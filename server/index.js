@@ -3,6 +3,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
+const io = require('socket.io').listen(8080);
+
+// Added for Alex's Proof Of Concept
+let val = true
+io.sockets.on('connection', function (socket) {
+  setInterval(() => {
+    if (val) {
+      // Hello is basically the header, 'Dog' is the message.
+      socket.emit('Hello', 'Dog')
+    } else {
+      socket.emit('Hello', 'Cat')
+    }
+    val = !val
+  }, 1000)
+
+  socket.on('join', function (data) {
+    socket.join(data.email); // We are using room of socket io
+  });
+});
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));

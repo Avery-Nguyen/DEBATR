@@ -1,11 +1,26 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Lobby from './Lobby';
 import Room from './Room';
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:8080";
+
 
 const VideoChat = () => {
   const [username, setUsername] = useState('');
   const [roomName, setRoomName] = useState('');
   const [token, setToken] = useState(null);
+  const [response, setResponse] = useState("");
+
+  useEffect(() => {
+    const socket = socketIOClient(ENDPOINT);
+    socket.on("Hello", data => {
+      setResponse(data);
+    });
+
+    // CLEAN UP THE EFFECT
+    return () => socket.disconnect();
+    //
+  }, []);
 
   const handleUsernameChange = useCallback(event => {
     setUsername(event.target.value);
@@ -44,6 +59,7 @@ const VideoChat = () => {
     );
   } else {
     render = (
+      <div>
       <Lobby
         username={username}
         roomName={roomName}
@@ -51,6 +67,10 @@ const VideoChat = () => {
         handleRoomNameChange={handleRoomNameChange}
         handleSubmit={handleSubmit}
       />
+        <p>
+        SocketMessage = {response}
+        </p>
+    </div>
     );
   }
   return render;
