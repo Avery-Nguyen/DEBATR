@@ -47,7 +47,7 @@ const VideoChat = () => {
   }, [currentSocket]);
 
 
-  // OG Code
+  // ALEX's CODE
   const roomAddHandler = (testRoom) => {
     setCurrentTestRoom(testRoom)
     setRoomList([...roomList, testRoom])
