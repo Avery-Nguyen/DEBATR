@@ -18,8 +18,11 @@ io.sockets.on('connection', function (socket) {
     val = !val
   }, 1000)
 
-  socket.on('join', function (data) {
-    socket.join(data.email); // We are using room of socket io
+  socket.on('joinRoom', function (data) {
+    console.log('Request to join room. Data:')
+    console.log(data);
+    socket.emit(`Request to join ${data} received.`)
+    // socket.join(data.email); // We are using room of socket io
   });
 });
 
