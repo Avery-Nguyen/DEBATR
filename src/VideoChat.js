@@ -11,14 +11,17 @@ const VideoChat = () => {
   const [username, setUsername] = useState('');
   const [roomName, setRoomName] = useState('');
   const [token, setToken] = useState(null);
+
+  // Alex's code, we should move into a reducer
   const [response, setResponse] = useState("");
   const [testRoom, setTestRoom] = useState("");
   const [currentTestRoom, setCurrentTestRoom] = useState("")
+  // Need this to access the socket outside of the second useEffect below
   const [currentSocket, setCurrentSocket] = useState(null)
   const [roomList, setRoomList] = useState([])
 
-  
 
+  // ALEX CODE: UseEffect to Create Socket
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:8080";
     const socket = socketIOClient(ENDPOINT);    
@@ -27,6 +30,7 @@ const VideoChat = () => {
     return () => socket.disconnect();
   }, []);
 
+  // ALEX CODE: Assign socket handlers
   useEffect(() => {
     if (currentSocket) {
       currentSocket.on("Hello", data => {
@@ -43,6 +47,7 @@ const VideoChat = () => {
   }, [currentSocket]);
 
 
+  // OG Code
   const roomAddHandler = (testRoom) => {
     setCurrentTestRoom(testRoom)
     setRoomList([...roomList, testRoom])
@@ -93,7 +98,6 @@ const VideoChat = () => {
       <Room roomName={roomName} token={token} handleLogout={handleLogout} />
     );
   } else {
-    console.log(roomList)
     const roomListMap = roomList.map(room => (
       <TestRoom currentTestRoom={currentTestRoom} exRoomName={room} setRoomName={roomChangeHandler} />
     ))
