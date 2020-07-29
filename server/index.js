@@ -7,8 +7,13 @@ const io = require('socket.io').listen(8080);
 
 // Added for Alex's Proof Of Concept
 let val = true
+let roomList = [];
+let interval;
 io.sockets.on('connection', function (socket) {
-  setInterval(() => {
+  const rLString = JSON.stringify(roomList)
+  socket.emit('initialRoomList', rLString)
+  
+  interval = setInterval(() => {
     if (val) {
       // Hello is basically the header, 'Dog' is the message.
       socket.emit('Hello', 'Dog')
@@ -18,9 +23,19 @@ io.sockets.on('connection', function (socket) {
     val = !val
   }, 1000)
 
+  socket.on('disconnect', function(socket) {
+    console.log('socket disconnected')
+    clearInterval(interval)
+  })
+
+  socket.on('createRoom', function (data) {
+    socket.emit(`Request to join ${data} received.`)
+    roomList = [...roomList, data]
+    // socket.join(data.email); // We are using room of socket io
+    console.log(`Current roomList is ${ roomList }`)
+  });
+
   socket.on('joinRoom', function (data) {
-    console.log('Request to join room. Data:')
-    console.log(data);
     socket.emit(`Request to join ${data} received.`)
     // socket.join(data.email); // We are using room of socket io
   });

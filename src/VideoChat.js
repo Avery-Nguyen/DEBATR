@@ -3,7 +3,8 @@ import Lobby from './Lobby';
 import Room from './Room';
 import TestRoom from './TestRoom';
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:8080";
+
+
 
 
 const VideoChat = () => {
@@ -16,25 +17,36 @@ const VideoChat = () => {
   const [currentSocket, setCurrentSocket] = useState(null)
   const [roomList, setRoomList] = useState([])
 
+  
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
+    const ENDPOINT = "http://127.0.0.1:8080";
+    const socket = socketIOClient(ENDPOINT);    
     setCurrentSocket(socket)
-    socket.on("Hello", data => {
-      setResponse(data);
-    });
 
-
-
-    // CLEAN UP THE EFFECT
     return () => socket.disconnect();
-    //
   }, []);
+
+  useEffect(() => {
+    if (currentSocket) {
+      currentSocket.on("Hello", data => {
+        setResponse(data);
+      });
+  
+      currentSocket.on("initialRoomList", data => {
+        const rLParse = JSON.parse(data)
+        setRoomList(prev => [...prev, ...rLParse])
+        console.log(`RoomList retrieved from server: ${data}`)
+      })
+    }
+ 
+  }, [currentSocket]);
+
 
   const roomAddHandler = (testRoom) => {
     setCurrentTestRoom(testRoom)
     setRoomList([...roomList, testRoom])
-    currentSocket.emit('joinRoom', testRoom)
+    currentSocket.emit('createRoom', testRoom)
   }
 
   const roomChangeHandler = (testRoom) => {
@@ -42,6 +54,7 @@ const VideoChat = () => {
     currentSocket.emit('joinRoom', testRoom)
   }
 
+  
 
 
   const handleUsernameChange = useCallback(event => {
@@ -80,6 +93,10 @@ const VideoChat = () => {
       <Room roomName={roomName} token={token} handleLogout={handleLogout} />
     );
   } else {
+    console.log(roomList)
+    const roomListMap = roomList.map(room => (
+      <TestRoom currentTestRoom={currentTestRoom} exRoomName={room} setRoomName={roomChangeHandler} />
+    ))
     render = (
       <div>
         <Lobby
@@ -102,9 +119,7 @@ const VideoChat = () => {
           <button onClick={(event) => roomAddHandler(testRoom)}>
             Create Room
           </button>
-          {roomList.map(room => {
-            return <TestRoom currentTestRoom={currentTestRoom} exRoomName={room} setRoomName={roomChangeHandler} />
-          })}
+            {roomListMap}
           </form>
         </p>
       </div>
