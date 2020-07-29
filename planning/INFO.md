@@ -5,7 +5,7 @@
 - a non-user can view list of topics and their agreement rating on main page
 
 # ERD
-
+![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen%20Shot%202020-07-29%20at%203.02.08%20PM.png?raw=true)
 
 # App Features
 
