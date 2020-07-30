@@ -17,7 +17,7 @@ const App = () => {
           <span role="img" aria-label="React">
             ⚛️
           </span>{' '}
-          by <a href="https://twitter.com/philnash">philnash</a>
+          by <a href="">AAA+</a>
         </p>
       </footer>
     </div>
