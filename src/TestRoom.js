@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const TestRoom = ({ currentTestRoom, exRoomName, objProps, setRoomName, sendMessageHandler }) => {
 
-  const { message, setMessage } = useState('')
+  const [ message, setMessage ] = useState('')
   // ObjProps: name,host,contender,spectators,topic,
   // hostArg,contenderArg,status,hostPoints,contenderPoints,messages
   // console.log(`ObjProps: ${Object.keys(objProps)}`)
@@ -18,10 +18,6 @@ const TestRoom = ({ currentTestRoom, exRoomName, objProps, setRoomName, sendMess
   }
   totalSpots();
 
-  if (message === "Never gonna be this value") {
-    setMessage('')
-
-  }
 
   const messages = objProps.messages.map(message => {
     return (<p>Message from {message.fromUser} - {message.message} </p>)
@@ -36,7 +32,7 @@ const TestRoom = ({ currentTestRoom, exRoomName, objProps, setRoomName, sendMess
         <input
           name="message"
           value={message}
-          onChange={(event) => (null)}
+          onChange={(event) => setMessage(event.target.value)}
         />
         <button onClick={(event) => {
           sendMessageHandler(message)
