@@ -30,6 +30,14 @@
 ### Login Page
 - Allow users to log in
 
+# Exernal links
+
+Colour Palette Tool
+- https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=6002ee&secondary.color=ffffff
+
+Icons 
+- https://material.io/resources/icons/?style=baseline
+
 
 # Stretch
 - Can record and save video to main page
