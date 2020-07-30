@@ -11,6 +11,7 @@ const Room = ({ roomName, token, handleLogout }) => {
   // console.log("Room -> participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
+  const [turn, setTurn] = useState(0)
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -94,26 +95,35 @@ const Room = ({ roomName, token, handleLogout }) => {
   }
 
   useEffect(()=>{
-    if(active && time >= 0) {
-      setTimeout(()=>{
-        setTime(time - 1);
-      }, 1000)
-    } else {
+   let timer = null;
+   if(turn >= 2){
+    if (active && time >= 0) {
+      timer = setTimeout(() => {
+        setTime(time - 1)
+      }, 1000);
+    } else if (active && time < 0) {
+      setTurn(prevTurn => prevTurn + 1)
       setTime(startTime);
-    };
-  },[active, time]);
+    } else if (!active) {
+      clearTimeout(timer)
+    }
+   } else {
+    clearTimeout(timer)
+   }
+   
+
+  },[active, time, turn]);
     
  
-      
-
-
-
 
   return (
     <div className="room">
       <h2>Room: {roomName}</h2>
       <h3>{time}</h3>
+      <h3>{turn}</h3>
+      <h3>{(turn === 2 && "Debate over")}</h3>
       <h3 onClick={toggle}>On/Off</h3>
+      {/* <h3>{message}</h3> */}
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
         {room ? (
