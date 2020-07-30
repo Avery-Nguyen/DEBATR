@@ -75,6 +75,13 @@ const VideoChat = () => {
   }
 
 
+  const sendMessageHandler = (message) => {
+    currentSocket.emit('message', {
+      roomName : currentTestRoom,
+      userName : 'Test Man',
+      message: message
+    })
+  }
 
 
   const handleUsernameChange = useCallback(event => {
@@ -114,7 +121,7 @@ const VideoChat = () => {
     );
   } else {
     const roomListMap = Object.keys(roomState).map((keyName, i) => (
-      <TestRoom currentTestRoom={currentTestRoom} exRoomName={keyName} objProps={roomState[keyName]} setRoomName={roomChangeHandler} />
+      <TestRoom currentTestRoom={currentTestRoom} exRoomName={keyName} objProps={roomState[keyName]} setRoomName={roomChangeHandler} sendMessageHandler={sendMessageHandler} />
     ))
     render = (
       <div>

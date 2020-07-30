@@ -9,24 +9,33 @@ const io = require('socket.io').listen(8080);
 let val = true
 let rLString;
 
-
 // This class holds an array of all the rooms
 class Rooms {
   constructor() {
     this.roomList = {}
   }
-
+  
   newRoom(name) {
     let r = new Room(name)
     this.roomList[r.name] = r
     return r
   }
+
+  delRoom(name) {
+    this.roomList[name] = null
+  }
+
   get allRooms() {
     return this.roomList
   }
   // this could include summary stats like average score, etc. For simplicy, just the count for now
   get numberOfRooms() {
     return this.roomList.length
+  }
+
+  sendRoomUpdate() {
+    rLString = JSON.stringify(roomList.allRooms)
+    io.to('lobby').emit('initialRoomList', rLString)
   }
 }
 
@@ -63,8 +72,11 @@ class Room {
     return this.users
   }
 
-  messageAllUsers(message) {
-    io.to(this.name).emit(message)
+  messageRoomUsers(message, user='Server') {
+    io.to(this.name).emit('message', {
+      roomName: this.name,
+      fromUser: user,
+      message: message})
   }
 }
 const roomList = new Rooms('roomList');
@@ -76,41 +88,33 @@ roomList.newRoom('otherRoom')
 let interval;
 io.sockets.on('connection', function (socket) {
   // Send roomList to each new participant
+  socket.join('lobby')
   rLString = JSON.stringify(roomList.allRooms)
+  // Send room data to client that just connected.
   socket.emit('initialRoomList', rLString)
-  console.log('all rooms being sent: ', roomList.allRooms)
+  console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
 
-  interval = setInterval(() => {
-    // if (val) {
-    //   // Hello is basically the header, 'Dog' is the message.
-    //   socket.emit('Hello', 'Dog')
-    // } else {
-    //   socket.emit('Hello', 'Cat')
-    // }
-    // val = !val
-
-    rLString = JSON.stringify(roomList.allRooms)
-    io.emit('initialRoomList', rLString)
+  // interval = setInterval(() => {
+  //   rLString = JSON.stringify(roomList.allRooms)
+  //   io.to('lobby').emit('initialRoomList', rLString)
     
-  }, 500)
+  // }, 1000)
 
-  // These are all custom functions
   socket.on('disconnect', function (socket) {
     console.log('socket disconnected')
-    clearInterval(interval)
   })
+
 
   socket.on('createRoom', function (data) {
     console.log('Data: ', data)
     console.log(`Request to Create ${data.roomName} by ${data.userName} received.`)
-    socket.emit(`Request to Create ${data} received.`)
+
     roomList.newRoom(data.roomName)
     roomList.roomList[data.roomName]['host'] = data.userName
 
-    rLString = JSON.stringify(roomList.allRooms)
-    socket.emit('initialRoomList', rLString)
-    // roomList = [...Room, data]
-    // socket.join(data.email); // We are using room of socket io
+    roomList.sendRoomUpdate()
+    // rLString = JSON.stringify(roomList.allRooms)
+    // socket.emit('initialRoomList', rLString)
     console.log(`Current roomList is ${roomList.allRooms}`)
   });
 
@@ -120,14 +124,25 @@ io.sockets.on('connection', function (socket) {
     roomList.roomList[data.roomName]['contender'] = data.userName
 
     // Send out update
-    rLString = JSON.stringify(roomList.allRooms)
-    socket.join(data.roomName)
-    socket.emit('initialRoomList', rLString)
+    
+    // rLString = JSON.stringify(roomList.allRooms)
+    // socket.join(data.roomName)
+    // socket.emit('initialRoomList', rLString)
+    roomList.sendRoomUpdate()
 
     if (roomList.roomList[data.roomName]['contender'] && roomList.roomList[data.roomName]['host']) {
-      console.log(`${data.roomName} iS FULL`)
+      console.log(`${data.roomName} is FULL`)
       io.in(data.roomName).emit('update', 'ROOM IS FULL using io!')
-      socket.broadcast.to(data.roomName).emit('update', 'ROOM IS FULL!')
+      // This works but easier to use a Room method.
+      // socket.broadcast.to(data.roomName).emit('update', 'ROOM IS FULL!')
+      roomList.roomList[data.roomName]['messages'].push({
+        timeStamp: 20200700456,
+        fromUser: 'Server',
+        message: 'Room is full!'
+      })
+
+       roomList.sendRoomUpdate()
+      roomList.roomList[data.roomName].messageRoomUsers('ROOM IS FULL')
     }
 
 
@@ -145,10 +160,21 @@ io.sockets.on('connection', function (socket) {
     }
 
     socket.leave(data.roomName)
+    roomList.sendRoomUpdate()
 
-    rLString = JSON.stringify(roomList.allRooms)
-    socket.emit('initialRoomList', rLString)
+    // rLString = JSON.stringify(roomList.allRooms)
+    // socket.emit('initialRoomList', rLString)
+  })
 
+  socket.on('message', function(data) {
+    console.log(`Message received from ${data.userName} - ${data.message}`)
+    roomList.roomList[data.roomName]['messages'].push({
+      timeStamp: 20200700456,
+      fromUser: data.userName,
+      message: data.message
+    })
+
+    roomList.sendRoomUpdate()
   })
 });
 
