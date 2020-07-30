@@ -4,7 +4,9 @@ import Participant from './Participant';
 
 const Room = ({ roomName, token, handleLogout }) => {
   const [room, setRoom] = useState(null);
+  // console.log("Room -> room", room)
   const [participants, setParticipants] = useState([]);
+  // console.log("Room -> participants", participants)
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -45,6 +47,49 @@ const Room = ({ roomName, token, handleLogout }) => {
     <Participant key={participant.sid} participant={participant} />
   ));
 
+  const toggleMute = function () {
+    // console.log(room.localParticipant);
+    room.localParticipant.audioTracks.forEach(publication => {
+      if (publication.track.isEnabled) {
+        //set
+        // console.log('muted');
+        return publication.track.disable();
+      } else {
+        // console.log('unmuted');
+        return publication.track.enable();
+      }
+    });
+  }
+
+  function handleTrackDisabled(track) {
+    console.log('track -->', track);
+    track.on('disabled', () => {
+      return console.log('Remote Person Muted');
+      // return true;
+    });
+    return console.log('Remote Person Unmuted');
+    // return false;
+  }
+ 
+    if(room){
+      room.participants.forEach(participant => {
+      // console.log("Room -> participant", participant)
+        participant.tracks.forEach(publication => {
+        // console.log("Room -> publication", publication.isSubscribed)
+          if (publication.isSubscribed) {
+            // console.log("Room -> publication.track", publication.track)
+            handleTrackDisabled(publication.track);
+          }
+          publication.on('subscribed', handleTrackDisabled);
+        });
+      });
+    }
+
+
+
+
+
+
   return (
     <div className="room">
       <h2>Room: {roomName}</h2>
@@ -59,6 +104,7 @@ const Room = ({ roomName, token, handleLogout }) => {
           ''
         )}
       </div>
+      <div onClick={() => toggleMute()}>mute</div>
       <h3>Remote Participants</h3>
       <div className="remote-participants">{remoteParticipants}</div>
     </div>
