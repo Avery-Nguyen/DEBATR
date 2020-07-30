@@ -4,9 +4,6 @@ import Room from './Room';
 import TestRoom from './TestRoom';
 import socketIOClient from "socket.io-client";
 
-
-
-
 const VideoChat = () => {
   const [username, setUsername] = useState('');
   const [roomName, setRoomName] = useState('');
@@ -18,13 +15,12 @@ const VideoChat = () => {
   const [currentTestRoom, setCurrentTestRoom] = useState("")
   // Need this to access the socket outside of the second useEffect below
   const [currentSocket, setCurrentSocket] = useState(null)
-  const [roomList, setRoomList] = useState([])
-
+  const [roomState, setRoomState] = useState({})
 
   // ALEX CODE: UseEffect to Create Socket
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:8080";
-    const socket = socketIOClient(ENDPOINT);    
+    const socket = socketIOClient(ENDPOINT);
     setCurrentSocket(socket)
 
     return () => socket.disconnect();
@@ -36,30 +32,56 @@ const VideoChat = () => {
       currentSocket.on("Hello", data => {
         setResponse(data);
       });
-  
+
       currentSocket.on("initialRoomList", data => {
         const rLParse = JSON.parse(data)
-        setRoomList(prev => [...prev, ...rLParse])
+        const roomsToLoadFromServer = Object.keys(rLParse)
+
+        console.log(`Rooms to load from server: ${roomsToLoadFromServer}`)
         console.log(`RoomList retrieved from server: ${data}`)
+
+        // This is an array of the room names
+        // setRoomList(prev => [...prev, ...roomsToLoadFromServer])
+
+        // Want this to be an object of rooms
+        setRoomState(prevState => ({ ...prevState, ...rLParse}))
       })
     }
- 
-  }, [currentSocket]);
 
+  }
+    , [currentSocket]);
 
   // ALEX's CODE
   const roomAddHandler = (testRoom) => {
+    if (currentTestRoom) {
+      currentSocket.emit('leaveRoom', {
+        roomName : currentTestRoom,
+        userName : 'Test Man'
+      })
+    }
     setCurrentTestRoom(testRoom)
-    setRoomList([...roomList, testRoom])
-    currentSocket.emit('createRoom', testRoom)
+    // setRoomList([...roomList, testRoom])
+    currentSocket.emit('createRoom', {
+      roomName : testRoom,
+      userName : 'Test Man'
+    })
   }
 
   const roomChangeHandler = (testRoom) => {
+    if (currentTestRoom) {
+      currentSocket.emit('leaveRoom', {
+        roomName : currentTestRoom,
+        userName : 'Test Man'
+      })
+    }
     setCurrentTestRoom(testRoom)
-    currentSocket.emit('joinRoom', testRoom)
+    currentSocket.emit('joinRoom', {
+      roomName : testRoom,
+      userName : 'Test Man'
+    })
   }
 
-  
+
 
 
   const handleUsernameChange = useCallback(event => {
@@ -98,8 +120,8 @@ const VideoChat = () => {
       <Room roomName={roomName} token={token} handleLogout={handleLogout} />
     );
   } else {
-    const roomListMap = roomList.map(room => (
-      <TestRoom currentTestRoom={currentTestRoom} exRoomName={room} setRoomName={roomChangeHandler} />
+    const roomListMap = Object.keys(roomState).map((keyName, i) => (
+      <TestRoom currentTestRoom={currentTestRoom} exRoomName={keyName} objProps={roomState[keyName]} setRoomName={roomChangeHandler} />
     ))
     render = (
       <div>
@@ -120,8 +142,8 @@ const VideoChat = () => {
               value={testRoom}
               onChange={(event) => setTestRoom(event.target.value)}
             />
-          <button onClick={(event) => roomAddHandler(testRoom)}>
-            Create Room
+            <button onClick={(event) => roomAddHandler(testRoom)}>
+              Create Room
           </button>
             {roomListMap}
           </form>

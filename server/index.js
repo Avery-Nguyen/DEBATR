@@ -7,7 +7,28 @@ const io = require('socket.io').listen(8080);
 
 // Alex's SOCKET code
 let val = true
-let roomList = [];
+let rLString;
+
+
+// This class holds an array of all the rooms
+class Rooms {
+  constructor() {
+    this.roomList = {}
+  }
+
+  newRoom(name) {
+    let r = new Room(name)
+    this.roomList[r.name] = r
+    return r
+  }
+  get allRooms() {
+    return this.roomList
+  }
+  // this could include summary stats like average score, etc. For simplicy, just the count for now
+  get numberOfRooms() {
+    return this.roomList.length
+  }
+}
 
 
 // Class framework for each Room. Will allow us to manage the rooms better
@@ -17,11 +38,9 @@ let roomList = [];
 class Room {
   constructor(name) {
     this.name = name;
-    this.users = {
-      host: null,
-      contender: null,
-      spectators: []
-    }
+    this.host = null;
+    this.contender = null;
+    this.spectators = [];
     this.topic = 'Topic Name';
     this.hostArg = 'Is the Greatest';
     this.contenderArg = 'Is the Worst';
@@ -40,19 +59,25 @@ class Room {
     }]
   }
 
+  get numberOfUsers() {
+    return this.users
+  }
 
   messageAllUsers(message) {
     io.to(this.name).emit(message)
   }
 }
+const roomList = new Rooms('roomList');
 
-const testRoom = new Room('testRoom')
+roomList.newRoom('testRoom')
+roomList.newRoom('otherRoom')
 
 
 let interval;
 io.sockets.on('connection', function (socket) {
   // Send roomList to each new participant
-  const rLString = JSON.stringify(roomList)
+  rLString = JSON.stringify(roomList.allRooms)
+  console.log('all rooms being sent: ', roomList.allRooms)
   socket.emit('initialRoomList', rLString)
 
   interval = setInterval(() => {
@@ -72,20 +97,44 @@ io.sockets.on('connection', function (socket) {
   })
 
   socket.on('createRoom', function (data) {
-    console.log(`Request to Create ${data} received.`)
+    console.log('Data: ', data)
+    console.log(`Request to Create ${data.roomName} by ${data.userName} received.`)
     socket.emit(`Request to Create ${data} received.`)
-    roomList = [...roomList, data]
+    roomList.newRoom(data.roomName)
+    roomList.roomList[data.roomName]['host'] = data.userName
+
+    rLString = JSON.stringify(roomList.allRooms)
+    socket.emit('initialRoomList', rLString)
+    // roomList = [...Room, data]
     // socket.join(data.email); // We are using room of socket io
-    console.log(`Current roomList is ${roomList}`)
+    console.log(`Current roomList is ${roomList.allRooms}`)
   });
 
   socket.on('joinRoom', function (data) {
-    console.log(`Request to join ${data} received.`)
+    console.log(`Request to join ${data.roomName} from ${data.userName} received.`)
+    roomList.roomList[data.roomName]['contender'] = data.userName
+
+    rLString = JSON.stringify(roomList.allRooms)
+    socket.emit('initialRoomList', rLString)
+    console.log(roomList.roomList)
+
+
     socket.emit(`Request to join ${data} received.`)
 
   });
 
+  socket.on('leaveRoom', function (data) {
+    console.log(`Request to leave ${data.roomName} from ${data.userName} received.`)
 
+    if (roomList.roomList[data.roomName]['contender'] === data.userName) {
+      roomList.roomList[data.roomName]['contender'] = null
+    } else if (roomList.roomList[data.roomName]['host'] === data.userName) {
+      roomList.roomList[data.roomName]['host'] = null
+    }
+    rLString = JSON.stringify(roomList.allRooms)
+    socket.emit('initialRoomList', rLString)
+
+  })
 });
 
 const app = express();
