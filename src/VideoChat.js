@@ -35,13 +35,6 @@ const VideoChat = () => {
 
       currentSocket.on("initialRoomList", data => {
         const rLParse = JSON.parse(data)
-        const roomsToLoadFromServer = Object.keys(rLParse)
-
-        console.log(`Rooms to load from server: ${roomsToLoadFromServer}`)
-        console.log(`RoomList retrieved from server: ${data}`)
-
-        // This is an array of the room names
-        // setRoomList(prev => [...prev, ...roomsToLoadFromServer])
 
         // Want this to be an object of rooms
         setRoomState(prevState => ({ ...prevState, ...rLParse}))

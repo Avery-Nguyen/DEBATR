@@ -77,18 +77,22 @@ let interval;
 io.sockets.on('connection', function (socket) {
   // Send roomList to each new participant
   rLString = JSON.stringify(roomList.allRooms)
-  console.log('all rooms being sent: ', roomList.allRooms)
   socket.emit('initialRoomList', rLString)
+  console.log('all rooms being sent: ', roomList.allRooms)
 
   interval = setInterval(() => {
-    if (val) {
-      // Hello is basically the header, 'Dog' is the message.
-      socket.emit('Hello', 'Dog')
-    } else {
-      socket.emit('Hello', 'Cat')
-    }
-    val = !val
-  }, 1000)
+    // if (val) {
+    //   // Hello is basically the header, 'Dog' is the message.
+    //   socket.emit('Hello', 'Dog')
+    // } else {
+    //   socket.emit('Hello', 'Cat')
+    // }
+    // val = !val
+
+    rLString = JSON.stringify(roomList.allRooms)
+    io.emit('initialRoomList', rLString)
+    
+  }, 500)
 
   // These are all custom functions
   socket.on('disconnect', function (socket) {
@@ -112,11 +116,19 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('joinRoom', function (data) {
     console.log(`Request to join ${data.roomName} from ${data.userName} received.`)
+    // Add to room list
     roomList.roomList[data.roomName]['contender'] = data.userName
 
+    // Send out update
     rLString = JSON.stringify(roomList.allRooms)
+    socket.join(data.roomName)
     socket.emit('initialRoomList', rLString)
-    console.log(roomList.roomList)
+
+    if (roomList.roomList[data.roomName]['contender'] && roomList.roomList[data.roomName]['host']) {
+      console.log(`${data.roomName} iS FULL`)
+      io.in(data.roomName).emit('update', 'ROOM IS FULL using io!')
+      socket.broadcast.to(data.roomName).emit('update', 'ROOM IS FULL!')
+    }
 
 
     socket.emit(`Request to join ${data} received.`)
@@ -131,6 +143,9 @@ io.sockets.on('connection', function (socket) {
     } else if (roomList.roomList[data.roomName]['host'] === data.userName) {
       roomList.roomList[data.roomName]['host'] = null
     }
+
+    socket.leave(data.roomName)
+
     rLString = JSON.stringify(roomList.allRooms)
     socket.emit('initialRoomList', rLString)
 
