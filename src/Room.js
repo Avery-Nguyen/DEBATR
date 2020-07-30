@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Video from 'twilio-video';
 import Participant from './Participant';
 
+const startTime = 5;
+
 const Room = ({ roomName, token, handleLogout }) => {
   const [room, setRoom] = useState(null);
   // console.log("Room -> room", room)
   const [participants, setParticipants] = useState([]);
   // console.log("Room -> participants", participants)
+  const [time, setTime] = useState(startTime);
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -85,7 +89,22 @@ const Room = ({ roomName, token, handleLogout }) => {
       });
     }
 
+  const toggle = function () {
+    setActive(!active);
+  }
 
+  useEffect(()=>{
+    if(active && time >= 0) {
+      setTimeout(()=>{
+        setTime(time - 1);
+      }, 1000)
+    } else {
+      setTime(startTime);
+    };
+  },[active, time]);
+    
+ 
+      
 
 
 
@@ -93,6 +112,8 @@ const Room = ({ roomName, token, handleLogout }) => {
   return (
     <div className="room">
       <h2>Room: {roomName}</h2>
+      <h3>{time}</h3>
+      <h3 onClick={toggle}>On/Off</h3>
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
         {room ? (
