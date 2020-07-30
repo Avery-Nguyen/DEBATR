@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS topics CASCADE;
+CREATE TABLE topics (
+  id SERIAL PRIMARY KEY NOT NULL,
+  question TEXT NOT NULL,
+  category_id SERIAL NOT NULL REFERENCES categories(id)
+);
