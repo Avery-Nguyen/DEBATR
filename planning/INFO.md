@@ -1,10 +1,23 @@
 # User Story
 - user can join chat room by choosing a topic
-- user can engage in site, while non-user can only view
-- user can rate other user's debate skills
-- user can agree or disagree on a topic
-- user and non-user can view overall debate statistics
-- user and non-user can view previous debates
+- user can engage in site, while non-user can only view active debates.
+- user can rate other user's debate skills.
+- user can agree or disagree on a topic.
+- user and non-user can view overall debate statistics (specific statistics - )
+
+Other Features
+- on Signup, promise not to test nudity filter
+(stretch)
+
+- user and non-user can view previous debates.
+  -(Stretch - Use AWS S3 / Firebase to host own videos)
+-Nudity filter (Can Twilio help with this?)
+-Verified users
+-Implement jobs to handle the startGame timeout chain
+-Any user can make any topic
+
+
+
 
 # Project Description
 Project title?
