@@ -6,7 +6,7 @@ const startTime = 5;
 
 const Room = ({ roomName, token, handleLogout }) => {
   const [room, setRoom] = useState(null);
-  // console.log("Room -> room", room)
+  console.log("Room -> room", room)
   const [participants, setParticipants] = useState([]);
   // console.log("Room -> participants", participants)
   const [time, setTime] = useState(startTime);
@@ -58,14 +58,14 @@ const Room = ({ roomName, token, handleLogout }) => {
       if (publication.track.isEnabled) {
         //set
         // console.log('muted');
-        return publication.track.disable();
+        publication.track.disable();
       } else {
         // console.log('unmuted');
-        return publication.track.enable();
+        publication.track.enable();
       }
     });
   }
-
+  
   function handleTrackDisabled(track) {
     console.log('track -->', track);
     track.on('disabled', () => {
@@ -96,7 +96,7 @@ const Room = ({ roomName, token, handleLogout }) => {
 
   useEffect(()=>{
    let timer = null;
-   if(turn >= 2){
+   if(turn < 2){
     if (active && time >= 0) {
       timer = setTimeout(() => {
         setTime(time - 1)
