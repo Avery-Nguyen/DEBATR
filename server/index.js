@@ -85,20 +85,25 @@ class Room {
   }
 
   startGame() {
-    io.to(this.name).emit('gameCommand', 'startGame')
+    io.to(this.name).emit('startGame', {
+      roomName: this.name
+    })
     this.sleep(3000)
     .then(() => {
       io.to(this.name).emit('gameCommand', 'hostTurn')
-      io.to(this.name).emit('mute', this.contender)})
+      io.to(this.name).emit('mute', this.host)
+      io.to(this.name).emit('mute', this.contender)
+    })
       .then(() => {
-        this.sleep(3000)
+        this.sleep(5000)
         .then(() => {
           io.to(this.name).emit('gameCommand', 'contenderTurn')
           io.to(this.name).emit('unMute', this.contender)
-          io.to(this.name).emit('mute', this.host)
+          io.to(this.name).emit('unMute', this.host)
         })
-        .then(() => this.sleep(2000)
+        .then(() => this.sleep(5000)
         .then(() => {
+          io.to(this.name).emit('unMute', this.host)
           io.to(this.name).emit('gameCommand', 'test - game over!')
         }))
     })
@@ -134,6 +139,7 @@ io.sockets.on('connection', function (socket) {
     console.log('Data: ', data)
     console.log(`Request to Create ${data.roomName} by ${data.userName} received.`)
 
+    socket.join(data.roomName)
     roomList.newRoom(data.roomName)
     roomList.roomList[data.roomName]['host'] = data.userName
 

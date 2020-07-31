@@ -6,11 +6,13 @@ import SocketContext from './SocketContext'
 
 const VideoChat = ({currentSocket}) => {
   const [username, setUsername] = useState('');
+  console.log("VideoChat -> username", username)
   const [roomName, setRoomName] = useState('');
+  console.log("VideoChat -> roomName", roomName)
   const [token, setToken] = useState(null);
+  console.log("VideoChat -> token", token)
 
   // Alex's code, we should move into a reducer
-  const [response, setResponse] = useState("");
   const [testRoom, setTestRoom] = useState("");
   const [currentTestRoom, setCurrentTestRoom] = useState("")
   // Need this to access the socket outside of the second useEffect below
@@ -22,21 +24,34 @@ const VideoChat = ({currentSocket}) => {
   // ALEX CODE: Assign socket handlers
   useEffect(() => {
     if (currentSocket) {
-      currentSocket.on("Hello", data => {
-        setResponse(data);
-      });
-
       currentSocket.on("initialRoomList", data => {
         const rLParse = JSON.parse(data)
         // Want this to be an object of rooms
         setRoomState(prevState => ({ ...prevState, ...rLParse}))
       })
 
-     
+      currentSocket.on('startGame', data => {
+        const randName = Math.random().toFixed(5).toString()
+        // handleSubmit()
+        console.log('data.roomname', data.roomName)
+        console.log('randName', randName)
+        
+        fetch('/video/token', {
+          method: 'POST',
+          body: JSON.stringify({
+            identity: randName,
+            room: data.roomName
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json())
+        .then((fetchData) => setToken(fetchData.token))
+        setRoomName(data.roomName)
+        setUsername(`${randName}`)
+      })
     }
-
-  }
-    , [currentSocket]);
+  }, [currentSocket]);
 
   // ALEX's CODE
   const roomAddHandler = (testRoom) => {
@@ -68,7 +83,6 @@ const VideoChat = ({currentSocket}) => {
     })
   }
 
-
   const sendMessageHandler = (message) => {
     currentSocket.emit('message', {
       roomName : currentTestRoom,
@@ -86,30 +100,35 @@ const VideoChat = ({currentSocket}) => {
     setRoomName(event.target.value);
   }, []);
 
-  const handleSubmit = useCallback(
-    async event => {
-      event.preventDefault();
-      const data = await fetch('/video/token', {
-        method: 'POST',
-        body: JSON.stringify({
-          identity: username,
-          room: roomName
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
-      setToken(data.token);
-    },
-    [roomName, username]
-  );
+  // const handleSubmit = useCallback(
+  //   async event => {
+  //     if(event) {
+  //       event.preventDefault();
+  //     }
+      
+  //     console.log('roomName in the Fetch REQ', roomName)
+  //     console.log('username in the Fetch REQ', username)
+  //     const data = await fetch('/video/token', {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         identity: username,
+  //         room: roomName
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     }).then(res => res.json());
+  //     setToken(data.token);
+  //   },
+  //   [roomName, username]
+  // );
 
   const handleLogout = useCallback(event => {
     setToken(null);
   }, []);
 
   let render;
-  if (token) {
+  if (token && roomName) {
     render = (
       <SocketContext.Provider value={currentSocket}>
       <Room roomName={roomName} token={token} handleLogout={handleLogout} currentSocket={currentSocket} username={username} roomState={roomState} currentTestRoom={currentTestRoom}/>
@@ -121,15 +140,13 @@ const VideoChat = ({currentSocket}) => {
     ))
     render = (
       <div>
-        <Lobby
+        {/* <Lobby
           username={username}
           roomName={roomName}
           handleUsernameChange={handleUsernameChange}
           handleRoomNameChange={handleRoomNameChange}
           handleSubmit={handleSubmit}
-        />
-        <p>
-          SocketMessage = {response}
+        />  */}
           <form
             onSubmit={(event) => event.preventDefault()}
           >
@@ -143,7 +160,6 @@ const VideoChat = ({currentSocket}) => {
           </button>
             {roomListMap}
           </form>
-        </p>
       </div>
     );
   }

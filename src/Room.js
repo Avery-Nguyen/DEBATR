@@ -12,6 +12,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [turn, setTurn] = useState(0)
+  const [gameCommands, setGameCommands] = useState([])
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -24,6 +25,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
       );
     };
 
+    console.log('RoomName before video.connect', roomName)
     Video.connect(token, {
       name: roomName
     }).then(room => {
@@ -52,60 +54,65 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
     <Participant key={participant.sid} participant={participant} />
   ));
 
-  const toggleMute = function () {
-    // console.log(room.localParticipant);
-    room.localParticipant.audioTracks.forEach(publication => {
-      if (publication.track.isEnabled) {
-        //set
-        // console.log('muted');
+  const muted = function (username) {
+    if (true) {
+      room.localParticipant.audioTracks.forEach(publication => {
+        // console.log(room.localParticipant.identity,'is muted');
         publication.track.disable();
-      } else {
-        // console.log('unmuted');
-        publication.track.enable();
-      }
-    });
-  }
-
-
-  useEffect(() => {
-    console.log(roomState)
-    console.log('username: ', username)
-    console.log(currentTestRoom)
-    if (currentSocket && currentTestRoom && roomState) {
-      currentSocket.on("mute", data => {
-        console.log('MUTE HOST COMMAND RECEIVED')
-        if (username === data) {
-          console.log('muting host')
-          console.log(data)
-          toggleMute();
-        }
-      })
-    }
-  }, [currentSocket]);
-  
-  function handleTrackDisabled(track) {
-    console.log('track -->', track);
-    track.on('disabled', () => {
-      return console.log('Remote Person Muted');
-      // return true;
-    });
-    return console.log('Remote Person Unmuted');
-    // return false;
-  }
- 
-    if(room){
-      room.participants.forEach(participant => {
-      // console.log("Room -> participant", participant)
-        participant.tracks.forEach(publication => {
-        // console.log("Room -> publication", publication.isSubscribed)
-          if (publication.isSubscribed) {
-            // console.log("Room -> publication.track", publication.track)
-            handleTrackDisabled(publication.track);
-          }
-          publication.on('subscribed', handleTrackDisabled);
-        });
       });
     }
+  }
+
+  const unMuted = function (username) {
+    if (true) {
+      room.localParticipant.audioTracks.forEach(publication => {
+        // console.log(room.localParticipant.identity,' is unmuted');
+        publication.track.enable();
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (currentSocket) {
+      currentSocket.on("gameCommand", data => {
+        setGameCommands(prev => [...prev, data])
+      })
+      currentSocket.on("mute", data => {
+        muted(data)
+      })
+      currentSocket.on("unMute", data => {
+        unMuted(data)
+      })
+      
+    }
+  }, [currentSocket]);
+
+
+  
+  
+  // function handleTrackDisabled(track) {
+  //   console.log('track -->', track);
+  //   track.on('disabled', () => {
+  //     return console.log('Remote Person Muted');
+  //     // return true;
+  //   });
+  //   return console.log('Remote Person Unmuted');
+  //   // return false;
+  // }
+ 
+  //   if(room){
+  //     room.participants.forEach(participant => {
+  //     // console.log("Room -> participant", participant)
+  //       participant.tracks.forEach(publication => {
+  //       // console.log("Room -> publication", publication.isSubscribed)
+  //         if (publication.isSubscribed) {
+  //           // console.log("Room -> publication.track", publication.track)
+  //           handleTrackDisabled(publication.track);
+  //         }
+  //         publication.on('subscribed', handleTrackDisabled);
+  //       });
+  //     });
+  //   }
 
   const toggle = function () {
     setActive(!active);
@@ -132,6 +139,9 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
   },[active, time, turn]);
     
  
+const gameCommandList = gameCommands.map(command => (
+ <h2>{command}</h2>
+))
 
   return (
     <div className="room">
@@ -152,7 +162,9 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
           ''
         )}
       </div>
-      <div onClick={() => toggleMute()}>mute</div>
+      <div>
+       {gameCommandList}
+      </div>
       <h3>Remote Participants</h3>
       <div className="remote-participants">{remoteParticipants}</div>
     </div>

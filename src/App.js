@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div className="app">
       <header>
-        <h1>Video Chat with Hooks</h1>
+        <h1>Master Debater</h1>
       </header>
       <main>
       <SocketContext.Provider value={currentSocket}>
