@@ -66,22 +66,61 @@ const Room = ({ roomName, token, handleLogout }) => {
     });
   }
   
+
+  const whoIsLocal = function (username) {
+    if (username === room.localParticipant.identity) {
+      room.localParticipant.audioTracks.forEach(publication => {
+        if (publication.track.isEnabled) {
+          
+          console.log(room.localParticipant.identity,'is muted');
+          publication.track.disable();
+        } else {
+          console.log(room.localParticipant.identity,' is unmuted');
+          publication.track.enable();
+        }
+      });
+    }
+  };
+
+
+  // const muted = function (username) {
+  //   if (username === room.localParticipant.identity) {
+  //     room.localParticipant.audioTracks.forEach(publication => {
+  //       // console.log(room.localParticipant.identity,'is muted');
+  //       publication.track.disable();
+  //     });
+  //   }
+  // }
+
+  // const unmuted = function (username) {
+  //   if (username === room.localParticipant.identity) {
+  //     room.localParticipant.audioTracks.forEach(publication => {
+  //       // console.log(room.localParticipant.identity,' is unmuted');
+  //       publication.track.enable();
+  //     });
+  //   }
+  // }
   function handleTrackDisabled(track) {
     console.log('track -->', track);
     track.on('disabled', () => {
       return console.log('Remote Person Muted');
       // return true;
     });
-    return console.log('Remote Person Unmuted');
+    track.on('enabled', () => {
+      return console.log('Remote Person Unmuted');
     // return false;
+    });
+  
   }
  
     if(room){
       room.participants.forEach(participant => {
-      // console.log("Room -> participant", participant)
+      console.log("Room -> participant", participant)
+      const remoteName = participant.identity
         participant.tracks.forEach(publication => {
         // console.log("Room -> publication", publication.isSubscribed)
           if (publication.isSubscribed) {
+            console.log(remoteName);
             // console.log("Room -> publication.track", publication.track)
             handleTrackDisabled(publication.track);
           }
@@ -123,6 +162,7 @@ const Room = ({ roomName, token, handleLogout }) => {
       <h3>{turn}</h3>
       <h3>{(turn === 2 && "Debate over")}</h3>
       <h3 onClick={toggle}>On/Off</h3>
+      <h3 onClick={() => whoIsLocal(room.localParticipant.identity)}>local participant</h3>
       {/* <h3>{message}</h3> */}
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
