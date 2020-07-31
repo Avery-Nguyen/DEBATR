@@ -29,7 +29,7 @@ insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_t
 insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (1, 3, 2, 75, '2019-12-18 22:16:10');
 insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (4, 2, 3, 58, '2019-08-06 13:58:08');
 insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (1, 4, 9, 53, '2019-10-17 16:26:05');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (5, 6, 2, 34, '2019-11-20 18:31:14');
+insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (4, 6, 2, 34, '2019-11-20 18:31:14');
 insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (3, 5, 8, 99, '2020-05-01 01:35:11');
 
 insert into ratings (from_user_id, to_user_id, rating) values (8, 4, 3);
