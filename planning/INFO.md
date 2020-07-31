@@ -1,11 +1,29 @@
 # User Story
 - user can join chat room by choosing a topic
+- user can engage in site, while non-user can only view
 - user can rate other user's debate skills
-- user can agree or disagre on a topic
-- a non-user can view list of topics and their agreement rating on main page
+- user can agree or disagree on a topic
+- user and non-user can view overall debate statistics
+- user and non-user can view previous debates
+
+# Project Description
+Project title?
+- Debatr
+Project description - What problem your app solves?
+- A platform to debate topics, in a game format, with a rewards system for civilized debate
+Target audience - Your app will be useful to whom?
+- Anyone looking for civil discussions on relevent topics, in a non-formal manner
+Team members?
+- Alex Hladun, Avery Nguyen, Andrew Delmar, Trevor Thomas
+
+# Project Stack
+- React | PostgreSQL / ElephantSQL | Node | Express | Twilio | Material.ui | Socket.io
 
 # ERD
 ![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen%20Shot%202020-07-29%20at%203.02.08%20PM.png?raw=true)
+
+# Wireframes
+![Wireframes](https://drive.google.com/drive/folders/1bsMLdfQq6ziN4ZJkBTRwgRb5g_vF1AqO?usp=sharing)
 
 # App Features
 
@@ -37,7 +55,6 @@ Colour Palette Tool
 
 Icons 
 - https://material.io/resources/icons/?style=baseline
-
 
 # Stretch
 - Can record and save video to main page

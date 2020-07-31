@@ -1,0 +1,11 @@
+.convinced {
+  display: flex;
+  justify-content: space-between;
+  font-size: small;
+  opacity: .7;
+}
+
+#discrete-slider {
+  display: flex;
+  justify-content: center;
+}

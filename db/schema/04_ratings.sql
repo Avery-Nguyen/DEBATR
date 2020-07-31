@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS ratings CASCADE;
+CREATE TABLE ratings (
+  id SERIAL PRIMARY KEY NOT NULL,
+  from_user_id SERIAL NOT NULL REFERENCES users(id),
+  to_user_id SERIAL NOT NULL REFERENCES users(id),
+  rating SMALLINT NOT NULL
+);
