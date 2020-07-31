@@ -1,8 +1,9 @@
 const config = require('./config');
-const express = require('express');
+const app = require('express')();
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
+const http=require('http').createServer(app)
 const io = require('socket.io').listen(8080);
 
 // Alex's SOCKET code
@@ -95,10 +96,9 @@ io.sockets.on('connection', function (socket) {
   console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
 
   // interval = setInterval(() => {
-  //   rLString = JSON.stringify(roomList.allRooms)
-  //   io.to('lobby').emit('initialRoomList', rLString)
+  //   // rLString = JSON.stringify(roomList.allRooms)
     
-  // }, 1000)
+  // }, 10000)
 
   socket.on('disconnect', function (socket) {
     console.log('socket disconnected')
@@ -126,10 +126,12 @@ io.sockets.on('connection', function (socket) {
     // Send out update
     
     // rLString = JSON.stringify(roomList.allRooms)
-    // socket.join(data.roomName)
+    socket.join(data.roomName)
+
     // socket.emit('initialRoomList', rLString)
     roomList.sendRoomUpdate()
 
+    // Room is full if host & contender
     if (roomList.roomList[data.roomName]['contender'] && roomList.roomList[data.roomName]['host']) {
       console.log(`${data.roomName} is FULL`)
       io.in(data.roomName).emit('update', 'ROOM IS FULL using io!')
@@ -143,10 +145,16 @@ io.sockets.on('connection', function (socket) {
 
        roomList.sendRoomUpdate()
       roomList.roomList[data.roomName].messageRoomUsers('ROOM IS FULL')
+      
+      io.to(data.roomName).emit('mute',roomList.roomList[data.roomName]['contender'])
+
     }
 
 
     socket.emit(`Request to join ${data} received.`)
+
+
+    
 
   });
 
@@ -178,7 +186,7 @@ io.sockets.on('connection', function (socket) {
   })
 });
 
-const app = express();
+// const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
@@ -212,6 +220,6 @@ app.post('/video/token', (req, res) => {
   sendTokenResponse(token, res);
 });
 
-app.listen(3001, () =>
+http.listen(3001, () =>
   console.log('Express server is running on localhost:3001')
 );

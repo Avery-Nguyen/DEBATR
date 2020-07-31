@@ -4,7 +4,7 @@ import Participant from './Participant';
 
 const startTime = 5;
 
-const Room = ({ roomName, token, handleLogout }) => {
+const Room = ({ roomName, token, handleLogout, currentSocket, username, roomState, currentTestRoom }) => {
   const [room, setRoom] = useState(null);
   console.log("Room -> room", room)
   const [participants, setParticipants] = useState([]);
@@ -65,6 +65,23 @@ const Room = ({ roomName, token, handleLogout }) => {
       }
     });
   }
+
+
+  useEffect(() => {
+    console.log(roomState)
+    console.log('username: ', username)
+    console.log(currentTestRoom)
+    if (currentSocket && currentTestRoom && roomState) {
+      currentSocket.on("mute", data => {
+        console.log('MUTE HOST COMMAND RECEIVED')
+        if (username === data) {
+          console.log('muting host')
+          console.log(data)
+          toggleMute();
+        }
+      })
+    }
+  }, [currentSocket]);
   
   function handleTrackDisabled(track) {
     console.log('track -->', track);

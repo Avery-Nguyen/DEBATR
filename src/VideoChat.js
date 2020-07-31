@@ -2,9 +2,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Lobby from './Lobby';
 import Room from './Room';
 import TestRoom from './TestRoom';
-import socketIOClient from "socket.io-client";
+import SocketContext from './SocketContext'
 
-const VideoChat = () => {
+const VideoChat = ({currentSocket}) => {
   const [username, setUsername] = useState('');
   const [roomName, setRoomName] = useState('');
   const [token, setToken] = useState(null);
@@ -14,17 +14,10 @@ const VideoChat = () => {
   const [testRoom, setTestRoom] = useState("");
   const [currentTestRoom, setCurrentTestRoom] = useState("")
   // Need this to access the socket outside of the second useEffect below
-  const [currentSocket, setCurrentSocket] = useState(null)
   const [roomState, setRoomState] = useState({})
 
   // ALEX CODE: UseEffect to Create Socket
-  useEffect(() => {
-    const ENDPOINT = "http://127.0.0.1:8080";
-    const socket = socketIOClient(ENDPOINT);
-    setCurrentSocket(socket)
-
-    return () => socket.disconnect();
-  }, []);
+ 
 
   // ALEX CODE: Assign socket handlers
   useEffect(() => {
@@ -35,10 +28,11 @@ const VideoChat = () => {
 
       currentSocket.on("initialRoomList", data => {
         const rLParse = JSON.parse(data)
-
         // Want this to be an object of rooms
         setRoomState(prevState => ({ ...prevState, ...rLParse}))
       })
+
+     
     }
 
   }
@@ -117,7 +111,9 @@ const VideoChat = () => {
   let render;
   if (token) {
     render = (
-      <Room roomName={roomName} token={token} handleLogout={handleLogout} />
+      <SocketContext.Provider value={currentSocket}>
+      <Room roomName={roomName} token={token} handleLogout={handleLogout} currentSocket={currentSocket} username={username} roomState={roomState} currentTestRoom={currentTestRoom}/>
+      </SocketContext.Provider>
     );
   } else {
     const roomListMap = Object.keys(roomState).map((keyName, i) => (
