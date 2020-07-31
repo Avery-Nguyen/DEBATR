@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const http=require('http').createServer(app)
-const io = require('socket.io').listen(8080);
+const io = require('socket.io')(http);
 
 // Alex's SOCKET code
 let val = true
@@ -79,6 +79,31 @@ class Room {
       fromUser: user,
       message: message})
   }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  startGame() {
+    io.to(this.name).emit('gameCommand', 'startGame')
+    this.sleep(3000)
+    .then(() => {
+      io.to(this.name).emit('gameCommand', 'hostTurn')
+      io.to(this.name).emit('mute', this.contender)})
+      .then(() => {
+        this.sleep(3000)
+        .then(() => {
+          io.to(this.name).emit('gameCommand', 'contenderTurn')
+          io.to(this.name).emit('unMute', this.contender)
+          io.to(this.name).emit('mute', this.host)
+        })
+        .then(() => this.sleep(2000)
+        .then(() => {
+          io.to(this.name).emit('gameCommand', 'test - game over!')
+        }))
+    })
+
+  }
 }
 const roomList = new Rooms('roomList');
 
@@ -143,10 +168,11 @@ io.sockets.on('connection', function (socket) {
         message: 'Room is full!'
       })
 
-       roomList.sendRoomUpdate()
-      roomList.roomList[data.roomName].messageRoomUsers('ROOM IS FULL')
-      
-      io.to(data.roomName).emit('mute',roomList.roomList[data.roomName]['contender'])
+      roomList.sendRoomUpdate()
+
+      roomList.roomList[data.roomName].startGame();
+
+      // io.to(data.roomName).emit('mute',roomList.roomList[data.roomName]['contender'])
 
     }
 
