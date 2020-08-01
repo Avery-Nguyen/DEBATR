@@ -88,11 +88,7 @@ export default function SignIn() {
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Already registered? Sign-in"}
-              </Link>
-            </Grid>
+            
           </Grid>
         </form>
       </div>

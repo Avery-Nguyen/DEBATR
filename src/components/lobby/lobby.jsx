@@ -7,7 +7,7 @@ import LobbyItem from './lobbyitem'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 0,
   },
   paper: {
     padding: theme.spacing(1),
@@ -37,8 +37,14 @@ export default function Lobby() {
   }
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={1}>
+    <div className={classes.root} >
+      <Grid container spacing={2}>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
         <Grid container item xs={12} spacing={3}>
           <FormRow />
         </Grid>

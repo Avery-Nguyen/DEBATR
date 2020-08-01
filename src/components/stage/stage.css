@@ -1,0 +1,5 @@
+#stage {
+  z-index: 3;
+  position: absolute;
+  padding: 0em 4em;
+}

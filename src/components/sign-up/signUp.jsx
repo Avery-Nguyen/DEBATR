@@ -39,7 +39,7 @@ export default function SignUp() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs" style={{ border: '5px solid black', borderRightColor: 'blue'} }>
+    <Container class='signup' component="main" maxWidth="xs" style={{ width: '400px'} }>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
