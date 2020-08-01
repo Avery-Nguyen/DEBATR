@@ -17,9 +17,9 @@ import './components/partials/slider.css'
 const App = () => {
   return (
     <div className="app">
-      <Nav />
+        <NavBar />
       <main>
-        <Dashboard />
+        <Stage />
       </main>
       <footer>
         <p>
