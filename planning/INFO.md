@@ -14,7 +14,9 @@ Other Features
 # Stretch
 - have text chat room for audience memebers to talk in
 - Can record and save video to main page
+
   -(Stretch - Use AWS S3 / Firebase to host own videos)
+  
 -Nudity filter (Can Twilio help with this?)
 -Verified users
 -Implement jobs to handle the startGame timeout chain
