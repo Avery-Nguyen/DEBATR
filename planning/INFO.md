@@ -67,7 +67,7 @@ Team members?
 ![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen%20Shot%202020-07-29%20at%203.02.08%20PM.png?raw=true)
 
 # Wireframes
-![Wireframes](https://drive.google.com/drive/folders/1bsMLdfQq6ziN4ZJkBTRwgRb5g_vF1AqO?usp=sharing)
+![Wirefhttps://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true
 
 # App Features
 
