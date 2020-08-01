@@ -48,10 +48,10 @@ Team members?
     - as above, but POST request. Not sure why they have both.
 
 - Our database routes
-  - /api/games/ POST
-    - Post game records after results are in
-  - /api/games GET
-    - Retrieve game results
+  - /api/rooms/ POST
+    - Post room records after results are in
+  - /api/rooms GET
+    - Retrieve room results
   - /api/users/ POST
     - Create an account
   - /api/users/ GET

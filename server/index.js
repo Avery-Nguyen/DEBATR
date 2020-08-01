@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const io = require('socket.io').listen(8080);
+const apiRoutes = require('./routes.js')
 
 // Added for Alex's Proof Of Concept
 let val = true
@@ -27,6 +28,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
+
+app.use('/api', apiRoutes)
+
 
 const sendTokenResponse = (token, res) => {
   res.set('Content-Type', 'application/json');
