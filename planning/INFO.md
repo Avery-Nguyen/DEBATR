@@ -10,11 +10,17 @@ Other Features
 (stretch)
 
 - user and non-user can view previous debates.
+
+# Stretch
+- have text chat room for audience memebers to talk in
+- Can record and save video to main page
   -(Stretch - Use AWS S3 / Firebase to host own videos)
 -Nudity filter (Can Twilio help with this?)
 -Verified users
 -Implement jobs to handle the startGame timeout chain
 -Any user can make any topic
+-Implement our own RTC server instead of twilio.
+-Implement Secure websockets
 
 
 
@@ -69,7 +75,3 @@ Colour Palette Tool
 Icons 
 - https://material.io/resources/icons/?style=baseline
 
-# Stretch
-- Can record and save video to main page
-- allows users to rate the users and topic after the fact
-- have text chat room for audience memebers to talk in
