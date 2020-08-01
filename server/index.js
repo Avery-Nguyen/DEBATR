@@ -43,7 +43,6 @@ class Rooms {
 
 
 // Class framework for each Room. Will allow us to manage the rooms better
-// Will probably need to store all these in an array or another class.
 // Could potentially do objects to but I think this is smarter
 // https://socket.io/docs/rooms/
 class Room {
@@ -58,6 +57,7 @@ class Room {
     this.status = 'Waiting';
     this.hostPoints = 0;
     this.contenderPoints = 0;
+    this.agreement_rating = 0;
     this.messages = [{
       timeStamp: 20200700456,
       fromUser: 'Alex',
