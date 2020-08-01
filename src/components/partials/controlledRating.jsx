@@ -11,7 +11,7 @@ export default function UserRating() {
   return (
     <div>
       <Box component="fieldset" mb={3} borderColor="transparent">
-        <Typography component="legend">Controlled</Typography>
+        <Typography component="legend">Opponent Review</Typography>
         <Rating
           name="simple-controlled"
           value={value}
