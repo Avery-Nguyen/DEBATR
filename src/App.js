@@ -5,22 +5,21 @@ import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
 // import Rating from './components/partials/rating'
 // import DiscreteSlider from './components/partials/slider'
-import UserCard from './components/user-card/userCard'
-        
-import Lobby from './components/lobby/lobby'
+// import UserCard from './components/user-card/userCard'
+import Dashboard from './components/dashboard/dashboard'
+// import Lobby from './components/lobby/lobby'
+import Nav from './components/nav/nav'
 
 import './components/partials/slider.css'
 
-{/* <VideoChat /> */}
+{/* <VideoChat /> */ }
 
 const App = () => {
   return (
     <div className="app">
-      <header>
-        <h1 style={{backgroundColor: "black"}}>Debatr</h1>
-      </header>
+      <Nav />
       <main>
-      <Stage />
+        <Dashboard />
       </main>
       <footer>
         <p>
