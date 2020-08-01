@@ -1,24 +1,5 @@
 const client = require('./db.js');
 
-// - Our database routes
-//axios request
-// - /api/users/ POST
-//   - Create an account
-// - /api/users/ GET
-//   - Retrieve account details for logging in.
-// - /api/users/reviews GET
-//   - Get user reviews
-// - /api/games GET
-//   - Retrieve game results
-
-//websocket request 
-
-// - /api/games/ POST
-//   - Post game records after results are in
-// - /api/users/reviews POST
-//   - Post user reviews after game
-
-
 const getRoomRecords = (limit = 10) => {
   return client.query(`SELECT * FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
@@ -29,7 +10,6 @@ const getRoomRecords = (limit = 10) => {
     return res.rows
   })
 }
-
 
 const postResultsToDatabase = (data) => {
   // Get topic ID from room state?
@@ -67,8 +47,44 @@ const postAgreementRating = (data) => {
     });
 }
 
+const getUserInfoByEmail = (email) => {
+  return client.query(`SELECT * FROM users
+  WHERE email = $1
+  `, [email])
+  .then(res => {
+    return res.rows
+  })
+}
+const checkEmailTaken = (email) => {
+  client.query(`SELECT * FROM users
+  WHERE email = $1
+  `, [email])
+  .then(res => {
+    if (res.rows) {
+      return true
+    } else {
+      return false
+    }
+  })
+
+}
+const createUser = (email, first_name, last_name, username, password, avatar_url) => {
+  return client.query(`
+  INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
+  VALUES ($1, $2, $3, $4, $5, $6);
+  `, [email, first_name, last_name, username, password, avatar_url])
+  .then(res => {
+    return res.rows
+  })
+}
 
 
 export default {
-  postResultsToDatabase, getRoomRecords, postUserRating, postAgreementRating
+  postResultsToDatabase, 
+  getRoomRecords, 
+  postUserRating, 
+  postAgreementRating, 
+  getUserInfoByEmail, 
+  checkEmailTaken, 
+  createUser
 }

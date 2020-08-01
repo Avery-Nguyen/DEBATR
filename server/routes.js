@@ -1,7 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const { postResultsToDatabase, getRoomRecords, postUserRating, postAgreementRating } = require('./databaseCalls.js');
+const { 
+  postResultsToDatabase,
+  getRoomRecords, 
+  postUserRating, 
+  postAgreementRating, 
+  getUserInfoByEmail, 
+  checkEmailTaken, 
+  createUser } = require('./databaseCalls.js');
 const bcrypt = require('bcrypt');
+
 
 //axios request
 // - /api/users/ POST
@@ -51,25 +59,45 @@ router.post('/agreement_ratings', function(req, res) {
   })
 })
 
-router.get('/users', function (req,res) {
+router.get('/login', function (req,res) {
   const loginInfo = req.body;
-  const userID = getUserByEmail(loginInfo.email);
+  const userID = getUserInfoByEmail(loginInfo.email);
 
   if (!userID) {
     // TODO: Add a 'user does not exist error'
     return res.redirect('login/401');
   }
   
-  bcrypt.compare(loginInfo.password, users[userID].password, function(err, result) {
+  bcrypt.compare(loginInfo.password, userID.password, function(err, result) {
     if (result) {
       req.session.userID = userID;
       return res.redirect('/urls');
     } else {
+    // TODO: Add a incorrect login page or something
       return res.redirect('login/401');
     }
   });
+})
 
+router.post('/users', function(req, res) {
+  if (req.body.email === "" || req.body.password === "") {
+    // TODO: Change this
+    return res.redirect('/register/empty');
+  }
 
+  if (checkEmailTaken(req.body.email)) {
+    // TODO: Change this
+    return res.redirect('/register/taken');
+  }
+
+  createUser(req.body.email, req.body.first_name, req.body.last_name, req.body.username, req.body.password, req.body.avatar_url)
+  .then((sqlResponse) => {
+    console.log(sqlResponse.rows)
+    // Need to assign cookie
+    // req.session.userID = sqlResponse.rows;
+
+    res.send(sqlResponse)
+  })
 })
 
 

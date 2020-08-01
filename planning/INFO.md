@@ -48,20 +48,22 @@ Team members?
     - as above, but POST request. Not sure why they have both.
 
 - Our database routes
-  - /api/rooms/ POST
-    - Post room records after results are in
   - /api/rooms GET
-    - Retrieve room results
+    - Retrieve historical room and agreement rating info.
   - /api/users/ POST
     - Create an account
-  - /api/users/ GET
+  - /api/login/ GET
     - Retrieve account details for logging in.
-  - /api/users/reviews POST
-    - Post user reviews after game
-  - /api/users/reviews GET
-    - Get user reviews
+  - /api/users/ratings POST
+    - Post user ratings after game
+  - /api/agreement_ratings POST
+    - Save agreement_ratings to server
 
-    -- Think we need to add points to ratings database.
+  **Will do with WebSockets!
+  - /api/users/ratings GET
+    - Get user ratings
+  - /api/rooms/ POST
+    - Post room records after results are in
 
 # ERD
 ![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true)

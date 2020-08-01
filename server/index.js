@@ -5,6 +5,8 @@ const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const io = require('socket.io').listen(8080);
 const apiRoutes = require('./routes.js')
+const cookieSession = require('cookie-session');
+
 
 // Added for Alex's Proof Of Concept
 let val = true
@@ -27,6 +29,13 @@ io.sockets.on('connection', function (socket) {
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2'],
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
+
 app.use(pino);
 
 app.use('/api', apiRoutes)
