@@ -9,7 +9,8 @@ const io = require('socket.io')(http);
 // Alex's SOCKET code
 let val = true
 let rLString;
-
+let debtateTime = 5
+let intermissionTime = 3
 // This class holds an array of all the rooms
 class Rooms {
   constructor() {
@@ -88,28 +89,41 @@ class Room {
     io.to(this.name).emit('startGame', {
       roomName: this.name
     })
-    this.sleep(3000)
+    this.sleep(5000)
     .then(() => {
-      io.to(this.name).emit('gameCommand', 'hostTurn')
-      io.to(this.name).emit('mute', this.host)
-      io.to(this.name).emit('mute', this.contender)
+      io.to(this.name).emit('gameCommand', `${this.contender} (Contender) is muted!`)
+      io.to(this.name).emit('mute', {
+        mute: this.contender,
+        intermission: false,
+        timer: debtateTime
+      })
     })
-      .then(() => {
-        this.sleep(5000)
-        .then(() => {
-          io.to(this.name).emit('gameCommand', 'contenderTurn')
-          io.to(this.name).emit('unMute', this.contender)
-          io.to(this.name).emit('unMute', this.host)
-        })
-        .then(() => this.sleep(5000)
-        .then(() => {
-          io.to(this.name).emit('unMute', this.host)
-          io.to(this.name).emit('gameCommand', 'test - game over!')
-        }))
+    .then(() => this.sleep(debtateTime * 1000))
+    .then(() => {
+      io.to(this.name).emit('gameCommand', `Intermission`)
+      io.to(this.name).emit('mute', {
+        mute: this.host,
+        intermission: true,
+        timer: intermissionTime
+      })
     })
-
+    .then(() => this.sleep(intermissionTime * 1000))
+    .then(() => {
+      io.to(this.name).emit('gameCommand', `${this.host} (Host) is muted!`)
+      io.to(this.name).emit('unMute', this.contender)
+      io.to(this.name).emit('mute', {
+        mute: this.host,
+        intermission: false,
+        timer: debtateTime
+      })})
+    .then(() => this.sleep(debtateTime * 1000))
+    .then(() => {
+      io.to(this.name).emit('unMute', this.host)
+      io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
+      })
+    }
   }
-}
+
 const roomList = new Rooms('roomList');
 
 roomList.newRoom('testRoom')

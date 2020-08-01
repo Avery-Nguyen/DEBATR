@@ -5,12 +5,12 @@ import TestRoom from './TestRoom';
 import SocketContext from './SocketContext'
 
 const VideoChat = ({currentSocket}) => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(Math.random().toFixed(5).toString());
   console.log("VideoChat -> username", username)
   const [roomName, setRoomName] = useState('');
-  console.log("VideoChat -> roomName", roomName)
+  // console.log("VideoChat -> roomName", roomName)
   const [token, setToken] = useState(null);
-  console.log("VideoChat -> token", token)
+  // console.log("VideoChat -> token", token)
 
   // Alex's code, we should move into a reducer
   const [testRoom, setTestRoom] = useState("");
@@ -31,15 +31,14 @@ const VideoChat = ({currentSocket}) => {
       })
 
       currentSocket.on('startGame', data => {
-        const randName = Math.random().toFixed(5).toString()
-        // handleSubmit()
         console.log('data.roomname', data.roomName)
-        console.log('randName', randName)
+        const connectUsername = username
+        console.log("VideoChat -> connectUsername", connectUsername)
         
         fetch('/video/token', {
           method: 'POST',
           body: JSON.stringify({
-            identity: randName,
+            identity: username,
             room: data.roomName
           }),
           headers: {
@@ -48,24 +47,23 @@ const VideoChat = ({currentSocket}) => {
         }).then(res => res.json())
         .then((fetchData) => setToken(fetchData.token))
         setRoomName(data.roomName)
-        setUsername(`${randName}`)
       })
     }
-  }, [currentSocket]);
+  }, [currentSocket, username]);
 
   // ALEX's CODE
   const roomAddHandler = (testRoom) => {
     if (currentTestRoom) {
       currentSocket.emit('leaveRoom', {
         roomName : currentTestRoom,
-        userName : 'Test Man'
+        userName : username
       })
     }
     setCurrentTestRoom(testRoom)
     // setRoomList([...roomList, testRoom])
     currentSocket.emit('createRoom', {
       roomName : testRoom,
-      userName : 'Test Man'
+      userName : username
     })
   }
 
@@ -73,20 +71,20 @@ const VideoChat = ({currentSocket}) => {
     if (currentTestRoom) {
       currentSocket.emit('leaveRoom', {
         roomName : currentTestRoom,
-        userName : 'Test Man'
+        userName : username
       })
     }
     setCurrentTestRoom(testRoom)
     currentSocket.emit('joinRoom', {
       roomName : testRoom,
-      userName : 'Test Man'
+      userName : username
     })
   }
 
   const sendMessageHandler = (message) => {
     currentSocket.emit('message', {
       roomName : currentTestRoom,
-      userName : 'Test Man',
+      userName : username,
       message: message
     })
   }
@@ -100,28 +98,6 @@ const VideoChat = ({currentSocket}) => {
     setRoomName(event.target.value);
   }, []);
 
-  // const handleSubmit = useCallback(
-  //   async event => {
-  //     if(event) {
-  //       event.preventDefault();
-  //     }
-      
-  //     console.log('roomName in the Fetch REQ', roomName)
-  //     console.log('username in the Fetch REQ', username)
-  //     const data = await fetch('/video/token', {
-  //       method: 'POST',
-  //       body: JSON.stringify({
-  //         identity: username,
-  //         room: roomName
-  //       }),
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     }).then(res => res.json());
-  //     setToken(data.token);
-  //   },
-  //   [roomName, username]
-  // );
 
   const handleLogout = useCallback(event => {
     setToken(null);
@@ -140,16 +116,7 @@ const VideoChat = ({currentSocket}) => {
     ))
     render = (
       <div>
-        {/* <Lobby
-          username={username}
-          roomName={roomName}
-          handleUsernameChange={handleUsernameChange}
-          handleRoomNameChange={handleRoomNameChange}
-          handleSubmit={handleSubmit}
-        />  */}
-          <form
-            onSubmit={(event) => event.preventDefault()}
-          >
+          <form onSubmit={(event) => event.preventDefault()}>
             <input
               name="name"
               value={testRoom}
