@@ -16,7 +16,7 @@ const postResultsToDatabase = (data) => {
 
   // Query to get host_id and contender id?
   return client.query(`
-  insert into room_logs (topic_id, host_id, contender_id) 
+  INSERT INTO room_logs (topic_id, host_id, contender_id) 
   VALUES ($1, $2, $3);
   `, [data.topic_id, data.host_id, data.contender_id])
     .then(res => {
@@ -27,7 +27,7 @@ const postResultsToDatabase = (data) => {
 
 const postUserRating = (data) => {
   return client.query(`
-  insert into ratings (from_user_id, to_user_id, rating, points) 
+  INSERT INTO ratings (from_user_id, to_user_id, rating, points) 
   VALUES ($1, $2, $3);
   `, [data.from_user_id, data.to_user_id, data.rating, data.points])
     .then(res => {
@@ -38,7 +38,7 @@ const postUserRating = (data) => {
 
 const postAgreementRating = (data) => {
   return client.query(`
-  insert into agreement_ratings (room_log_id, user_id, agreement_rating) 
+  INSERT INTO agreement_ratings (room_log_id, user_id, agreement_rating) 
   VALUES ($1, $2, $3);
   `, [data.room_log_id, data.user_id, data.agreement_rating])
     .then(res => {
@@ -52,6 +52,7 @@ const getUserInfoByEmail = (email) => {
   WHERE email = $1
   `, [email])
   .then(res => {
+    console.log(res.rows)
     return res.rows
   })
 }
