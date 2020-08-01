@@ -11,20 +11,6 @@ Other Features
 
 - user and non-user can view previous debates.
 
-# Stretch
-- have text chat room for audience memebers to talk in
-- Can record and save video to main page
-  -(Stretch - Use AWS S3 / Firebase to host own videos)
--Nudity filter (Can Twilio help with this?)
--Verified users
--Implement jobs to handle the startGame timeout chain
--Any user can make any topic
--Implement our own RTC server instead of twilio.
--Implement Secure websockets
-
-
-
-
 # Project Description
 Project title?
 - Debatr
@@ -37,6 +23,45 @@ Team members?
 
 # Project Stack
 - React | PostgreSQL / ElephantSQL | Node | Express | Twilio | Material.ui | Socket.io
+
+# Stretch
+- have text chat room for audience memebers to talk in
+- Can record and save video to main page
+  -(Stretch - Use AWS S3 / Firebase to host own videos)
+-Nudity filter (Can Twilio help with this?)
+-Verified users
+-Implement jobs to handle the startGame timeout chain
+-Any user can make any topic
+-Implement our own RTC server instead of twilio.
+-Implement Secure websockets
+
+# Routes
+- General Routes
+  - /
+    - Main react app
+
+
+- Twilio API routes
+  - /video/token GET
+    - request send when connecting to room
+  - /video/token POST
+    - as above, but POST request. Not sure why they have both.
+
+- Our database routes
+  - /api/games/ POST
+    - Post game records after results are in
+  - /api/games GET
+    - Retrieve game results
+  - /api/users/ POST
+    - Create an account
+  - /api/users/ GET
+    - Retrieve account details for logging in.
+  - /api/users/reviews POST
+    - Post user reviews after game
+  - /api/users/reviews GET
+    - Get user reviews
+
+    -- Think we need to add points to ratings database.
 
 # ERD
 ![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen%20Shot%202020-07-29%20at%203.02.08%20PM.png?raw=true)
