@@ -46,7 +46,7 @@ const Room = ({ roomName, token, handleLogout }) => {
   ));
 
   return (
-    <div className="room">
+    <div className="room" style={{width: "100%", display:'flex'}}>
       <h2>Room: {roomName}</h2>
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
@@ -60,7 +60,7 @@ const Room = ({ roomName, token, handleLogout }) => {
         )}
       </div>
       <h3>Remote Participants</h3>
-      <div className="remote-participants">{remoteParticipants}</div>
+      <div className="remote-participants" style={{width: "40%"}}>{remoteParticipants}</div>
     </div>
   );
 };
