@@ -64,7 +64,7 @@ Team members?
     -- Think we need to add points to ratings database.
 
 # ERD
-![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen%20Shot%202020-07-29%20at%203.02.08%20PM.png?raw=true)
+![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true)
 
 # Wireframes
 ![Wirefhttps://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true

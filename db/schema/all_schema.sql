@@ -30,7 +30,8 @@ CREATE TABLE ratings (
   id SERIAL PRIMARY KEY NOT NULL,
   from_user_id SERIAL NOT NULL REFERENCES users(id),
   to_user_id SERIAL NOT NULL REFERENCES users(id),
-  rating SMALLINT NOT NULL
+  rating SMALLINT NOT NULL,
+  points SMALLINT NOT NULL
 );
 
 DROP TABLE IF EXISTS room_logs;
@@ -43,5 +44,14 @@ CREATE TABLE room_logs (
   agreement_rating DECIMAL,
   date_time TIMESTAMP DEFAULT NOW()::timestamp
 );
+
+DROP TABLE IF EXISTS agreement_ratings CASCADE;
+CREATE TABLE agreement_ratings (
+  id SERIAL PRIMARY KEY NOT NULL,
+  room_log_id SERIAL NOT NULL REFERENCES room_logs(id),
+  user_id SERIAL NOT NULL REFERENCES users(id),
+  agreement_rating SMALLINT NOT NULL
+);
+
 
   

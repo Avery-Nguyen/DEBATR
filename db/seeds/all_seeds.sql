@@ -32,13 +32,40 @@ insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_t
 insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (4, 6, 2, 34, '2019-11-20 18:31:14');
 insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (3, 5, 8, 99, '2020-05-01 01:35:11');
 
-insert into ratings (from_user_id, to_user_id, rating) values (8, 4, 3);
-insert into ratings (from_user_id, to_user_id, rating) values (4, 5, 3);
-insert into ratings (from_user_id, to_user_id, rating) values (6, 5, 1);
-insert into ratings (from_user_id, to_user_id, rating) values (1, 6, 4);
-insert into ratings (from_user_id, to_user_id, rating) values (8, 2, 4);
-insert into ratings (from_user_id, to_user_id, rating) values (9, 10, 3);
-insert into ratings (from_user_id, to_user_id, rating) values (1, 7, 3);
-insert into ratings (from_user_id, to_user_id, rating) values (5, 2, 3);
-insert into ratings (from_user_id, to_user_id, rating) values (3, 6, 1);
-insert into ratings (from_user_id, to_user_id, rating) values (2, 5, 5);
+insert into ratings (from_user_id, to_user_id, rating, points) values (4, 5, 1, 28);
+insert into ratings (from_user_id, to_user_id, rating, points) values (3, 6, 1, 26);
+insert into ratings (from_user_id, to_user_id, rating, points) values (6, 6, 3, 46);
+insert into ratings (from_user_id, to_user_id, rating, points) values (4, 6, 2, 4);
+insert into ratings (from_user_id, to_user_id, rating, points) values (10, 7, 4, 91);
+insert into ratings (from_user_id, to_user_id, rating, points) values (8, 9, 2, 42);
+insert into ratings (from_user_id, to_user_id, rating, points) values (1, 3, 4, 52);
+insert into ratings (from_user_id, to_user_id, rating, points) values (10, 9, 4, 81);
+insert into ratings (from_user_id, to_user_id, rating, points) values (8, 5, 2, 51);
+insert into ratings (from_user_id, to_user_id, rating, points) values (5, 8, 4, 22);
+insert into ratings (from_user_id, to_user_id, rating, points) values (10, 4, 5, 78);
+insert into ratings (from_user_id, to_user_id, rating, points) values (5, 3, 4, 50);
+insert into ratings (from_user_id, to_user_id, rating, points) values (7, 2, 3, 50);
+insert into ratings (from_user_id, to_user_id, rating, points) values (1, 7, 2, 98);
+insert into ratings (from_user_id, to_user_id, rating, points) values (9, 8, 3, 55);
+insert into ratings (from_user_id, to_user_id, rating, points) values (2, 2, 4, 51);
+insert into ratings (from_user_id, to_user_id, rating, points) values (2, 1, 5, 69);
+insert into ratings (from_user_id, to_user_id, rating, points) values (10, 4, 3, 50);
+insert into ratings (from_user_id, to_user_id, rating, points) values (3, 3, 2, 3);
+insert into ratings (from_user_id, to_user_id, rating, points) values (9, 5, 3, 85);
+
+
+
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (1, 9, 66);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (1, 10, 5);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (2, 8, 46);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (2, 5, 16);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (3, 10, 31);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (3, 2, 5);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (4, 2, 26);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (4, 4, 49);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (5, 10, 78);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (5, 5, 77);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (6, 3, 3);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (6, 1, 86);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (7, 4, 68);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (7, 5, 15);
