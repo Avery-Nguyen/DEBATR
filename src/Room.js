@@ -131,10 +131,11 @@ const Room = ({ roomName, token, handleLogout }) => {
 
   const toggle = function () {
     setActive(!active);
+    countDown();
   }
 
-  useEffect(()=>{
-   let timer = null;
+  const countDown = function () {
+    let timer = null;
    if(turn < 2){
     if (active && time >= 0) {
       timer = setTimeout(() => {
@@ -149,9 +150,7 @@ const Room = ({ roomName, token, handleLogout }) => {
    } else {
     clearTimeout(timer)
    }
-   
-
-  },[active, time, turn]);
+  }
     
  
 
