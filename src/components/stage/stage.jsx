@@ -10,13 +10,12 @@ export default function Stage() {
     <React.Fragment>
       {/* <CssBaseline /> */}
       <Container style={{
-        // display: 'flex',
-        // justifyContent: 'center',
-        
+        display: 'flex',
+        flexDirection: 'row'
       }}>
         <Typography component="div" style={{ 
              backgroundColor: '#cfe8fc', 
-             width: '100%',
+             width: '40%',
              height: '700px'
           }}>
           <VideoChat />

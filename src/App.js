@@ -6,7 +6,8 @@ import Stage from './components/stage/stage';
 import NavBar from './components/nav/nav'
 import SignUp from './components/sign-up/signUp'
 import PostDebateReview from './components/post-debate/postDebate'
-import SignIn from './components/sign-up/signIn'
+import SignIn from './components/sign-in/signIn'
+import CreateRoom from './components/create-room/createRoom'
         
 import Lobby from './components/lobby/lobby'
 // import UserRating from './components/partials/staticRating'
@@ -25,27 +26,7 @@ const App = () => {
     <div className="app">
         <NavBar />
       <main>
-        <PostDebateReview />
-        <br />
-        <br />
-        <br />
         <Stage />
-        <br />
-        <br />
-        <br />
-        <SignUp />
-        <br />
-        <br />
-        <br />
-        <SignIn />
-        <br />
-        <br />
-        <br />
-        <UserCard />
-        <br />
-        <br />
-        <br />
-        <Lobby />
       </main>
       <footer>
         <p>
