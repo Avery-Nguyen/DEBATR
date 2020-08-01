@@ -16,15 +16,17 @@ const TestRoom = ({ currentTestRoom, exRoomName, objProps, setRoomName, sendMess
     }
     return i
   }
-  totalSpots();
+  if (objProps) {
+    totalSpots();
+  }
 
 
-  const messages = objProps.messages.map(message => {
+  const messages = (objProps && objProps.messages.map(message => {
     return (<p>Message from {message.fromUser} - {message.message} </p>)
-  })
+  }))
 
   let render;
-  if (currentTestRoom === exRoomName) {
+  if (currentTestRoom === exRoomName && objProps) {
     render = (
       <div>
         You are in room {currentTestRoom} - Topic is {objProps.topic} {objProps.hostArg}. Currently {totalSpots()} person in room.
@@ -42,7 +44,7 @@ const TestRoom = ({ currentTestRoom, exRoomName, objProps, setRoomName, sendMess
       </div>
     )
   } else {
-    render = (
+    render = (objProps &&
       <div onClick={event => setRoomName(exRoomName)}>
         <button>
           {exRoomName} - {totalSpots()}/2

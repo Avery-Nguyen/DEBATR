@@ -112,7 +112,7 @@ const VideoChat = ({currentSocket}) => {
     );
   } else {
     const roomListMap = Object.keys(roomState).map((keyName, i) => (
-      <TestRoom currentTestRoom={currentTestRoom} exRoomName={keyName} objProps={roomState[keyName]} setRoomName={roomChangeHandler} sendMessageHandler={sendMessageHandler} />
+      (keyName && <TestRoom currentTestRoom={currentTestRoom} exRoomName={keyName} objProps={roomState[keyName]} setRoomName={roomChangeHandler} sendMessageHandler={sendMessageHandler} />)
     ))
     render = (
       <div>

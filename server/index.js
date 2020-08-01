@@ -86,6 +86,7 @@ class Room {
   }
 
   startGame() {
+    // The framework of the game! Toggles the turns
     io.to(this.name).emit('startGame', {
       roomName: this.name
     })
@@ -124,11 +125,11 @@ class Room {
     }
   }
 
+// Roomslist is an instance of the roomS class.
 const roomList = new Rooms('roomList');
-
+// Two rooms in here for testing purposes.
 roomList.newRoom('testRoom')
 roomList.newRoom('otherRoom')
-
 
 let interval;
 io.sockets.on('connection', function (socket) {
@@ -137,29 +138,24 @@ io.sockets.on('connection', function (socket) {
   rLString = JSON.stringify(roomList.allRooms)
   // Send room data to client that just connected.
   socket.emit('initialRoomList', rLString)
-  console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
-
-  // interval = setInterval(() => {
-  //   // rLString = JSON.stringify(roomList.allRooms)
-    
-  // }, 10000)
+  // console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
 
   socket.on('disconnect', function (socket) {
     console.log('socket disconnected')
   })
 
-
   socket.on('createRoom', function (data) {
-    console.log('Data: ', data)
     console.log(`Request to Create ${data.roomName} by ${data.userName} received.`)
 
+    // Socket Joins the 'socket'room'
     socket.join(data.roomName)
+    // Also create an instance of the room class.
     roomList.newRoom(data.roomName)
+    // Assign the username as host of the newly created class.
     roomList.roomList[data.roomName]['host'] = data.userName
 
+    // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate()
-    // rLString = JSON.stringify(roomList.allRooms)
-    // socket.emit('initialRoomList', rLString)
     console.log(`Current roomList is ${roomList.allRooms}`)
   });
 
@@ -168,20 +164,16 @@ io.sockets.on('connection', function (socket) {
     // Add to room list
     roomList.roomList[data.roomName]['contender'] = data.userName
 
-    // Send out update
-    
-    // rLString = JSON.stringify(roomList.allRooms)
+    // Socket Joins the 'socket'room'
     socket.join(data.roomName)
-
-    // socket.emit('initialRoomList', rLString)
+    
+    // Send out update to everyone in lobby.
     roomList.sendRoomUpdate()
 
-    // Room is full if host & contender
+    // Room is full if host & contender spots exist
     if (roomList.roomList[data.roomName]['contender'] && roomList.roomList[data.roomName]['host']) {
       console.log(`${data.roomName} is FULL`)
-      io.in(data.roomName).emit('update', 'ROOM IS FULL using io!')
-      // This works but easier to use a Room method.
-      // socket.broadcast.to(data.roomName).emit('update', 'ROOM IS FULL!')
+
       roomList.roomList[data.roomName]['messages'].push({
         timeStamp: 20200700456,
         fromUser: 'Server',
@@ -190,18 +182,9 @@ io.sockets.on('connection', function (socket) {
 
       roomList.sendRoomUpdate()
 
+      // Starts the game method!
       roomList.roomList[data.roomName].startGame();
-
-      // io.to(data.roomName).emit('mute',roomList.roomList[data.roomName]['contender'])
-
     }
-
-
-    socket.emit(`Request to join ${data} received.`)
-
-
-    
-
   });
 
   socket.on('leaveRoom', function (data) {
@@ -210,7 +193,8 @@ io.sockets.on('connection', function (socket) {
     if (roomList.roomList[data.roomName]['contender'] === data.userName) {
       roomList.roomList[data.roomName]['contender'] = null
     } else if (roomList.roomList[data.roomName]['host'] === data.userName) {
-      roomList.roomList[data.roomName]['host'] = null
+      // Removes the instance of the class 
+      roomList.roomList[data.roomName] = null
     }
 
     socket.leave(data.roomName)
