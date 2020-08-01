@@ -8,7 +8,6 @@
 Other Features
 - on Signup, promise not to test nudity filter
 (stretch)
-
 - user and non-user can view previous debates.
 
 # Project Description
@@ -24,16 +23,17 @@ Team members?
 # Project Stack
 - React | PostgreSQL / ElephantSQL | Node | Express | Twilio | Material.ui | Socket.io
 
+
 # Stretch
 - have text chat room for audience memebers to talk in
 - Can record and save video to main page
-  -(Stretch - Use AWS S3 / Firebase to host own videos)
--Nudity filter (Can Twilio help with this?)
--Verified users
--Implement jobs to handle the startGame timeout chain
--Any user can make any topic
--Implement our own RTC server instead of twilio.
--Implement Secure websockets
+  - (Stretch - Use AWS S3 / Firebase to host own videos)
+- Nudity filter (Can Twilio help with this?)
+- Verified users
+- Implement jobs to handle the startGame timeout chain
+- Any user can make any topic
+- Implement our own RTC server instead of twilio.
+- Implement Secure websockets
 
 # Routes
 - General Routes
