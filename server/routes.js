@@ -22,7 +22,9 @@ const bcrypt = require('bcrypt');
 //   - Retrieve game results
 
 
+module.exports = () => {
 router.get('/rooms', function(req, res) {
+  console.log('REQUEST TO /API/ROOMS')
   getRoomRecords()
     .then(sqlResponse => {
       res.send(sqlResponse)
@@ -100,4 +102,6 @@ router.post('/users', function(req, res) {
   })
 })
 
-module.exports = router;
+  return router;
+}
+
