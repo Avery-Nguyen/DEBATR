@@ -7,6 +7,7 @@ const getRoomRecords = (limit = 10) => {
   LIMIT $1;
   `, [limit])
   .then(res => {
+    console.log(res.rows)
     return res.rows
   })
 }

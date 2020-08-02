@@ -45,6 +45,10 @@ export default function NavBar(props) {
     setOpen(true);
   };
 
+  const handleClickCreateRoom = () => {
+    setOpen(true);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -71,11 +75,27 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{justifyContent: "spaceBetween"}}>
         <Toolbar>
           <h3> Debatr </h3>
           <Typography variant="h6" className={classes.title}>
           </Typography>
+          <div>
+          <Button
+            style={{
+              color:"rgb(64,81,182)",
+              backgroundColor:"white",
+              border:"rgb(64,81,182) solid 1px",
+              borderRadius: "30px",
+              marginTop:'5px',
+              width: "200px"
+            }}
+            onClick={handleClickCreateRoom}
+            >
+            Create Stage
+          </Button>
+          </div>
+          <div>
           <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
           <Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
             <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
@@ -103,7 +123,7 @@ export default function NavBar(props) {
           >
             <SignUp />
           </Dialog>
-
+          </div>
         </Toolbar>
       </AppBar>
     </div>

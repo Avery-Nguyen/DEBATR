@@ -47,24 +47,25 @@ const App = () => {
   }, []);
   return (
     <div className="app">
-      <header>
+      <header style={{ 
+            color: "white", 
+            backgroundColor: "rgb(64,81,182)"}}>
         <NavBar />
       </header>
-      <main style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
+      <main style={{display:'flex', justifyContent:'center', flexDirection:'column', height: '120em'}}>
         <Button
-          style={{
-            color:"white",
-            backgroundColor:"rgb(64,81,182)",
-            border:"rgb(64,81,182) solid 1px",
-            borderRadius: "30px",
-            marginTop:'5px',
-            // maxWidth: '55px',
-            justifySelf:'center'
-          }}
-          onClick={handleClickOpen}
-          >
-          Create Stage
-        </Button>
+            style={{
+              color:"white",
+              backgroundColor:"rgb(64,81,182)",
+              border:"rgb(64,81,182) solid 1px",
+              borderRadius: "30px",
+              marginTop:'5px',
+              width: "200px"
+            }}
+            onClick={handleClickOpen}
+            >
+            Create Stage
+          </Button>
         <Dialog
             open={open}
             TransitionComponent={Transition}

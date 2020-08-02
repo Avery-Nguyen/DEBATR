@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -22,9 +22,9 @@ import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
+import axios from 'axios';
 
-
-
+// import getRoomRecords from '../../server/databaseCalls'
 import Stage from '../stage/stage'
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -59,34 +60,46 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function PastDebateItem() {
   const classes = useStyles();
-  // const [expanded, setExpanded] = React.useState(false);
 
+  //user-card state logic
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
-
-  // Expandable arrow
-  // const handleExpandClick = () => {
-  //   setExpanded(!expanded);
-  // };
-
-
+//stage state logic - will need to change after
   const [openStage, setOpenStage] = React.useState(false);
-
   const handleClickOpenStage = () => {
     setOpenStage(true);
   };
-
   const handleCloseStage = () => {
     setOpenStage(false);
   };
+
+  const [pastDebates, setpastDebates] = useState()
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`/api/games`)
+
+    ]).then((data) => {
+      console.log(data, "theres something happening");
+      // setState(prev => ({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
+    })
+      .catch(error => {
+        console.log(error.message);
+      })
+  }, []);
+
+  // console.log(getRoomRecords());
+
+  // pastDebates = getRoomRecords();
+
+  // pastDebates.map((e) => 
+  // )
 
   return (
     <Card className={classes.root} style={{border: "solid rgb(255,107,107) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", marginLeft:'5px', justifySelf:'center'}}>

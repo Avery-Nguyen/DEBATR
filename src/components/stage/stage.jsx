@@ -1,8 +1,8 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import VideoChat from '../../VideoChat.js';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import Typography from '@material-ui/core/Typography';
+// import Container from '@material-ui/core/Container';
+// import VideoChat from '../../VideoChat.js';
 import Button from '@material-ui/core/Button';
 
 export default function Stage() {
@@ -15,7 +15,7 @@ export default function Stage() {
         <div class="w3-row-padding w3-grayscale">
           <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
             <div class='participants'>
-            <img  style={{ border: '2px solid black'}} src="https://www.calliaweb.co.uk/wp-content/uploads/2015/10/600x400.jpg" />
+            <img  style={{ border: '2px solid black'}} src="https://www.calliaweb.co.uk/wp-content/uploads/2015/10/600x400.jpg" alt=""  />
             <div class='userAndStance' style={{display: 'flex', justifyContent:'space-between'}}>
             <p style={{ color: 'white', justifySelf: 'right' }}>User1</p>
             <p style={{ color: 'white'}}>Against</p>
@@ -28,7 +28,7 @@ export default function Stage() {
               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
             </div>
             <div class='participants'>
-            <img  style={{ border: '2px solid black'}} src="https://www.calliaweb.co.uk/wp-content/uploads/2015/10/600x400.jpg" />
+            <img  style={{ border: '2px solid black'}} src="https://www.calliaweb.co.uk/wp-content/uploads/2015/10/600x400.jpg" alt="" />
             <div class='userAndStance' style={{display: 'flex', justifyContent:'space-between'}}>
             <p style={{ color: 'white'}}>For</p>
             <p style={{ color: 'white'}}>Andy Lindsay</p>
