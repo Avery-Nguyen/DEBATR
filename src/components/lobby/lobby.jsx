@@ -10,6 +10,7 @@ import {useStore} from '../../Store'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 0,
+    margin: '200px',
   },
   paper: {
     padding: theme.spacing(1),
@@ -121,7 +122,19 @@ export default function Lobby() {
   function FormRow() {
     return (
       <React.Fragment>
+<<<<<<< HEAD
        {roomItems}
+=======
+        <Grid item xs={4}>
+          <LobbyItem />
+        </Grid>
+        <Grid item xs={4}>
+        <LobbyItem />
+        </Grid>
+        <Grid item xs={4}>
+         <LobbyItem />
+        </Grid>
+>>>>>>> master
       </React.Fragment>
     );
   }
@@ -129,11 +142,29 @@ export default function Lobby() {
   return (
     <div className={classes.root} >
       <Grid container spacing={2}>
+<<<<<<< HEAD
         <Grid container item xs={12} spacing={3}>
 
           <FormRow />
 
         </Grid>
+=======
+        <Grid container item xs={12} spacing={3} margin='24px'>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        {/* <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid> */}
+>>>>>>> master
       </Grid>
     </div>
   );

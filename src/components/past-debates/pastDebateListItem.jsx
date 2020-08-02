@@ -57,8 +57,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function LobbyItem({roomDetails}) {
-  console.log(roomDetails);
+export default function PastDebateItem() {
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
 
@@ -90,7 +89,7 @@ export default function LobbyItem({roomDetails}) {
   };
 
   return (
-    <Card className={classes.root} style={{border: "solid rgb(0,238,40) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", display: "flex", justifyContent: "center"}}>
+    <Card className={classes.root} style={{border: "solid rgb(255,107,107) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", marginLeft:'5px', justifySelf:'center'}}>
       <CardHeader
         avatar={
           <div>
@@ -105,18 +104,35 @@ export default function LobbyItem({roomDetails}) {
             </Dialog>
           </div>
         }
-        title={roomDetails.topic}
-        subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
+        title="Topic title"
+        subheader="Total Views: 155"
+        avatar2={
+          <div>
+            <Avatar onClick={handleClickOpen} />
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+            >
+              <UserCard />
+            </Dialog>
+          </div>
+        }
       />
       <CardActions disableSpacing>
-        <Button 
-          variant="contained" 
-          style={{ 
-            color: "white", 
-            backgroundColor: "rgb(64,81,182)",
-            borderRadius: "30px"
-            }} 
-          onClick={handleClickOpenStage}>Enter Stage
+        <IconButton aria-label="add to favorites">
+          <ThumbUpIcon />
+          <p>78</p>
+        </IconButton>
+        <IconButton aria-label="share">
+          <ThumbDownIcon />
+          <p>5</p>
+        </IconButton>
+        <Button variant="contained" 
+        style={{ color: "white", backgroundColor: "rgb(64,81,182)", justifySelf:'right', borderRadius: "30px", display: "flex", justifyContent: "center"}} 
+        onClick={handleClickOpenStage}>
+          Watch
           </Button>
         
         <Dialog fullScreen open={openStage} TransitionComponent={Transition}>

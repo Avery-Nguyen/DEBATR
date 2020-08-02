@@ -18,7 +18,12 @@ import './components/partials/slider.css'
 import socketIOClient from "socket.io-client";
 import SignUp from './components/sign-up/signUp';
 import CreateRoom from './components/create-room/createRoom';
+<<<<<<< HEAD
 import {useStore} from './Store'
+=======
+import WaitingRoom from './components/waiting-room/waitingRoom';
+import PastDebate from './components/past-debates/pastDebates'
+>>>>>>> master
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,6 +61,7 @@ const App = () => {
 
   return (
     <div className="app">
+<<<<<<< HEAD
         <header>
           <NavBar />
         </header>
@@ -68,6 +74,25 @@ const App = () => {
             onClick={handleClickOpen}
           >
             Create Room
+=======
+      <header>
+        <NavBar />
+      </header>
+      <main style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
+        <Button
+          style={{
+            color:"white",
+            backgroundColor:"rgb(64,81,182)",
+            border:"rgb(64,81,182) solid 1px",
+            borderRadius: "30px",
+            marginTop:'5px',
+            // maxWidth: '55px',
+            justifySelf:'center'
+          }}
+          onClick={handleClickOpen}
+          >
+          Create Stage
+>>>>>>> master
         </Button>
           <Dialog
             open={open}
@@ -75,6 +100,7 @@ const App = () => {
             keepMounted
             onClose={handleClose}
           >
+<<<<<<< HEAD
             <CreateRoom />
           </Dialog>
           <PostDebate />
@@ -88,6 +114,26 @@ const App = () => {
             Made with{' '}
             <span role="img" aria-label="React">
               ♥️
+=======
+            <CreateRoom /> 
+          </Dialog>
+        <Lobby />
+
+      {/* <SocketContext.Provider value={currentSocket}>
+        <VideoChat currentSocket={currentSocket} />
+      </SocketContext.Provider> */}
+
+<h1 style={{display:'flex', justifyContent:'center', border:'solid 3px black'}}>Past Debates</h1>
+<span></span>
+
+<PastDebate />
+      </main>
+      <footer style={{ fontSize: "10px" }}>
+        <p>
+          Made with{' '}
+          <span role="img" aria-label="React">
+            ♥️
+>>>>>>> master
           </span>{' '}
           and{' '}
             <span role="img" aria-label="React">

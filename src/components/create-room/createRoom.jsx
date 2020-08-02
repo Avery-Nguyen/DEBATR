@@ -11,10 +11,21 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {useStore} from '../../Store'
 
+import Avatar from '@material-ui/core/Avatar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Container from '@material-ui/core/Container';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 300,
+    borderRadius: "50%",
   },
   title: {
     fontSize: 14,
@@ -25,8 +36,25 @@ const useStyles = makeStyles({
   topicStance: {
     display: 'flex',
     justifyContent: 'space-between'
-  }
-});
+  },
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: '30px',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(2),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 export default function CreateRoom() {
   const [state, dispatch] = useStore();
@@ -61,43 +89,57 @@ export default function CreateRoom() {
   }
 
   return (
-    <Card className={classes.root} variant="outlined" style={{border: "solid black 1px", width: "25px"}}>
-      <CardContent>
-        <Typography className={classes.title} color="black" gutterBottom>
-          Create a stage?
-        </Typography>
-        <div className={classes.topicStance}>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="grouped-native-select">Topic</InputLabel>
-        <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
-          <option aria-label="None" value={topic} />
+    <Container component="main" maxWidth="xs" style={{border:'solid black 3px', borderRadius: "30px"}}>
+      <CssBaseline />
+      <Box mt={2}>
+      </Box>
+      <div className={classes.paper}>
+         <img style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"
+        />
+        <Typography component="h1" variant="h5">
+          Will you be the next master?
+      </Typography>
+        <FormControl className={classes.formControl} style={{
+              marginTop:'15px',
+            }}>
+          <InputLabel htmlFor="grouped-native-select"
+            variant="outlined"
+            // margin="normal"
+            fullWidth
+            autoFocus
+            >Topic</InputLabel>
+          <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
+            {/* TODO: Add topic_ids when we render with map! */}
+            <option aria-label="None" value="" />
             <option value={"Nudity API"}>Nudity API</option>
             <option value={"Andy Lindsay"}>Andy Lindsay</option>
             <option value={"Oranges"}>Oranges</option>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl} style={{width: "75px"}}>
-        <InputLabel htmlFor="grouped-select">Stance</InputLabel>
-        <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={true} >For</MenuItem>
-          <MenuItem value={false} >Against</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
-      </CardContent>
-      <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="secondary"
-            backgroundColor='black'
-            className={classes.submit}
-            Create Stage
-            onClick={submitCreateRoom}
-          />
-    </Card>
+          </Select>
+        </FormControl>
+        <FormControl className={classes.formControl} style={{ width: "100px", marginTop:'15px', }}>
+          <InputLabel htmlFor="grouped-select">Stance</InputLabel>
+          <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={true}>For</MenuItem>
+            <MenuItem value={false}>Against</MenuItem>
+          </Select>
+        </FormControl>
+        <Button
+          // onClick={handleClickOpen}
+          variant="contained"
+          style={{
+            color: "white",
+            backgroundColor: "rgb(64,81,182)",
+            marginTop:'25px',
+            borderRadius: "30px"
+          }}
+        >Create Stage
+      </Button>
+      </div>
+      <Box mt={2}>
+      </Box>
+    </Container>
   );
 }
