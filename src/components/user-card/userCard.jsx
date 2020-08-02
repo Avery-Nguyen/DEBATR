@@ -11,6 +11,7 @@ import UserRating from '../partials/staticRating'
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
+    zIndex: '3'
   },
   bullet: {
     display: 'inline-block',
@@ -27,10 +28,9 @@ const useStyles = makeStyles({
 
 export default function UserCard() {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   return (
-    <Card className={classes.root} style={{border: "solid black 1px", width: "25px"}}>
+    <Card className={classes.root} style={{border: "solid black 1px", width: "25px"}} >
       <CardContent>
       <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -47,3 +47,5 @@ export default function UserCard() {
     </Card>
   );
 }
+
+

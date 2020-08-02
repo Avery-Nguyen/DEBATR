@@ -19,7 +19,7 @@ header {
   color: #fff;
   text-align: center;
   flex-grow: 0;
-  margin-bottom: 2em;
+  /* margin-bottom: 2em; */
 }
 
 h1 {
@@ -35,11 +35,12 @@ h1 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: rgb(64,81,182);
 }
 
 main {
   background: #ffffff;
-  flex-grow: 1;
+  /* flex-grow: 1; */
 }
 
 form {
@@ -131,13 +132,13 @@ video {
 }
 
 footer {
-  background: #333e5a;
+  background: rgb(64,81,182);
   color: #fff;
   text-align: center;
-  flex-grow: 0;
+  /* flex-grow: 0; */
   padding: 1em 0;
 }
 
 footer a {
-  color: #fff;
+  color: rgb(64,81,182);
 }
