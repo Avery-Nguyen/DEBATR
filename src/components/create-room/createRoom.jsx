@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,6 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {useStore} from '../../Store'
+
 
 const useStyles = makeStyles({
   root: {
@@ -27,8 +29,28 @@ const useStyles = makeStyles({
 });
 
 export default function CreateRoom() {
+  const [state, dispatch] = useStore();
+
+
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
+  
+  const submitCreateRoom = () => {
+    if (state.currentRoomName) {
+      state.currentSocket.emit('leaveRoom', {
+        roomName : state.currentRoomName,
+        userName : state.username
+      })
+    }
+    // dispatch({type: 'SET_CURRENT_ROOM', payload: state.});
+
+    state.currentSocket.emit('createRoom', {
+      roomName : Math.random().toFixed(5).toString(),
+      userName : state.username,
+      topic: state.topic,
+      stance: state.stance
+    })
+  }
 
   return (
     <Card className={classes.root} variant="outlined" style={{border: "solid black 1px", width: "25px"}}>
@@ -66,6 +88,7 @@ export default function CreateRoom() {
             backgroundColor='black'
             className={classes.submit}
             Create Stage
+            onClick={submitCreateRoom}
           />
     </Card>
   );
