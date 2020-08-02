@@ -177,7 +177,13 @@ io.sockets.on('connection', function (socket) {
     // Also create an instance of the room class.
     roomList.newRoom(data.roomName)
     // Assign the username as host of the newly created class.
-    roomList.roomList[data.roomName]['host'] = data.userName
+
+    if (data.stance === 'For') {
+      roomList.roomList[data.roomName]['host'] = data.userName
+    } else {
+      roomList.roomList[data.roomName]['host'] = data.userName
+
+    }
 
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate()
