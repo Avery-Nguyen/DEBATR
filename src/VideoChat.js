@@ -90,15 +90,6 @@ const VideoChat = ({currentSocket}) => {
   }
 
 
-  const handleUsernameChange = useCallback(event => {
-    setUsername(event.target.value);
-  }, []);
-
-  const handleRoomNameChange = useCallback(event => {
-    setRoomName(event.target.value);
-  }, []);
-
-
   const handleLogout = useCallback(event => {
     setToken(null);
   }, []);

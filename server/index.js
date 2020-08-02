@@ -5,6 +5,10 @@ const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const http=require('http').createServer(app)
 const io = require('socket.io')(http);
+const { 
+  postResultsToDatabase 
+} = require('./databaseCalls.js');
+
 
 // Alex's SOCKET code
 let val = true
@@ -48,10 +52,14 @@ class Rooms {
 class Room {
   constructor(name) {
     this.name = name;
+    this.game_id = null;
     this.host = null;
+    this.host_id = null
     this.contender = null;
+    this.contender_id = null;
     this.spectators = [];
     this.topic = 'Topic Name';
+    this.topic_id = null;
     this.hostArg = 'Is the Greatest';
     this.contenderArg = 'Is the Worst';
     this.status = 'Waiting';
@@ -121,6 +129,20 @@ class Room {
     .then(() => {
       io.to(this.name).emit('unMute', this.host)
       io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
+      // Post the game record to the database.
+      this.postGameToDatabase();
+      })
+    }
+
+    postGameToDatabase() {
+      // use function imported from databaseCalls.js
+      postResultsToDatabase({
+        topic_id: this.topic_id,
+        host_id: this.host_id,
+        contender_id: this.contender_id
+      })
+      .then(res => {
+        console.log('Response from SQL server after posting: ', res)
       })
     }
   }
