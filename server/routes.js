@@ -100,4 +100,4 @@ router.post('/users', function(req, res) {
   })
 })
 
-
+module.exports = router;
