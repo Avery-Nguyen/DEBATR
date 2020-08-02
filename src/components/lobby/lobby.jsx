@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import LobbyItem from './lobbyitem'
 import {useStore} from '../../Store'
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 0,
@@ -18,16 +19,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Lobby() {
+  const [state, dispatch] = useStore();
+
   const classes = useStyles();
   const [username, setUsername] = useState(Math.random().toFixed(5).toString());
   const [roomState, setRoomState] = useState({})
   const [token, setToken] = useState(null);
   const [activeRoomState, setActiveRoomState] = useState({})
-  const [topic, setTopic] = useState("");
-  const [stance, setStance] = useState(null);
+  // const [topic, setTopic] = useState("");
+  // const [stance, setStance] = useState(null);
   const [currentRoomName, setCurrentRoomName] = useState("")
-
-  const [state, dispatch] = useStore();
 
   console.log('roomState', roomState)
 
@@ -78,15 +79,15 @@ export default function Lobby() {
         userName: username
       })
     }
-    const randRoomName = Math.random().toFixed(5).toString();
-    setCurrentRoomName(randRoomName);
-    // setRoomList([...roomList, testRoom])
-    state.currentSocket.emit('createRoom', {
-      roomName: randRoomName,
-      userName: username,
-      topic: topic,
-      stance: stance
-    })
+    // const randRoomName = Math.random().toFixed(5).toString();
+    // setCurrentRoomName(randRoomName);
+    // // setRoomList([...roomList, testRoom])
+    // state.currentSocket.emit('createRoom', {
+    //   roomName: randRoomName,
+    //   userName: username,
+    //   topic: topic,
+    //   stance: stance
+    // })
   }
 
   const roomChangeHandler = (testRoom) => {

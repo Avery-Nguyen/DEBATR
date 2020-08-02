@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -30,26 +30,34 @@ const useStyles = makeStyles({
 
 export default function CreateRoom() {
   const [state, dispatch] = useStore();
+  const [topic, setTopic] = useState("")
+  const [stance, setStance] = useState("")
 
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
   
-  const submitCreateRoom = () => {
-    if (state.currentRoomName) {
-      state.currentSocket.emit('leaveRoom', {
-        roomName : state.currentRoomName,
-        userName : state.username
-      })
-    }
-    // dispatch({type: 'SET_CURRENT_ROOM', payload: state.});
+  const submitCreateRoom = (vals) => {
+    console.log('submitCreateRoom values', vals.target)
+    // if (state.currentRoomName) {
+    //   state.currentSocket.emit('leaveRoom', {
+    //     roomName : state.currentRoomName,
+    //     userName : state.username
+    //   })
+    // }
+    const randRoomName = Math.random().toFixed(5).toString();
+    dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
 
+    // setRoomList([...roomList, testRoom])
+    console.log('Sending topic and stance: ', topic, stance)
     state.currentSocket.emit('createRoom', {
-      roomName : Math.random().toFixed(5).toString(),
-      userName : state.username,
-      topic: state.topic,
-      stance: state.stance
+      roomName: randRoomName,
+      userName: state.username,
+      topic: topic,
+      stance: stance
     })
+
+
   }
 
   return (
@@ -61,21 +69,21 @@ export default function CreateRoom() {
         <div className={classes.topicStance}>
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="grouped-native-select">Topic</InputLabel>
-        <Select native defaultValue="" id="grouped-native-select">
-          <option aria-label="None" value="" />
-            <option value={1}>Nudity API</option>
-            <option value={2}>Andy Lindsay</option>
-            <option value={2}>Oranges</option>
+        <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
+          <option aria-label="None" value={topic} />
+            <option value={"Nudity API"}>Nudity API</option>
+            <option value={"Andy Lindsay"}>Andy Lindsay</option>
+            <option value={"Oranges"}>Oranges</option>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl} style={{width: "75px"}}>
         <InputLabel htmlFor="grouped-select">Stance</InputLabel>
-        <Select defaultValue="" id="grouped-select">
+        <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={1}>For</MenuItem>
-          <MenuItem value={2}>Against</MenuItem>
+          <MenuItem value={true} >For</MenuItem>
+          <MenuItem value={false} >Against</MenuItem>
         </Select>
       </FormControl>
     </div>

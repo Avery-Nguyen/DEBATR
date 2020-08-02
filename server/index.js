@@ -14,7 +14,6 @@ const {
 
 
 // Alex's SOCKET code
-let val = true
 let rLString;
 let debtateTime = 5
 let intermissionTime = 3
@@ -56,7 +55,7 @@ class Room {
   constructor(name, topic) {
     this.name = name; //random string to connect to twilio room
     this.game_id = null;
-    this.host = 'Alex'; //username
+    this.host = null; //username
     this.host_id = null
     this.contender = null; //username
     this.contender_id = null;
@@ -155,7 +154,6 @@ roomList.newRoom('otherRoom', 'Is Avery the greatest?')
 roomList.newRoom('3rdroom', 'Are beavers awesome?')
 roomList.newRoom('4tdroom', 'Are Trevor and Andrew lovers?')
 
-let interval;
 io.sockets.on('connection', function (socket) {
   // Send roomList to each new participant
   socket.join('lobby')

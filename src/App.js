@@ -48,6 +48,12 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (state.username === undefined) {
+      dispatch({type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString()})
+    }
+  }, [dispatch, state.username])
+
   return (
     <div className="app">
         <header>
