@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import Lobby from './Lobby';
 import Room from './Room';
 import TestRoom from './TestRoom';
 import SocketContext from './SocketContext'
@@ -13,11 +12,13 @@ const VideoChat = ({currentSocket}) => {
   // console.log("VideoChat -> token", token)
 
   // Alex's code, we should move into a reducer
-  const [testRoom, setTestRoom] = useState("");
+  // const [testRoom, setTestRoom] = useState("");
   const [currentTestRoom, setCurrentTestRoom] = useState("")
   // Need this to access the socket outside of the second useEffect below
   const [roomState, setRoomState] = useState({})
   const [activeRoomState, setActiveRoomState] = useState({})
+  const [topic, setTopic] = useState("");
+  const [stance, setStance] = useState(null);
 
   // ALEX CODE: UseEffect to Create Socket
  
@@ -55,6 +56,7 @@ const VideoChat = ({currentSocket}) => {
 
       currentSocket.on('currentRoomUpdate', data => {
         // data to only update the current room state. 
+        setActiveRoomState(data);
       }
       )
     }
@@ -68,11 +70,13 @@ const VideoChat = ({currentSocket}) => {
         userName : username
       })
     }
-    setCurrentTestRoom(testRoom)
+    // setCurrentTestRoom(testRoom)
     // setRoomList([...roomList, testRoom])
     currentSocket.emit('createRoom', {
-      roomName : testRoom,
-      userName : username
+      roomName : Math.random().toFixed(5).toString(),
+      userName : username,
+      topic: topic,
+      stance: stance
     })
   }
 
@@ -116,7 +120,7 @@ const VideoChat = ({currentSocket}) => {
     ))
     render = (
       <div>
-          <form onSubmit={(event) => event.preventDefault()}>
+          {/* <form onSubmit={(event) => event.preventDefault()}>
             <input
               name="name"
               value={testRoom}
@@ -126,7 +130,7 @@ const VideoChat = ({currentSocket}) => {
               Create Room
           </button>
             {roomListMap}
-          </form>
+          </form> */}
       </div>
     );
   }

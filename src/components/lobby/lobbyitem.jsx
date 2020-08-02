@@ -57,7 +57,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function LobbyItem() {
+export default function LobbyItem({roomDetails}) {
+  console.log(roomDetails);
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
 
@@ -104,8 +105,8 @@ export default function LobbyItem() {
             </Dialog>
           </div>
         }
-        title="Topic title" 
-        subheader="Host Stance - For"
+        title={roomDetails.topic}
+        subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
       />
       <CardActions disableSpacing>
         <Button 

@@ -14,7 +14,6 @@ const {
 
 
 // Alex's SOCKET code
-let val = true
 let rLString;
 let debtateTime = 5
 let intermissionTime = 3
@@ -24,8 +23,8 @@ class Rooms {
     this.roomList = {}
   }
   
-  newRoom(name) {
-    let r = new Room(name)
+  newRoom(name, topic) {
+    let r = new Room(name, topic)
     this.roomList[r.name] = r
     return r
   }
@@ -53,22 +52,19 @@ class Rooms {
 // Could potentially do objects to but I think this is smarter
 // https://socket.io/docs/rooms/
 class Room {
-  constructor(name) {
-    this.name = name;
+  constructor(name, topic) {
+    this.name = name; //random string to connect to twilio room
     this.game_id = null;
-    this.host = null;
+    this.host = null; //username
     this.host_id = null
-    this.contender = null;
+    this.contender = null; //username
     this.contender_id = null;
     this.spectators = [];
-    this.topic = 'Topic Name';
+    this.topic = topic;
     this.topic_id = null;
-    this.hostArg = 'Is the Greatest';
-    this.contenderArg = 'Is the Worst';
     this.status = 'Waiting';
     this.hostPoints = 0;
     this.contenderPoints = 0;
-    this.agreement_rating = 0;
     this.messages = [{
       timeStamp: 20200700456,
       fromUser: 'Alex',
@@ -153,10 +149,11 @@ class Room {
 // Roomslist is an instance of the roomS class.
 const roomList = new Rooms('roomList');
 // Two rooms in here for testing purposes.
-roomList.newRoom('testRoom')
-roomList.newRoom('otherRoom')
+roomList.newRoom('testRoom', 'Is Alex the Greatest?')
+roomList.newRoom('otherRoom', 'Is Avery the greatest?')
+roomList.newRoom('3rdroom', 'Are beavers awesome?')
+roomList.newRoom('4tdroom', 'Are Trevor and Andrew lovers?')
 
-let interval;
 io.sockets.on('connection', function (socket) {
   // Send roomList to each new participant
   socket.join('lobby')
@@ -175,13 +172,20 @@ io.sockets.on('connection', function (socket) {
     // Socket Joins the 'socket'room'
     socket.join(data.roomName)
     // Also create an instance of the room class.
-    roomList.newRoom(data.roomName)
+    roomList.newRoom(data.roomName, data.topic)
     // Assign the username as host of the newly created class.
-    roomList.roomList[data.roomName]['host'] = data.userName
+
+    if (data.stance) {
+      roomList.roomList[data.roomName]['host'] = data.userName
+    } else {
+      roomList.roomList[data.roomName]['contender'] = data.userName
+    }
 
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate()
     console.log(`Current roomList is ${roomList.allRooms}`)
+
+    io.to(data.roomName).emit('currentRoomUpdate', roomList.roomList[data.roomName])
   });
 
   socket.on('joinRoom', function (data) {
