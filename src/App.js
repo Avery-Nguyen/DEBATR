@@ -18,6 +18,8 @@ import SocketContext from './SocketContext'
 import socketIOClient from "socket.io-client";
 import SignUp from './components/sign-up/signUp';
 import CreateRoom from './components/create-room/createRoom';
+import WaitingRoom from './components/waiting-room/waitingRoom';
+import PastDebate from './components/past-debates/pastDebates'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -48,13 +50,20 @@ const App = () => {
       <header>
         <NavBar />
       </header>
-      <main>
+      <main style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
         <Button
-          color="secondary"
-          backgroundColor='black'
+          style={{
+            color:"white",
+            backgroundColor:"rgb(64,81,182)",
+            border:"rgb(64,81,182) solid 1px",
+            borderRadius: "30px",
+            marginTop:'5px',
+            // maxWidth: '55px',
+            justifySelf:'center'
+          }}
           onClick={handleClickOpen}
           >
-          Create Room
+          Create Stage
         </Button>
         <Dialog
             open={open}
@@ -62,14 +71,18 @@ const App = () => {
             keepMounted
             onClose={handleClose}
           >
-                    <CreateRoom />
+            <CreateRoom /> 
           </Dialog>
-          <PostDebate />
         <Lobby />
 
-      <SocketContext.Provider value={currentSocket}>
+      {/* <SocketContext.Provider value={currentSocket}>
         <VideoChat currentSocket={currentSocket} />
-      </SocketContext.Provider>
+      </SocketContext.Provider> */}
+
+<h1 style={{display:'flex', justifyContent:'center', border:'solid 3px black'}}>Past Debates</h1>
+<span></span>
+
+<PastDebate />
       </main>
       <footer style={{ fontSize: "10px" }}>
         <p>

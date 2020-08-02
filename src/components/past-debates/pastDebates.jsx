@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import LobbyItem from './lobbyitem'
+import LobbyItem from '../lobby/lobbyitem'
+import PastDebateItem from './pastDebateListItem'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,20 +18,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Lobby() {
+export default function PastDebate() {
   const classes = useStyles();
 
   function FormRow() {
     return (
       <React.Fragment>
         <Grid item xs={4}>
-          <LobbyItem />
+          <PastDebateItem />
+          
         </Grid>
         <Grid item xs={4}>
-        <LobbyItem />
+        <PastDebateItem />
         </Grid>
         <Grid item xs={4}>
-         <LobbyItem />
+         <PastDebateItem />
         </Grid>
       </React.Fragment>
     );
@@ -39,13 +41,7 @@ export default function Lobby() {
   return (
     <div className={classes.root} >
       <Grid container spacing={2}>
-        <Grid container item xs={12} spacing={3} margin='24px'>
-          <FormRow />
-        </Grid>
         <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        {/* <Grid container item xs={12} spacing={3}>
           <FormRow />
         </Grid>
         <Grid container item xs={12} spacing={3}>
@@ -53,7 +49,13 @@ export default function Lobby() {
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <FormRow />
-        </Grid> */}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
       </Grid>
     </div>
   );
