@@ -18,12 +18,9 @@ import './components/partials/slider.css'
 import socketIOClient from "socket.io-client";
 import SignUp from './components/sign-up/signUp';
 import CreateRoom from './components/create-room/createRoom';
-<<<<<<< HEAD
-import {useStore} from './Store'
-=======
+import { useStore } from './Store'
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
->>>>>>> master
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -47,7 +44,7 @@ const App = () => {
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:3001";
     const socket = socketIOClient(ENDPOINT);
-    dispatch({type: 'SET_CURRENTSOCKET', payload: socket})
+    dispatch({ type: 'SET_CURRENTSOCKET', payload: socket })
     // setCurrentSocket(socket)
 
     return () => socket.disconnect();
@@ -55,94 +52,59 @@ const App = () => {
 
   useEffect(() => {
     if (state.username === undefined) {
-      dispatch({type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString()})
+      dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
     }
   }, [dispatch, state.username])
 
   return (
     <div className="app">
-<<<<<<< HEAD
-        <header>
-          <NavBar />
-        </header>
-        <main>
-
-          {/* <SocketContext.Provider value={currentSocket}> */}
-          <Button
-            color="secondary"
-            backgroundColor='black'
-            onClick={handleClickOpen}
-          >
-            Create Room
-=======
       <header>
         <NavBar />
       </header>
-      <main style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
+      <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
         <Button
           style={{
-            color:"white",
-            backgroundColor:"rgb(64,81,182)",
-            border:"rgb(64,81,182) solid 1px",
+            color: "white",
+            backgroundColor: "rgb(64,81,182)",
+            border: "rgb(64,81,182) solid 1px",
             borderRadius: "30px",
-            marginTop:'5px',
+            marginTop: '5px',
             // maxWidth: '55px',
-            justifySelf:'center'
+            justifySelf: 'center'
           }}
           onClick={handleClickOpen}
-          >
+        >
           Create Stage
->>>>>>> master
         </Button>
-          <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-          >
-<<<<<<< HEAD
-            <CreateRoom />
-          </Dialog>
-          <PostDebate />
-          <Lobby />
-          {/* <VideoChat currentSocket={currentSocket} /> */}
-          {/* </SocketContext.Provider> */}
-
-        </main>
-        <footer style={{ fontSize: "10px" }}>
-          <p>
-            Made with{' '}
-            <span role="img" aria-label="React">
-              ♥️
-=======
-            <CreateRoom /> 
-          </Dialog>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+        >
+          <CreateRoom handleClose={handleClose} />
+        </Dialog>
         <Lobby />
 
-      {/* <SocketContext.Provider value={currentSocket}>
-        <VideoChat currentSocket={currentSocket} />
-      </SocketContext.Provider> */}
+        <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
+        <span></span>
 
-<h1 style={{display:'flex', justifyContent:'center', border:'solid 3px black'}}>Past Debates</h1>
-<span></span>
-
-<PastDebate />
+        <PastDebate />
       </main>
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}
           <span role="img" aria-label="React">
             ♥️
->>>>>>> master
           </span>{' '}
           and{' '}
-            <span role="img" aria-label="React">
-              ⚛️
+          <span role="img" aria-label="React">
+            ⚛️
           </span>{' '}
           by <p>AAA+</p>
-          </p>
-        </footer>
-      </div>
+        </p>
+      </footer>
+    </div>
   );
 };
 

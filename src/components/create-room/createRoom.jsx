@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateRoom() {
+export default function CreateRoom({handleClose}) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [stance, setStance] = useState("")
@@ -67,12 +67,7 @@ export default function CreateRoom() {
   
   const submitCreateRoom = (vals) => {
     console.log('submitCreateRoom values', vals.target)
-    // if (state.currentRoomName) {
-    //   state.currentSocket.emit('leaveRoom', {
-    //     roomName : state.currentRoomName,
-    //     userName : state.username
-    //   })
-    // }
+  
     const randRoomName = Math.random().toFixed(5).toString();
     dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
 
@@ -85,6 +80,8 @@ export default function CreateRoom() {
       stance: stance
     })
 
+    handleClose();
+
 
   }
 
@@ -94,8 +91,7 @@ export default function CreateRoom() {
       <Box mt={2}>
       </Box>
       <div className={classes.paper}>
-         <img style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"
-        />
+         <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/>
         <Typography component="h1" variant="h5">
           Will you be the next master?
       </Typography>
@@ -127,7 +123,7 @@ export default function CreateRoom() {
           </Select>
         </FormControl>
         <Button
-          // onClick={handleClickOpen}
+          onClick={submitCreateRoom}
           variant="contained"
           style={{
             color: "white",
