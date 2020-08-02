@@ -17,6 +17,7 @@ const VideoChat = ({currentSocket}) => {
   const [currentTestRoom, setCurrentTestRoom] = useState("")
   // Need this to access the socket outside of the second useEffect below
   const [roomState, setRoomState] = useState({})
+  const [activeRoomState, setActiveRoomState] = useState({})
 
   // ALEX CODE: UseEffect to Create Socket
  
@@ -45,9 +46,17 @@ const VideoChat = ({currentSocket}) => {
             'Content-Type': 'application/json'
           }
         }).then(res => res.json())
-        .then((fetchData) => setToken(fetchData.token))
+        .then((fetchData) => {
+          setToken(fetchData.token)
+          setActiveRoomState(roomState[data.roomName])
+        })
         setRoomName(data.roomName)
       })
+
+      currentSocket.on('currentRoomUpdate', data => {
+        // data to only update the current room state. 
+      }
+      )
     }
   }, [currentSocket, username]);
 
