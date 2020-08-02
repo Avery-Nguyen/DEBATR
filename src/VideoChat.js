@@ -1,76 +1,124 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Lobby from './Lobby';
 import Room from './Room';
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:8080";
+import TestRoom from './TestRoom';
+import SocketContext from './SocketContext'
 
-
-const VideoChat = () => {
-  const [username, setUsername] = useState('');
+const VideoChat = ({currentSocket}) => {
+  const [username, setUsername] = useState(Math.random().toFixed(5).toString());
+  console.log("VideoChat -> username", username)
   const [roomName, setRoomName] = useState('');
+  // console.log("VideoChat -> roomName", roomName)
   const [token, setToken] = useState(null);
-  const [response, setResponse] = useState("");
+  // console.log("VideoChat -> token", token)
 
+  // Alex's code, we should move into a reducer
+  const [testRoom, setTestRoom] = useState("");
+  const [currentTestRoom, setCurrentTestRoom] = useState("")
+  // Need this to access the socket outside of the second useEffect below
+  const [roomState, setRoomState] = useState({})
+
+  // ALEX CODE: UseEffect to Create Socket
+ 
+
+  // ALEX CODE: Assign socket handlers
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("Hello", data => {
-      setResponse(data);
-    });
+    if (currentSocket) {
+      currentSocket.on("initialRoomList", data => {
+        const rLParse = JSON.parse(data)
+        // Want this to be an object of rooms
+        setRoomState(prevState => ({ ...prevState, ...rLParse}))
+      })
 
-    // CLEAN UP THE EFFECT
-    return () => socket.disconnect();
-    //
-  }, []);
+      currentSocket.on('startGame', data => {
+        console.log('data.roomname', data.roomName)
+        const connectUsername = username
+        console.log("VideoChat -> connectUsername", connectUsername)
+        
+        fetch('/video/token', {
+          method: 'POST',
+          body: JSON.stringify({
+            identity: username,
+            room: data.roomName
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json())
+        .then((fetchData) => setToken(fetchData.token))
+        setRoomName(data.roomName)
+      })
+    }
+  }, [currentSocket, username]);
 
-  const handleUsernameChange = useCallback(event => {
-    setUsername(event.target.value);
-  }, []);
+  // ALEX's CODE
+  const roomAddHandler = (testRoom) => {
+    if (currentTestRoom) {
+      currentSocket.emit('leaveRoom', {
+        roomName : currentTestRoom,
+        userName : username
+      })
+    }
+    setCurrentTestRoom(testRoom)
+    // setRoomList([...roomList, testRoom])
+    currentSocket.emit('createRoom', {
+      roomName : testRoom,
+      userName : username
+    })
+  }
 
-  const handleRoomNameChange = useCallback(event => {
-    setRoomName(event.target.value);
-  }, []);
+  const roomChangeHandler = (testRoom) => {
+    if (currentTestRoom) {
+      currentSocket.emit('leaveRoom', {
+        roomName : currentTestRoom,
+        userName : username
+      })
+    }
+    setCurrentTestRoom(testRoom)
+    currentSocket.emit('joinRoom', {
+      roomName : testRoom,
+      userName : username
+    })
+  }
 
-  const handleSubmit = useCallback(
-    async event => {
-      event.preventDefault();
-      const data = await fetch('/video/token', {
-        method: 'POST',
-        body: JSON.stringify({
-          identity: username,
-          room: roomName
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
-      setToken(data.token);
-    },
-    [roomName, username]
-  );
+  const sendMessageHandler = (message) => {
+    currentSocket.emit('message', {
+      roomName : currentTestRoom,
+      userName : username,
+      message: message
+    })
+  }
+
 
   const handleLogout = useCallback(event => {
     setToken(null);
   }, []);
 
   let render;
-  if (token) {
+  if (token && roomName) {
     render = (
-      <Room roomName={roomName} token={token} handleLogout={handleLogout} />
+      <SocketContext.Provider value={currentSocket}>
+      <Room roomName={roomName} token={token} handleLogout={handleLogout} currentSocket={currentSocket} username={username} roomState={roomState} currentTestRoom={currentTestRoom}/>
+      </SocketContext.Provider>
     );
   } else {
+    const roomListMap = Object.keys(roomState).map((keyName, i) => (
+      (keyName && <TestRoom currentTestRoom={currentTestRoom} exRoomName={keyName} objProps={roomState[keyName]} setRoomName={roomChangeHandler} sendMessageHandler={sendMessageHandler} />)
+    ))
     render = (
       <div>
-      <Lobby
-        username={username}
-        roomName={roomName}
-        handleUsernameChange={handleUsernameChange}
-        handleRoomNameChange={handleRoomNameChange}
-        handleSubmit={handleSubmit}
-      />
-        <p>
-        SocketMessage = {response}
-        </p>
-    </div>
+          <form onSubmit={(event) => event.preventDefault()}>
+            <input
+              name="name"
+              value={testRoom}
+              onChange={(event) => setTestRoom(event.target.value)}
+            />
+            <button onClick={(event) => roomAddHandler(testRoom)}>
+              Create Room
+          </button>
+            {roomListMap}
+          </form>
+      </div>
     );
   }
   return render;
