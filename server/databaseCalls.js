@@ -79,8 +79,7 @@ const createUser = (email, first_name, last_name, username, password, avatar_url
   })
 }
 
-
-export default {
+module.exports = {
   postResultsToDatabase, 
   getRoomRecords, 
   postUserRating, 

@@ -3,7 +3,9 @@ const pg = require('pg');
 //var pg = require('pg').native
 require('dotenv').config() 
 
-var conString = 	process.env.REACT_APP_PG_STRING; //Can be found in the Details page
+// var conString = process.env.REACT_APP_PG_STRING; //Can be found in the Details page
+var conString = 	`postgres://csslmvrr:KuCNQMyVFayHEkIigel7Z6lDdjOIEUDT@ruby.db.elephantsql.com:5432/csslmvrr` //Can be found in the Details page
+
 var client = new pg.Client(conString);
 client.connect(function(err) {
   if(err) {
@@ -20,4 +22,4 @@ client.connect(function(err) {
   });
 });
 
-export default client;
+module.exports = client;

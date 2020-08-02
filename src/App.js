@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,6 +14,8 @@ import Lobby from './components/lobby/lobby'
 import NavBar from './components/nav/nav'
 import PostDebate from './components/post-debate/postDebate'
 import './components/partials/slider.css'
+import SocketContext from './SocketContext'
+import socketIOClient from "socket.io-client";
 import SignUp from './components/sign-up/signUp';
 import CreateRoom from './components/create-room/createRoom';
 
@@ -32,9 +34,20 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [currentSocket, setCurrentSocket] = useState(null)
+
+  useEffect(() => {
+    const ENDPOINT = "http://127.0.0.1:3001";
+    const socket = socketIOClient(ENDPOINT);
+    setCurrentSocket(socket)
+
+    return () => socket.disconnect();
+  }, []);
   return (
     <div className="app">
-      <NavBar />
+      <header>
+        <NavBar />
+      </header>
       <main>
         <Button
           color="secondary"
@@ -54,6 +67,9 @@ const App = () => {
           <PostDebate />
         <Lobby />
 
+      <SocketContext.Provider value={currentSocket}>
+        <VideoChat currentSocket={currentSocket} />
+      </SocketContext.Provider>
       </main>
       <footer style={{ fontSize: "10px" }}>
         <p>
