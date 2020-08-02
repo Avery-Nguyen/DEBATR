@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function OutlinedCard() {
+export default function CreateRoom() {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
 
