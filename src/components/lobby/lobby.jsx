@@ -19,12 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Lobby() {
+export default function Lobby({roomState}) {
   const [state, dispatch] = useStore();
 
   const classes = useStyles();
   const [username, setUsername] = useState(Math.random().toFixed(5).toString());
-  const [roomState, setRoomState] = useState({})
   const [token, setToken] = useState(null);
   const [activeRoomState, setActiveRoomState] = useState({})
   // const [topic, setTopic] = useState("");
@@ -35,42 +34,35 @@ export default function Lobby() {
 
   // ALEX CODE: Assign socket handlers
   useEffect(() => {
-    if (state.currentSocket) {
-      state.currentSocket.on("initialRoomList", data => {
-        const rLParse = JSON.parse(data)
-        // Want this to be an object of rooms
-        setRoomState(prevState => ({ ...prevState, ...rLParse }))
-      })
+    
 
-      state.currentSocket.on('startGame', data => {
-        console.log('data.roomname', data.roomName)
-        const connectUsername = username
-        console.log("VideoChat -> connectUsername", connectUsername)
+      // state.currentSocket.on('startGame', data => {
+      //   console.log('data.roomname', data.roomName)
+      //   const connectUsername = username
+      //   console.log("VideoChat -> connectUsername", connectUsername)
 
-        fetch('/video/token', {
-          method: 'POST',
-          body: JSON.stringify({
-            identity: username,
-            room: data.roomName
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then(res => res.json())
-          .then((fetchData) => {
-            setToken(fetchData.token)
-            setActiveRoomState(roomState[data.roomName])
-          })
+      //   fetch('/video/token', {
+      //     method: 'POST',
+      //     body: JSON.stringify({
+      //       identity: state.username,
+      //       room: state.currentRoom
+      //     }),
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     }
+      //   }).then(res => res.json())
+      //     .then((fetchData) => {
+      //       dispatch('SET_TOKEN', fetchData.token)
+      //       // setActiveRoomState(roomState[data.roomName])
+      //     })
+      // })
 
-      })
-
-      state.currentSocket.on('currentRoomUpdate', data => {
-        // data to only update the current room state. 
-        setActiveRoomState(data);
-      }
-      )
-    }
-  }, [username, state.currentSocket, roomState]);
+      // state.currentSocket.on('currentRoomUpdate', data => {
+      //   // data to only update the current room state. 
+      //   setActiveRoomState(data);
+      // }
+      // )
+    }, []);
 
   const roomAddHandler = (testRoom) => {
 

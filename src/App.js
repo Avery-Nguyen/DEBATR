@@ -31,15 +31,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const App = () => {
 
   const [state, dispatch] = useStore();
+  const [roomState, setRoomState] = useState({})
 
   const [open, setOpen] = React.useState(false);
 
-  // useEffect(() => {
-  //   axios.get('/api/users')
-  //   .then((data) => {
-  //     console.log("data -->", data);
-  //   });
-  // }, [])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,7 +50,6 @@ const App = () => {
     const socket = socketIOClient(ENDPOINT);
     dispatch({ type: 'SET_CURRENTSOCKET', payload: socket })
     // setCurrentSocket(socket)
-
     return () => socket.disconnect();
   }, [dispatch]);
 
@@ -65,6 +59,41 @@ const App = () => {
       dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
     }
   }, [dispatch, state.username])
+
+  useEffect(() => {
+    if (state.currentSocket) {
+      state.currentSocket.on("initialRoomList", data => {
+        const rLParse = JSON.parse(data)
+        // Want this to be an object of rooms
+        setRoomState(prevState => ({ ...prevState, ...rLParse }))
+      })
+
+      state.currentSocket.on('startGame', data => {
+        fetch('/video/token', {
+          method: 'POST',
+          body: JSON.stringify({
+            identity: state.username,
+            room: state.currentRoom
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json())
+          .then((fetchData) => {
+          console.log("App -> fetchData", fetchData)
+            
+            dispatch({type:'SET_TOKEN', payload: fetchData.token})
+            // setActiveRoomState(roomState[data.roomName])
+          })
+      })
+
+      state.currentSocket.on('currentRoomUpdate', data => {
+        // data to only update the current room state. 
+        // setActiveRoomState(data);
+      }
+      )
+    }
+  }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
 
 
   const lobby = (
@@ -92,7 +121,7 @@ const App = () => {
           <CreateRoom handleClose={handleClose} />
         </Dialog>
         
-        <Lobby />
+        <Lobby roomState={roomState} />
         <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
         <span></span>
         <PastDebate />
@@ -110,8 +139,8 @@ const App = () => {
       <Stage />
     </main>
   )
-  
-
+  console.log("App -> state.currentRoom", state.currentRoom)
+  console.log("App -> state.token", state.token)
   
   return (
     <div className="app">
@@ -120,6 +149,8 @@ const App = () => {
       </header>
       
       {state.currentRoom && state.token ? stage : ''}
+      
+      
       {state.currentRoom && !state.token ? waitingRoom : ''}
       {!state.currentRoom && !state.token ? lobby : ''}
 
