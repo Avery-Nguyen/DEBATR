@@ -9,7 +9,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
   const [participants, setParticipants] = useState([]);
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
-  console.log("Room -> active", active)
+  // console.log("Room -> active", active)
   // const [turn, setTurn] = useState(0)
   const [gameCommands, setGameCommands] = useState([])
 

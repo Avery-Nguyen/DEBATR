@@ -9,7 +9,6 @@ const db = require("./db.js");
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const { postResultsToDatabase } = require("./databaseCalls.js");
-const usersRoutes = require("./users");
 const topicRoutes = require("./topics");
 
 // Alex's SOCKET code
@@ -280,7 +279,6 @@ app.use(
 app.use(pino);
 
 app.use("/api", apiRoutes(db));
-app.use("/api", usersRoutes(db));
 app.use("/api", topicRoutes(db));
 
 const sendTokenResponse = (token, res) => {
