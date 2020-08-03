@@ -22,6 +22,7 @@ import { useStore } from './Store'
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
 import axios from "axios"
+// import Stage from './components/stage'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -58,18 +59,16 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
 
+  // Assign random username for time being
   useEffect(() => {
     if (state.username === undefined) {
       dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
     }
   }, [dispatch, state.username])
 
-  return (
-    <div className="app">
-      <header>
-        <NavBar />
-      </header>
-      <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+
+  const lobby = (
+    <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
         <Button
           style={{
             color: "white",
@@ -92,13 +91,39 @@ const App = () => {
         >
           <CreateRoom handleClose={handleClose} />
         </Dialog>
+        
         <Lobby />
-
         <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
         <span></span>
-
         <PastDebate />
       </main>
+  )
+
+  const waitingRoom = (
+    <main>
+      <WaitingRoom />
+    </main>
+  )
+
+  const stage = (
+    <main>
+      <Stage />
+    </main>
+  )
+  
+
+  
+  return (
+    <div className="app">
+      <header>
+        <NavBar />
+      </header>
+      
+      {state.currentRoom && state.token ? stage : ''}
+      {state.currentRoom && !state.token ? waitingRoom : ''}
+      {!state.currentRoom && !state.token ? lobby : ''}
+
+      
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}

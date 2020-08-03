@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserCard() {
+export default function WaitingRoom() {
   const classes = useStyles();
 
   return (
