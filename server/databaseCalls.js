@@ -1,6 +1,6 @@
 const client = require('./db.js');
 
-const getRoomRecords = (limit = 10) => {
+const getRoomRecords = (client, limit = 10) => {
   return client.query(`SELECT * FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
   ORDER BY room_logs.date_time DESC

@@ -31,7 +31,7 @@ export default function Lobby() {
   // const [stance, setStance] = useState(null);
   const [currentRoomName, setCurrentRoomName] = useState("")
 
-  console.log('roomState', roomState)
+  // console.log('roomState', roomState)
 
   // ALEX CODE: Assign socket handlers
   useEffect(() => {

@@ -58,7 +58,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export default function LobbyItem({roomDetails}) {
-  console.log(roomDetails);
+  // console.log(roomDetails);
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
 

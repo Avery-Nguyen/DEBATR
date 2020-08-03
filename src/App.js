@@ -21,6 +21,7 @@ import CreateRoom from './components/create-room/createRoom';
 import { useStore } from './Store'
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
+import axios from "axios"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,6 +32,13 @@ const App = () => {
   const [state, dispatch] = useStore();
 
   const [open, setOpen] = React.useState(false);
+
+  // useEffect(() => {
+  //   axios.get('/api/users')
+  //   .then((data) => {
+  //     console.log("data -->", data);
+  //   });
+  // }, [])
 
   const handleClickOpen = () => {
     setOpen(true);
