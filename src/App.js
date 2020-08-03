@@ -3,7 +3,6 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import VideoChat from './VideoChat';
 import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
 // import Rating from './components/partials/rating'
@@ -32,6 +31,7 @@ const App = () => {
 
   const [state, dispatch] = useStore();
   const [roomState, setRoomState] = useState({})
+  const [activeRoomState, setActiveRoomState] = useState({})
 
   const [open, setOpen] = React.useState(false);
 
@@ -80,7 +80,7 @@ const App = () => {
           }
         }).then(res => res.json())
           .then((fetchData) => {
-          console.log("App -> fetchData", fetchData)
+          // console.log("App -> fetchData", fetchData)
             
             dispatch({type:'SET_TOKEN', payload: fetchData.token})
             // setActiveRoomState(roomState[data.roomName])
@@ -89,10 +89,17 @@ const App = () => {
 
       state.currentSocket.on('currentRoomUpdate', data => {
         // data to only update the current room state. 
-        // setActiveRoomState(data);
+        setActiveRoomState(prev => ({...prev, ...data}));
       }
       )
     }
+
+    return (() => {
+      if(state.currentSocket) {
+        state.currentSocket.off('startGame')
+        state.currentSocket.off('initialRoomList')
+      }
+    })
   }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
 
 
@@ -136,11 +143,11 @@ const App = () => {
 
   const stage = (
     <main>
-      <Stage />
+      <Stage activeRoomState={activeRoomState}/>
     </main>
   )
-  console.log("App -> state.currentRoom", state.currentRoom)
-  console.log("App -> state.token", state.token)
+  // console.log("App -> state.currentRoom", state.currentRoom)
+  // console.log("App -> state.token", state.token)
   
   return (
     <div className="app">

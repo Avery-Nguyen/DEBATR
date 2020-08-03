@@ -212,6 +212,10 @@ io.sockets.on("connection", function (socket) {
 
     // Send out update to everyone in lobby.
     roomList.sendRoomUpdate();
+    io.to(data.roomName).emit(
+      "currentRoomUpdate",
+      roomList.roomList[data.roomName]
+    );
 
     // Room is full if host & contender spots exist
     if (

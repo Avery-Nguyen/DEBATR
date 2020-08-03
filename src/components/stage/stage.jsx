@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import VideoChat from '../../VideoChat.js';
 import Button from '@material-ui/core/Button';
 import Participant from '../../Participant'
 import {useStore} from '../../Store'
 import Video from 'twilio-video';
 
-export default function Stage() {
+export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  console.log("Stage -> participants", participants)
+  // console.log("Stage -> participants", participants)
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -50,10 +49,13 @@ export default function Stage() {
   }, [state.currentRoom, state.token]);
 
 
-  const remoteParticipants = participants.map(participant => (
+  const remoteParticipants = participants.filter(p => p._tracks).map((participant) => {
+    console.log(participant);
     
-    <Participant key={participant.sid} participant={participant} />
-  ));
+    return (<Participant key={participant.sid} participant={participant} />)
+  });
+
+  
 
   const handleLogout = function () {
     dispatch({type: 'SET_TOKEN', payload: null})
@@ -62,7 +64,7 @@ export default function Stage() {
     <body id='stage' style={{height: '100%', zIndex:'1'}}>
       <div class="w3-content" >
         <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
-          <h1 class="w3-xlarge">Debate Topic - Nudity API</h1>
+          <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
         </header>
         <div class="w3-row-padding w3-grayscale">
           <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
@@ -76,8 +78,8 @@ export default function Stage() {
             ''
           )}
             <div class='userAndStance' style={{display: 'flex', justifyContent:'space-between'}}>
-            <p style={{ color: 'white', justifySelf: 'right' }}>User1</p>
-            <p style={{ color: 'white'}}>Against</p>
+        <p style={{ color: 'white', justifySelf: 'right' }}>{state.username}</p>
+            <p style={{ color: 'white'}}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
             </div>
             </div>
             <div id='stage-details' style={{ display: 'flex', flexDirection:'column', justifyContent: 'space-around' }}>
@@ -89,8 +91,8 @@ export default function Stage() {
             <div class='participants'>
             {remoteParticipants}
             <div class='userAndStance' style={{display: 'flex', justifyContent:'space-between'}}>
-            <p style={{ color: 'white'}}>For</p>
-            <p style={{ color: 'white'}}>Andy Lindsay</p>
+            <p style={{ color: 'white'}}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
+            <p style={{ color: 'white'}}>{(state.username === activeRoomState.host) ?  activeRoomState.contender : activeRoomState.host }</p>
             </div>
             </div>
           </div>

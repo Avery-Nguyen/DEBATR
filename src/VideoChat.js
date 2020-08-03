@@ -7,9 +7,7 @@ const VideoChat = ({currentSocket}) => {
   const [username, setUsername] = useState(Math.random().toFixed(5).toString());
   console.log("VideoChat -> username", username)
   const [roomName, setRoomName] = useState('');
-  // console.log("VideoChat -> roomName", roomName)
   const [token, setToken] = useState(null);
-  // console.log("VideoChat -> token", token)
 
   // Alex's code, we should move into a reducer
   // const [testRoom, setTestRoom] = useState("");
