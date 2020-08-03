@@ -76,7 +76,6 @@ export default function LobbyItem({roomDetails}) {
     setOpen(false);
   };
 
-
   // Expandable arrow
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);
@@ -89,6 +88,8 @@ export default function LobbyItem({roomDetails}) {
     // Set the current room (socket emit)
 
     dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
+    dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
+
 
     state.currentSocket.emit('joinRoom', {
       roomName : roomDetails.name,
@@ -104,46 +105,50 @@ export default function LobbyItem({roomDetails}) {
     setOpenStage(false);
   };
 
-  return (
-    <Card className={classes.root} style={{border: "solid rgb(0,238,40) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", display: "flex", justifyContent: "center"}}>
-      <CardHeader
-        avatar={
-          <div>
-            <Avatar onClick={handleClickOpen} />
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={handleClose}
-            >
-              <UserCard />
-            </Dialog>
-          </div>
-        }
-        title={roomDetails.topic}
-        subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
-      />
-      <CardActions disableSpacing>
-        <Button 
-          variant="contained" 
-          style={{ 
-            color: "white", 
-            backgroundColor: "rgb(64,81,182)",
-            borderRadius: "30px"
-            }} 
-          onClick={handleClickOpenStage}>Enter Stage
-          </Button>
-        
-        <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
-          <Stage />
-          <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-        </Dialog>
-        
-      </CardActions>
-    </Card>
-  );
+  if (roomDetails) {
+    return (
+      <Card className={classes.root} style={{border: "solid rgb(0,238,40) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", display: "flex", justifyContent: "center"}}>
+        <CardHeader
+          avatar={
+            <div>
+              <Avatar onClick={handleClickOpen} />
+              <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+              >
+                <UserCard />
+              </Dialog>
+            </div>
+          }
+          title={roomDetails.topic}
+          subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
+        />
+        <CardActions disableSpacing>
+          <Button 
+            variant="contained" 
+            style={{ 
+              color: "white", 
+              backgroundColor: "rgb(64,81,182)",
+              borderRadius: "30px"
+              }} 
+            onClick={handleClickOpenStage}>Enter Stage
+            </Button>
+          
+          <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
+            <Stage />
+            <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+          </Dialog>
+          
+        </CardActions>
+      </Card>
+    );
+  } else {
+    return null
+  }
 }
 
 

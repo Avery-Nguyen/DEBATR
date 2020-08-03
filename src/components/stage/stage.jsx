@@ -7,11 +7,83 @@ import Participant from '../../Participant'
 import {useStore} from '../../Store'
 import Video from 'twilio-video';
 
+const startTime = 5.0;
+
 export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   // console.log("Stage -> participants", participants)
+  const [time, setTime] = useState(startTime);
+  const [active, setActive] = useState(false)
+  const [gameCommands, setGameCommands] = useState([])
+
+
+  // GameCommand / mute / unmute listeners
+  useEffect(() => {
+    if (state.currentSocket) {
+      state.currentSocket.on("gameCommand", data => {
+        setGameCommands(data)
+      })
+
+      state.currentSocket.on("gameOver", data => {
+        dispatch({type: 'SET_TOKEN', payload: null})
+        dispatch({type: 'SET_VISUAL_MODE', payload: "GAME_OVER"})
+        dispatch({type: 'SET_CURRENT_ROOM', payload: null})
+        disableMedia()
+      })
+
+      state.currentSocket.on("disconnect", data => {
+        dispatch({type: 'SET_TOKEN', payload: null})
+        dispatch({type: 'SET_VISUAL_MODE', payload: "CONNECTION_ERROR"})
+        dispatch({type: 'SET_CURRENT_ROOM', payload: null})
+        disableMedia()
+      })
+
+      state.currentSocket.on("mute", data => {
+        // console.log('Room mute request', room)
+        if (room) {
+          if (state.username === data.mute) {
+            room.localParticipant.audioTracks.forEach(publication => {
+              // console.log(room.localParticipant.identity,'is muted');
+              publication.track.disable();
+            });
+          }
+
+          // Start Timer
+          if (!data.intermission) {
+            setActive(true)
+            setTime(data.timer);
+          } else {
+            // setTime(data.timer)
+          }
+        }
+
+      })
+      state.currentSocket.on("unMute", data => {
+        // console.log('Room UNmute request', room)
+        if (room) {
+          if(state.username === data){
+            room.localParticipant.audioTracks.forEach(publication => {
+              // console.log(room.localParticipant.identity,' is unmuted');
+              publication.track.enable();
+            });
+          }
+        }
+      })
+    }
+
+    return (() => {
+      if (state.currentSocket) {
+        state.currentSocket.off("mute")
+        state.currentSocket.off("unMute")
+        state.currentSocket.off("disconnect")
+        state.currentSocket.off("gameOver")
+        state.currentSocket.off("leaveStage")
+      }
+    })
+
+  }, [state.currentSocket, state.currentRoom, state.username, room]);
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -55,11 +127,46 @@ export default function Stage({ activeRoomState }) {
     return (<Participant key={participant.sid} participant={participant} />)
   });
 
-  
+  function disableMedia() {
+    room.localParticipant.audioTracks.forEach(publication => {
+      publication.track.disable();
+    });
+    
+    room.localParticipant.videoTracks.forEach(publication => {
+      publication.track.disable();
+      publication.track.stop();
+      publication.unpublish();
+    });
+  }
 
   const handleLogout = function () {
+    state.currentSocket.emit('leaveRoom', {
+      roomName : state.currentRoom,
+      userName : state.username
+    })
+    
+    disableMedia()
+
     dispatch({type: 'SET_TOKEN', payload: null})
+    dispatch({type: 'SET_VISUAL_MODE', payload: "LOBBY"})
+    dispatch({type: 'SET_CURRENT_ROOM', payload: null})
   }
+
+  useEffect(() => {
+    let timer = null;
+      if (active && time > 0) {
+        timer = setTimeout(() => {
+          setTime((time - 0.1).toFixed(1))
+        }, 100);
+      } else if (time <= 0) {
+  
+        console.log('calling clearTimeout and setActive false')
+        clearTimeout(timer)
+      
+      }
+    } , [active, time]);
+
+
   return (
     <body id='stage' style={{height: '100%', zIndex:'1'}}>
       <div class="w3-content" >
@@ -83,8 +190,8 @@ export default function Stage({ activeRoomState }) {
             </div>
             </div>
             <div id='stage-details' style={{ display: 'flex', flexDirection:'column', justifyContent: 'space-around' }}>
-              <h1 style={{ color: 'white' }}>User1 Speaking</h1>
-              <h4 style={{ color: 'white' }}>Time Remaining: 45 seconds</h4>
+              <h1 style={{ color: 'white' }}>{gameCommands}</h1>
+              <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
               <br />
               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
             </div>
@@ -98,7 +205,7 @@ export default function Stage({ activeRoomState }) {
           </div>
         </div>
         <footer style={{ backgroundColor: "rgb(64,81,182)", display:'flex' }}>
-        <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Leave Stage?</Button>
+        <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
         </footer>
       </div>
     </body>

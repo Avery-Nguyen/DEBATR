@@ -105,7 +105,7 @@ export default function Lobby({roomState}) {
     })
   }
 
-  const roomItems = Object.keys(roomState).map(room =>
+  const roomItems = Object.keys(roomState).filter(room => room).map(room =>
     <Grid item xs={4}>
       <LobbyItem roomDetails={roomState[room]}/>
     </Grid>

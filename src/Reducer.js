@@ -25,6 +25,11 @@ const Reducer = (state, action) => {
         ...state,
         token: action.payload
       };
+    case 'SET_VISUAL_MODE':
+      return {
+        ...state,
+        visualMode: action.payload
+      };
     default:
       return state;
   }

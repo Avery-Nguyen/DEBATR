@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Video from 'twilio-video';
 import Participant from './Participant';
 
-const startTime = 5.0;
 
 const Room = ({ roomName, token, handleLogout, currentSocket, username, roomState, currentTestRoom }) => {
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  const [time, setTime] = useState(startTime);
-  const [active, setActive] = useState(false)
+
   // console.log("Room -> active", active)
   // const [turn, setTurn] = useState(0)
-  const [gameCommands, setGameCommands] = useState([])
 
   useEffect(() => {
     const participantConnected = participant => {

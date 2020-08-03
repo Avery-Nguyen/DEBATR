@@ -72,6 +72,7 @@ export default function CreateRoom({handleClose}) {
   
     const randRoomName = Math.random().toFixed(5).toString();
     dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
+    dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
 
     // setRoomList([...roomList, testRoom])
     console.log('Sending topic and stance: ', topic, stance)

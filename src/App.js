@@ -21,7 +21,14 @@ import { useStore } from './Store'
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
 import axios from "axios"
-// import Stage from './components/stage'
+
+
+// LOBBY
+// WAITING (for token)
+// ACTIVE (in debate)
+// GAME_OVER (for reviews) -> LOBBY
+// CONNECTION_ERROR (other user leaves or other error)
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -80,10 +87,8 @@ const App = () => {
           }
         }).then(res => res.json())
           .then((fetchData) => {
-          // console.log("App -> fetchData", fetchData)
-            
+            dispatch({type: 'SET_VISUAL_MODE', payload: "ACTIVE"});
             dispatch({type:'SET_TOKEN', payload: fetchData.token})
-            // setActiveRoomState(roomState[data.roomName])
           })
       })
 
@@ -94,6 +99,7 @@ const App = () => {
       )
     }
 
+    // Cleanup function for socket listeners
     return (() => {
       if(state.currentSocket) {
         state.currentSocket.off('startGame')
@@ -102,6 +108,7 @@ const App = () => {
     })
   }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
 
+  
 
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
@@ -143,24 +150,33 @@ const App = () => {
 
   const stage = (
     <main>
-      <Stage activeRoomState={activeRoomState}/>
+      <Stage activeRoomState={ activeRoomState}
+      />
     </main>
   )
-  // console.log("App -> state.currentRoom", state.currentRoom)
-  // console.log("App -> state.token", state.token)
   
+  const postDebate = (
+    <main>
+      <PostDebate/>
+    </main>
+  )
+
+  const connectionError = (
+    <main>
+      <h1>your BUDDY left the game!</h1>
+    </main>
+  )
   return (
     <div className="app">
       <header>
         <NavBar />
-      </header>
+      </header>      
       
-      {state.currentRoom && state.token ? stage : ''}
-      
-      
-      {state.currentRoom && !state.token ? waitingRoom : ''}
-      {!state.currentRoom && !state.token ? lobby : ''}
-
+      {state.visualMode === "ACTIVE" && state.token && stage}
+      {state.visualMode === "WAITING" && waitingRoom}
+      {state.visualMode === "LOBBY" && lobby}
+      {state.visualMode === "GAME_OVER" && postDebate}
+      {state.visualMode === "CONNECTION_ERROR" && connectionError}
       
       <footer style={{ fontSize: "10px" }}>
         <p>
