@@ -38,7 +38,7 @@ export default function Lobby() {
     if (state.currentSocket) {
       state.currentSocket.on("initialRoomList", data => {
         const rLParse = JSON.parse(data)
-        // Want this to be an object of rooms
+        // Wstyle={{display: "flex"}} ant this to be an object of rooms
         setRoomState(prevState => ({ ...prevState, ...rLParse }))
       })
 

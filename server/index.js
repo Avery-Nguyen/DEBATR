@@ -3,14 +3,30 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
-const apiRoutes = require('./routes.js')
+const apiRoutes = require('./routes')
 const cookieSession = require('cookie-session');
+
+const db = require('./db.js');
+app.use('/api', apiRoutes(db))
+
 
 const http=require('http').createServer(app)
 const io = require('socket.io')(http);
 const { 
   postResultsToDatabase 
 } = require('./databaseCalls.js');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2'],
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
+
+app.use(pino);
+
 
 
 // Alex's SOCKET code
@@ -244,21 +260,6 @@ io.sockets.on('connection', function (socket) {
     roomList.sendRoomUpdate()
   })
 });
-
-// const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2'],
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}));
-
-app.use(pino);
-
-app.use('/api', apiRoutes());
-
 
 const sendTokenResponse = (token, res) => {
   res.set('Content-Type', 'application/json');

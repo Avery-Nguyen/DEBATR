@@ -18,16 +18,11 @@ export default function Deposits() {
   return (
     <React.Fragment>
       <Typography component="p" variant="h4">
-        $3,024.00
+        Total Debates
       </Typography>
-      <Typography color="textSecondary" className={classes.depositContext}>
-        on 15 March, 2019
+      <Typography component="p" variant="h4">
+        8,557
       </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

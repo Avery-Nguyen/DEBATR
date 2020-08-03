@@ -113,6 +113,7 @@ export default function Dashboard() {
 
   return (
     <div className={classes.root}>
+      <h1 justifySelf="center">Debatr Stats</h1>
       <CssBaseline />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -22,7 +22,7 @@ import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
-import axios from 'axios';
+
 
 // import getRoomRecords from '../../server/databaseCalls'
 import Stage from '../stage/stage'
@@ -58,11 +58,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function PastDebateItem() {
+export default function PastDebateItem(props) {
   const classes = useStyles();
 
   //user-card state logic
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -79,20 +79,7 @@ export default function PastDebateItem() {
     setOpenStage(false);
   };
 
-  const [pastDebates, setpastDebates] = useState()
 
-  useEffect(() => {
-    Promise.all([
-      axios.get(`/api/rooms`)
-    ]).then((data) => {
-      console.log("theres something happening");
-      console.log(data)
-      // setState(prev => ({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
-    })
-      .catch(error => {
-        console.log(error.message);
-      })
-  }, []);
 
   // console.log(getRoomRecords());
 
@@ -117,11 +104,11 @@ export default function PastDebateItem() {
             </Dialog>
           </div>
         }
-        title="Topic title"
-        subheader="Total Views: 155"
-        avatar2={
+        title={props.roomQuestion}
+        subheader={"Agreement Rating: " + props.agreement}
+        avatar={
           <div>
-            <Avatar onClick={handleClickOpen} />
+            <Avatar onClick={handleClickOpen} img="test" />
             <Dialog
               open={open}
               TransitionComponent={Transition}
@@ -133,20 +120,21 @@ export default function PastDebateItem() {
           </div>
         }
       />
-      <CardActions disableSpacing>
+      <CardActions disableSpacing style={{display:'flex', justifyContent:'space-between'}}>
         <IconButton aria-label="add to favorites">
           <ThumbUpIcon />
           <p>78</p>
         </IconButton>
-        <IconButton aria-label="share">
+
+        <Button variant="contained"
+          style={{ color: "white", backgroundColor: "rgb(64,81,182)", justifySelf: 'right', borderRadius: "30px", display: "flex", justifyContent: "center" }}
+          onClick={() => console.log('url callback will go here')}>
+          Watch
+          </Button>
+          <IconButton aria-label="share">
           <ThumbDownIcon />
           <p>5</p>
         </IconButton>
-        <Button variant="contained"
-          style={{ color: "white", backgroundColor: "rgb(64,81,182)", justifySelf: 'right', borderRadius: "30px", display: "flex", justifyContent: "center" }}
-          onClick={handleClickOpenStage}>
-          Watch
-          </Button>
 
         <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
           <Stage />

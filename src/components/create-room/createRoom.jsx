@@ -87,7 +87,7 @@ export default function CreateRoom({handleClose}) {
   }
 
   return (
-    <Container component="main" maxWidth="xs" style={{border:'solid black 3px', borderRadius: "30px"}}>
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box mt={2}>
       </Box>

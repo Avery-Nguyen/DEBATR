@@ -25,11 +25,15 @@ import CloseIcon from '@material-ui/icons/Close';
 
 
 
+
+
 import Stage from '../stage/stage'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    // maxWidth: 345,
+    minwidth: "345px",
+    display: "block"
   },
   media: {
     height: 0,
@@ -90,7 +94,14 @@ export default function LobbyItem({roomDetails}) {
   };
 
   return (
-    <Card className={classes.root} style={{border: "solid rgb(0,238,40) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", display: "flex", justifyContent: "center"}}>
+    <Card className={classes.root} style={{
+      border: "solid rgb(0,238,40) 3px", 
+      backgroundColor: "rgb(241,241,241)", 
+      borderRadius: "30px",  
+      display: "block",
+      // justifyContent: "center"
+      minWidth: "225px !important"
+      }}>
       <CardHeader
         avatar={
           <div>

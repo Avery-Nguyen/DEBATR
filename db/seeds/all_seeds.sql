@@ -24,13 +24,13 @@ INSERT INTO topics (question, category_id) VALUES ('Kanye West will be the best 
 INSERT INTO topics (question, category_id) VALUES ('Crocs are the Best', 4);
 
 
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (2, 9, 1, 17, '2020-01-09 05:35:19');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (4, 1, 4, 45, '2020-07-27 17:30:41');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (1, 3, 2, 75, '2019-12-18 22:16:10');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (4, 2, 3, 58, '2019-08-06 13:58:08');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (1, 4, 9, 53, '2019-10-17 16:26:05');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (4, 6, 2, 34, '2019-11-20 18:31:14');
-insert into room_logs (topic_id, host_id, contender_id, agreement_rating, date_time) values (3, 5, 8, 99, '2020-05-01 01:35:11');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (2, 9, 1, '2020-01-09 05:35:19');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (4, 1, 4, '2020-07-27 17:30:41');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (1, 3, 2, '2019-12-18 22:16:10');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (4, 2, 3, '2019-08-06 13:58:08');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (1, 4, 9, '2019-10-17 16:26:05');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (4, 6, 2, '2019-11-20 18:31:14');
+insert into room_logs (topic_id, host_id, contender_id, date_time) values (3, 5, 8, '2020-05-01 01:35:11');
 
 insert into ratings (from_user_id, to_user_id, rating, points) values (4, 5, 1, 28);
 insert into ratings (from_user_id, to_user_id, rating, points) values (3, 6, 1, 26);
@@ -56,16 +56,16 @@ insert into ratings (from_user_id, to_user_id, rating, points) values (9, 5, 3, 
 
 
 insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (1, 9, 66);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (1, 10, 5);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (2, 8, 46);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (2, 5, 16);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (3, 10, 31);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (1, 1, 5);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (2, 1, 46);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (2, 4, 16);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (3, 3, 31);
 insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (3, 2, 5);
 insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (4, 2, 26);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (4, 4, 49);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (5, 10, 78);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (5, 5, 77);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (6, 3, 3);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (6, 1, 86);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (7, 4, 68);
-insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (7, 5, 15);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (4, 3, 49);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (5, 4, 78);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (5, 9, 77);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (6, 6, 3);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (6, 2, 86);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (7, 5, 68);
+insert into agreement_ratings (room_log_id, user_id, agreement_rating) values (7, 8, 15);

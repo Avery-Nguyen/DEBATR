@@ -12,6 +12,8 @@ function createData(id, date, name, shipTo, paymentMethod, amount) {
   return { id, date, name, shipTo, paymentMethod, amount };
 }
 
+//will need to do a axios request in here for user data and over all stats
+
 const rows = [
   createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
   createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
@@ -34,32 +36,47 @@ export default function Orders() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div style={{display:'block'}}>
+        <h1>Leaderboard </h1>
+        <br></br>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Username</TableCell>
+              <TableCell align="right">Total Agreement Points</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more orders
-        </Link>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{row.name}</TableCell>
+                <TableCell align="right">{row.amount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </div>
+        <div style={{display:'block'}}>
+        <h1>Most Popular Topics</h1>
+        <br></br>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Payment Method</TableCell>
+              <TableCell align="right">Sale Amount</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{row.paymentMethod}</TableCell>
+                <TableCell align="right">{row.amount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </div>
       </div>
     </React.Fragment>
   );

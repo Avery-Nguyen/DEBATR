@@ -66,10 +66,10 @@ Team members?
     - Post room records after results are in
 
 # ERD
-![ERD](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true)
+![ERD](https://cdn.discordapp.com/attachments/737774601022734440/739192893193060435/Screen_Shot_2020-08-01_at_12.46.20_PM.png)
 
 # Wireframes
-![Wirefhttps://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true
+![Wireframe](https://github.com/alex-hladun/final-project/blob/master/planning/img/Screen_Shot_2020-07-30_at_3.51.30_PM.png?raw=true)
 
 # App Features
 

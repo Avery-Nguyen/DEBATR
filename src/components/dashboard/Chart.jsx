@@ -19,6 +19,18 @@ const data = [
   createData('24:00', undefined),
 ];
 
+const data2 = [
+  createData('00:00', 0),
+  createData('03:00', 500),
+  createData('06:00', 800),
+  createData('09:00', 200),
+  createData('12:00', 1500),
+  createData('15:00', 2000),
+  createData('18:00', 2400),
+  createData('21:00', 2400),
+  createData('24:00', undefined),
+];
+
 export default function Chart() {
   const theme = useTheme();
 
@@ -28,6 +40,7 @@ export default function Chart() {
       <ResponsiveContainer>
         <LineChart
           data={data}
+          data2={data2}
           margin={{
             top: 16,
             right: 16,

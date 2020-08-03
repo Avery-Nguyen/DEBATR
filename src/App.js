@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -56,8 +57,22 @@ const App = () => {
     }
   }, [dispatch, state.username])
 
+  // useEffect(() => {
+  //   Promise.all([
+  //     axios.get(`/api/rooms`)
+  //   ]).then((data) => {
+  //     console.log("theres something happening");
+  //     console.log(data)
+  //     // setState(prev => ({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
+  //   })
+  //     .catch(error => {
+  //       console.log(error.message);
+  //     })
+  // }, []);
+
+
   return (
-    <div className="app">
+    <div className="app" >
       <header style={{ 
             color: "white", 
             backgroundColor: "rgb(64,81,182)"}}>
@@ -72,6 +87,7 @@ const App = () => {
         >
           <CreateRoom handleClose={handleClose} />
         </Dialog>
+        <Stage />
         <Lobby />
 
         <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
@@ -83,7 +99,7 @@ const App = () => {
         <p>
           Made with{' '}
           <span role="img" aria-label="React">
-            ♥️
+            ♥
           </span>{' '}
           and{' '}
           <span role="img" aria-label="React">

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -21,19 +23,37 @@ const useStyles = makeStyles((theme) => ({
 export default function PastDebate() {
   const classes = useStyles();
 
+  const [pastDebates, setpastDebates] = useState([]);
+
+  console.log(pastDebates, "outside")
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`/api/rooms`)
+    ]).then((data) => {
+      setpastDebates(prev => [...prev, ...data[0].data]);
+    })
+      .catch(error => {
+        console.log(error.message);
+      })
+  }, []);
+
+  const pastDebate = pastDebates.map((debate) => {
+    console.log(debate.question)
+    return(    <Grid item xs={4}>
+    <PastDebateItem 
+    roomQuestion={debate.question}
+    agreement={debate.agreement_rating}
+    />
+  </Grid>
+    )
+  
+  })
+
   function FormRow() {
     return (
       <React.Fragment>
-        <Grid item xs={4}>
-          <PastDebateItem />
-          
-        </Grid>
-        <Grid item xs={4}>
-        <PastDebateItem />
-        </Grid>
-        <Grid item xs={4}>
-         <PastDebateItem />
-        </Grid>
+          {pastDebate}
       </React.Fragment>
     );
   }
@@ -41,19 +61,7 @@ export default function PastDebate() {
   return (
     <div className={classes.root} >
       <Grid container spacing={2}>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
+        <Grid container item xs={12} spacing={3} margin='24px'>
           <FormRow />
         </Grid>
       </Grid>
