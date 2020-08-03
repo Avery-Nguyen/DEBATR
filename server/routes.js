@@ -11,6 +11,7 @@ const {
 const bcrypt = require('bcrypt');
 
 
+
 //axios request
 // - /api/users/ POST
 //   - Create an account
@@ -22,10 +23,10 @@ const bcrypt = require('bcrypt');
 //   - Retrieve game results
 
 
-module.exports = () => {
+module.exports = (client) => {
 router.get('/rooms', function(req, res) {
   console.log('REQUEST TO /API/ROOMS')
-  getRoomRecords()
+  getRoomRecords(client)
     .then(sqlResponse => {
       res.send(sqlResponse)
     })

@@ -1,17 +1,19 @@
-const client = require('./db.js');
 
-const getRoomRecords = (limit = 10) => {
+const getRoomRecords = (client, limit = 10) => {
+  console.log('INSIDE GET ROOM RECORDS')
+
   return client.query(`SELECT * FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
   ORDER BY room_logs.date_time DESC
   LIMIT $1;
   `, [limit])
-  .then(res => {
+  .then((res) => {
+    console.log(`res from sql ${res}`)
     return res.rows
   })
 }
 
-const postResultsToDatabase = (data) => {
+const postResultsToDatabase = (client, data) => {
   // Get topic ID from room state?
 
   // Query to get host_id and contender id?
@@ -25,7 +27,7 @@ const postResultsToDatabase = (data) => {
     });
 }
 
-const postUserRating = (data) => {
+const postUserRating = (client, data) => {
   return client.query(`
   INSERT INTO ratings (from_user_id, to_user_id, rating, points) 
   VALUES ($1, $2, $3);
@@ -36,7 +38,7 @@ const postUserRating = (data) => {
     });
 }
 
-const postAgreementRating = (data) => {
+const postAgreementRating = (client, data) => {
   return client.query(`
   INSERT INTO agreement_ratings (room_log_id, user_id, agreement_rating) 
   VALUES ($1, $2, $3);
@@ -47,7 +49,7 @@ const postAgreementRating = (data) => {
     });
 }
 
-const getUserInfoByEmail = (email) => {
+const getUserInfoByEmail = (client, email) => {
   return client.query(`SELECT * FROM users
   WHERE email = $1
   `, [email])
@@ -56,7 +58,7 @@ const getUserInfoByEmail = (email) => {
     return res.rows
   })
 }
-const checkEmailTaken = (email) => {
+const checkEmailTaken = (client, email) => {
   client.query(`SELECT * FROM users
   WHERE email = $1
   `, [email])
@@ -69,7 +71,7 @@ const checkEmailTaken = (email) => {
   })
 
 }
-const createUser = (email, first_name, last_name, username, password, avatar_url) => {
+const createUser = (client, email, first_name, last_name, username, password, avatar_url) => {
   return client.query(`
   INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
   VALUES ($1, $2, $3, $4, $5, $6);
