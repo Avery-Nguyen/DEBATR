@@ -86,6 +86,8 @@ export default function CreateRoom({handleClose}) {
 
   }
 
+  
+
   useEffect(() => {
     axios.get('/api/topics')
     .then((data) => {
