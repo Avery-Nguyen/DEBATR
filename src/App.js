@@ -64,20 +64,6 @@ const App = () => {
         <NavBar />
       </header>
       <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-        <Button
-          style={{
-            color: "white",
-            backgroundColor: "rgb(64,81,182)",
-            border: "rgb(64,81,182) solid 1px",
-            borderRadius: "30px",
-            marginTop: '5px',
-            // maxWidth: '55px',
-            justifySelf: 'center'
-          }}
-          onClick={handleClickOpen}
-        >
-          Create Stage
-        </Button>
         <Dialog
           open={open}
           TransitionComponent={Transition}

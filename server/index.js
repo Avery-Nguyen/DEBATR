@@ -257,7 +257,7 @@ app.use(cookieSession({
 
 app.use(pino);
 
-app.use('/api', apiRoutes)
+app.use('/api', apiRoutes());
 
 
 const sendTokenResponse = (token, res) => {

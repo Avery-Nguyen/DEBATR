@@ -70,7 +70,7 @@ export default function PastDebateItem() {
     setOpen(false);
   };
 
-//stage state logic - will need to change after
+  //stage state logic - will need to change after
   const [openStage, setOpenStage] = React.useState(false);
   const handleClickOpenStage = () => {
     setOpenStage(true);
@@ -83,10 +83,10 @@ export default function PastDebateItem() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`/api/games`)
-
+      axios.get(`/api/rooms`)
     ]).then((data) => {
-      console.log(data, "theres something happening");
+      console.log("theres something happening");
+      console.log(data)
       // setState(prev => ({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     })
       .catch(error => {
@@ -102,7 +102,7 @@ export default function PastDebateItem() {
   // )
 
   return (
-    <Card className={classes.root} style={{border: "solid rgb(255,107,107) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", marginLeft:'5px', justifySelf:'center'}}>
+    <Card className={classes.root} style={{ border: "solid rgb(255,107,107) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", marginLeft: '5px', justifySelf: 'center' }}>
       <CardHeader
         avatar={
           <div>
@@ -142,19 +142,19 @@ export default function PastDebateItem() {
           <ThumbDownIcon />
           <p>5</p>
         </IconButton>
-        <Button variant="contained" 
-        style={{ color: "white", backgroundColor: "rgb(64,81,182)", justifySelf:'right', borderRadius: "30px", display: "flex", justifyContent: "center"}} 
-        onClick={handleClickOpenStage}>
+        <Button variant="contained"
+          style={{ color: "white", backgroundColor: "rgb(64,81,182)", justifySelf: 'right', borderRadius: "30px", display: "flex", justifyContent: "center" }}
+          onClick={handleClickOpenStage}>
           Watch
           </Button>
-        
+
         <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
           <Stage />
           <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
-              <CloseIcon />
-            </IconButton>
+            <CloseIcon />
+          </IconButton>
         </Dialog>
-        
+
       </CardActions>
     </Card>
   );

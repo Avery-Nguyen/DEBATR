@@ -5,15 +5,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+// import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 
+import CreateRoom from '../create-room/createRoom'
 import SignUp from '../sign-up/signUp.jsx'
 import SignIn from '../sign-in/signIn'
 import Dashboard from '../dashboard/dashboard'
@@ -73,6 +74,16 @@ export default function NavBar(props) {
     setStats(false);
   };
 
+  const [openCreateRoom, setCreateRoom] = React.useState(false);
+
+  const handleCreateRoomOpen = () => {
+    setCreateRoom(true);
+  };
+
+  const handleCloseCreateRoom = () => {
+    setCreateRoom(false);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{justifyContent: "spaceBetween"}}>
@@ -90,10 +101,18 @@ export default function NavBar(props) {
               marginTop:'5px',
               width: "200px"
             }}
-            onClick={handleClickCreateRoom}
+            onClick={handleCreateRoomOpen}
             >
             Create Stage
           </Button>
+          <Dialog
+            open={openCreateRoom}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleCloseCreateRoom}
+          >
+            <CreateRoom />
+          </Dialog>
           </div>
           <div>
           <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
