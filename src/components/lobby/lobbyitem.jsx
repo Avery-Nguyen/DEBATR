@@ -22,6 +22,7 @@ import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
+import {useStore} from '../../Store'
 
 
 
@@ -58,11 +59,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export default function LobbyItem({roomDetails}) {
-  console.log(roomDetails);
+  // console.log(roomDetails);
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
 
+
   const [open, setOpen] = React.useState(false);
+  const [state, dispatch] = useStore();
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,7 +86,18 @@ export default function LobbyItem({roomDetails}) {
   const [openStage, setOpenStage] = React.useState(false);
 
   const handleClickOpenStage = () => {
-    setOpenStage(true);
+    // Set the current room (socket emit)
+
+    dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
+
+    state.currentSocket.emit('joinRoom', {
+      roomName : roomDetails.name,
+      userName : state.username
+    })
+
+
+
+    // setOpenStage(true);
   };
 
   const handleCloseStage = () => {

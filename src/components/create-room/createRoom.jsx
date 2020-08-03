@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -21,6 +21,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Container from '@material-ui/core/Container';
+import axios from "axios"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ export default function CreateRoom({handleClose}) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [stance, setStance] = useState("")
+  const [options, setOptions] = useState([])
 
 
   const classes = useStyles();
@@ -82,8 +84,20 @@ export default function CreateRoom({handleClose}) {
 
     handleClose();
 
-
   }
+
+  
+
+  useEffect(() => {
+    axios.get('/api/topics')
+    .then((data) => {
+      setOptions(data.data.topics)
+    });
+  }, [])
+
+  const topicOptions = options.map(topic =>
+      <option value={topic.question}>{topic.question}</option>
+  )
 
   return (
     <Container component="main" maxWidth="xs" style={{border:'solid black 3px', borderRadius: "30px"}}>
@@ -107,9 +121,7 @@ export default function CreateRoom({handleClose}) {
           <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
-            <option value={"Nudity API"}>Nudity API</option>
-            <option value={"Andy Lindsay"}>Andy Lindsay</option>
-            <option value={"Oranges"}>Oranges</option>
+            {topicOptions}
           </Select>
         </FormControl>
         <FormControl className={classes.formControl} style={{ width: "100px", marginTop:'15px', }}>

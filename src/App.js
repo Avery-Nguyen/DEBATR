@@ -3,7 +3,6 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import VideoChat from './VideoChat';
 import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
 // import Rating from './components/partials/rating'
@@ -21,6 +20,8 @@ import CreateRoom from './components/create-room/createRoom';
 import { useStore } from './Store'
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
+import axios from "axios"
+// import Stage from './components/stage'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -29,8 +30,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const App = () => {
 
   const [state, dispatch] = useStore();
+  const [roomState, setRoomState] = useState({})
+  const [activeRoomState, setActiveRoomState] = useState({})
 
   const [open, setOpen] = React.useState(false);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,22 +50,61 @@ const App = () => {
     const socket = socketIOClient(ENDPOINT);
     dispatch({ type: 'SET_CURRENTSOCKET', payload: socket })
     // setCurrentSocket(socket)
-
     return () => socket.disconnect();
   }, [dispatch]);
 
+  // Assign random username for time being
   useEffect(() => {
     if (state.username === undefined) {
       dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
     }
   }, [dispatch, state.username])
 
-  return (
-    <div className="app">
-      <header>
-        <NavBar />
-      </header>
-      <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+  useEffect(() => {
+    if (state.currentSocket) {
+      state.currentSocket.on("initialRoomList", data => {
+        const rLParse = JSON.parse(data)
+        // Want this to be an object of rooms
+        setRoomState(prevState => ({ ...prevState, ...rLParse }))
+      })
+
+      state.currentSocket.on('startGame', data => {
+        fetch('/video/token', {
+          method: 'POST',
+          body: JSON.stringify({
+            identity: state.username,
+            room: state.currentRoom
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json())
+          .then((fetchData) => {
+          // console.log("App -> fetchData", fetchData)
+            
+            dispatch({type:'SET_TOKEN', payload: fetchData.token})
+            // setActiveRoomState(roomState[data.roomName])
+          })
+      })
+
+      state.currentSocket.on('currentRoomUpdate', data => {
+        // data to only update the current room state. 
+        setActiveRoomState(prev => ({...prev, ...data}));
+      }
+      )
+    }
+
+    return (() => {
+      if(state.currentSocket) {
+        state.currentSocket.off('startGame')
+        state.currentSocket.off('initialRoomList')
+      }
+    })
+  }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
+
+
+  const lobby = (
+    <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
         <Button
           style={{
             color: "white",
@@ -84,13 +127,41 @@ const App = () => {
         >
           <CreateRoom handleClose={handleClose} />
         </Dialog>
-        <Lobby />
-
+        
+        <Lobby roomState={roomState} />
         <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
         <span></span>
-
         <PastDebate />
       </main>
+  )
+
+  const waitingRoom = (
+    <main>
+      <WaitingRoom />
+    </main>
+  )
+
+  const stage = (
+    <main>
+      <Stage activeRoomState={activeRoomState}/>
+    </main>
+  )
+  // console.log("App -> state.currentRoom", state.currentRoom)
+  // console.log("App -> state.token", state.token)
+  
+  return (
+    <div className="app">
+      <header>
+        <NavBar />
+      </header>
+      
+      {state.currentRoom && state.token ? stage : ''}
+      
+      
+      {state.currentRoom && !state.token ? waitingRoom : ''}
+      {!state.currentRoom && !state.token ? lobby : ''}
+
+      
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}

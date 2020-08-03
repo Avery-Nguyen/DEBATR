@@ -81,6 +81,7 @@ const createUser = (client, email, first_name, last_name, username, password, av
   })
 }
 
+
 module.exports = {
   postResultsToDatabase, 
   getRoomRecords, 

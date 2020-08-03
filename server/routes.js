@@ -24,6 +24,7 @@ const bcrypt = require('bcrypt');
 
 
 module.exports = (client) => {
+
 router.get('/rooms', function(req, res) {
   console.log('REQUEST TO /API/ROOMS')
   getRoomRecords(client)
@@ -31,6 +32,7 @@ router.get('/rooms', function(req, res) {
       res.send(sqlResponse)
     })
 })
+
 
 router.post('/users/ratings', function(req, res) {
   const from_user_id = req.body.from_user_id
