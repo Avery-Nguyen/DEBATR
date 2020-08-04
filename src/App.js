@@ -20,22 +20,12 @@ import CreateRoom from './components/create-room/createRoom';
 import { useStore } from './Store'
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
-import axios from "axios"
-
-
-// LOBBY
-// WAITING (for token)
-// ACTIVE (in debate)
-// GAME_OVER (for reviews) -> LOBBY
-// CONNECTION_ERROR (other user leaves or other error)
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const App = () => {
-
   const [state, dispatch] = useStore();
   const [roomState, setRoomState] = useState({})
   const [activeRoomState, setActiveRoomState] = useState({})
@@ -50,7 +40,6 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  // const [currentSocket, setCurrentSocket] = useState(null)
 
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:3001";
@@ -60,8 +49,8 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
 
-  // Assign random username for time being
   useEffect(() => {
+    // Assign random username for time being
     if (state.username === undefined) {
       dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
     }
@@ -70,9 +59,8 @@ const App = () => {
   useEffect(() => {
     if (state.currentSocket) {
       state.currentSocket.on("initialRoomList", data => {
-        const rLParse = JSON.parse(data)
-        // Want this to be an object of rooms
-        setRoomState(prevState => ({ ...prevState, ...rLParse }))
+        const roomListParse = JSON.parse(data)
+        setRoomState(prevState => ({ ...roomListParse }))
       })
 
       state.currentSocket.on('startGame', data => {
@@ -87,77 +75,57 @@ const App = () => {
           }
         }).then(res => res.json())
           .then((fetchData) => {
-            dispatch({type: 'SET_VISUAL_MODE', payload: "ACTIVE"});
-            dispatch({type:'SET_TOKEN', payload: fetchData.token})
+            dispatch({ type: 'SET_VISUAL_MODE', payload: "ACTIVE" });
+            dispatch({ type: 'SET_TOKEN', payload: fetchData.token })
           })
       })
 
       state.currentSocket.on('currentRoomUpdate', data => {
         // data to only update the current room state. 
-        setActiveRoomState(prev => ({...prev, ...data}));
-      }
-      )
+        setActiveRoomState(prev => ({ ...prev, ...data }));
+      })
     }
 
     // Cleanup function for socket listeners
     return (() => {
-      if(state.currentSocket) {
+      if (state.currentSocket) {
         state.currentSocket.off('startGame')
         state.currentSocket.off('initialRoomList')
       }
     })
   }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
 
-  
+
 
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-        <Button
-          style={{
-            color: "white",
-            backgroundColor: "rgb(64,81,182)",
-            border: "rgb(64,81,182) solid 1px",
-            borderRadius: "30px",
-            marginTop: '5px',
-            // maxWidth: '55px',
-            justifySelf: 'center'
-          }}
-          onClick={handleClickOpen}
-        >
-          Create Stage
+      <Button
+        style={{
+          color: "white",
+          backgroundColor: "rgb(64,81,182)",
+          border: "rgb(64,81,182) solid 1px",
+          borderRadius: "30px",
+          marginTop: '5px',
+          // maxWidth: '55px',
+          justifySelf: 'center'
+        }}
+        onClick={handleClickOpen}
+      >
+        Create Stage
         </Button>
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-        >
-          <CreateRoom handleClose={handleClose} />
-        </Dialog>
-        
-        <Lobby roomState={roomState} />
-        <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
-        <span></span>
-        <PastDebate />
-      </main>
-  )
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+      >
+        <CreateRoom handleClose={handleClose} />
+      </Dialog>
 
-  const waitingRoom = (
-    <main>
-      <WaitingRoom />
-    </main>
-  )
-
-  const stage = (
-    <main>
-      <Stage activeRoomState={ activeRoomState}
-      />
-    </main>
-  )
-  
-  const postDebate = (
-    <main>
-      <PostDebate activeRoomState={activeRoomState}/>
+      <Lobby roomState={roomState} />
+      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
+      <span></span>
+      <PastDebate />
     </main>
   )
 
@@ -166,18 +134,19 @@ const App = () => {
       <h1>your BUDDY left the game!</h1>
     </main>
   )
+
   return (
     <div className="app">
       <header>
         <NavBar />
-      </header>      
-      
-      {state.visualMode === "ACTIVE" && state.token && stage}
-      {state.visualMode === "WAITING" && waitingRoom}
+      </header>
+
+      {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
+      {state.visualMode === "WAITING" && <WaitingRoom />}
       {state.visualMode === "LOBBY" && lobby}
-      {state.visualMode === "GAME_OVER" && postDebate}
+      {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && connectionError}
-      
+
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}

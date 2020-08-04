@@ -87,6 +87,7 @@ export default function PostDebate({activeRoomState}) {
   }
 
   return (
+    <main>
     <Container component="main" maxWidth="xs" style={{ border: '2px solid black', borderRadius: '10px'}}>
       <CssBaseline />
       <div className={classes.paper}>
@@ -127,5 +128,6 @@ export default function PostDebate({activeRoomState}) {
       <Box mt={5}>
       </Box>
     </Container>
+    </main>
   );
 }

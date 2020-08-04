@@ -44,7 +44,11 @@ class Rooms {
   }
 
   delRoom(name) {
-    this.roomList[name] = null;
+    // this.roomList[name] = null;
+    console.log('Deleteing', name)
+    console.log('org roomList: ', this.roomList)
+    delete this.roomList[name]
+    console.log('new roomList: ', this.roomList)
   }
 
   get allRooms() {
@@ -182,6 +186,7 @@ io.sockets.on("connection", function (socket) {
   // console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
 
   socket.on("disconnect", function (socket) {
+    console.log('rooms socket was a part of: ', socket.rooms)
     console.log("socket disconnected");
   });
 
@@ -235,10 +240,8 @@ io.sockets.on("connection", function (socket) {
     );
 
     // Room is full if host & contender spots exist
-    if (
-      roomList.roomList[data.roomName]["contender"] &&
-      roomList.roomList[data.roomName]["host"]
-    ) {
+    if (roomList.roomList[data.roomName]["contender"] &&
+      roomList.roomList[data.roomName]["host"]) {
       console.log(`${data.roomName} is FULL`);
 
       roomList.roomList[data.roomName]["messages"].push({
@@ -251,7 +254,6 @@ io.sockets.on("connection", function (socket) {
 
       // Starts the game method!
       roomList.roomList[data.roomName].startGame()
-      // .then(console.log('GAME OVER - DELETE OBJECT'))
     }
   });
 
@@ -260,16 +262,11 @@ io.sockets.on("connection", function (socket) {
       `Request to leave ${data.roomName} from ${data.userName} received.`
     );
 
-    roomList.roomList[data.roomName] = null
-
+    roomList.delRoom(data.roomName)
     socket.leave(data.roomName);
     socket.join('lobby')
-
     io.to(data.roomName).emit('disconnect')
     roomList.sendRoomUpdate();
-
-    // rLString = JSON.stringify(roomList.allRooms)
-    // socket.emit('initialRoomList', rLString)
   });
 
   socket.on("message", function (data) {

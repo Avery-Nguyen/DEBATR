@@ -7,9 +7,6 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
 
-  // console.log("Room -> active", active)
-  // const [turn, setTurn] = useState(0)
-
   useEffect(() => {
     const participantConnected = participant => {
       setParticipants(prevParticipants => [...prevParticipants, participant]);
@@ -53,7 +50,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
   useEffect(() => {
     if (currentSocket) {
       currentSocket.on("gameCommand", data => {
-        setGameCommands(data)
+        // setGameCommands(data)
       })
       currentSocket.on("mute", data => {
         // console.log('Room mute request', room)

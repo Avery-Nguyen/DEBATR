@@ -186,6 +186,7 @@ export default function Stage({ activeRoomState }) {
 
 
   return (
+    <main> 
     <body id='stage' style={{height: '100%', zIndex:'1'}}>
       <div class="w3-content" >
         <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
@@ -227,5 +228,6 @@ export default function Stage({ activeRoomState }) {
         </footer>
       </div>
     </body>
+    </main>
   );
 }
