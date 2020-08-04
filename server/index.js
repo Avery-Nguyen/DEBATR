@@ -194,11 +194,11 @@ io.sockets.on("connection", function (socket) {
     if (roomList.socketDirectory[socket.id]) {
         io.to(roomList.socketDirectory[socket.id]).emit('disconnect')
         roomList.delRoom(roomList.socketDirectory[socket.id])
-        roomList.sendRoomUpdate();
-    }
-    console.log('this sockets id', socket.id)
-    console.log('all sockets', Object.keys(io.sockets.sockets))
-    console.log("socket disconnected");
+      }
+      roomList.sendRoomUpdate();
+      console.log('this sockets id', socket.id)
+      console.log('all sockets', Object.keys(io.sockets.sockets))
+      console.log("socket disconnected");
   });
 
   socket.on("createRoom", function (data) {
@@ -232,6 +232,18 @@ io.sockets.on("connection", function (socket) {
   socket.on("joinRoomSpectator", function (data) {
     socket.join(data.roomName);
     socket.leave('lobby')
+
+    io.to(data.roomName).emit(
+      "currentRoomUpdate",
+      roomList.roomList[data.roomName]
+    );
+  })
+  socket.on("leaveRoomSpectator", function (data) {
+    socket.leave(data.roomName);
+    socket.join('lobby')
+
+    roomList.sendRoomUpdate();
+
   })
 
   socket.on("joinRoom", function (data) {

@@ -13,7 +13,7 @@ export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  console.log("Stage -> participants", participants)
+  console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
@@ -191,7 +191,7 @@ export default function Stage({ activeRoomState }) {
     } , [active, time]);
 
 
-  console.log('Remote Participants: ', remoteParticipants);
+  console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
   return (
     <main> 
@@ -219,6 +219,7 @@ export default function Stage({ activeRoomState }) {
             <div id='stage-details' style={{ display: 'flex', flexDirection:'column', justifyContent: 'space-around' }}>
               <h1 style={{ color: 'white' }}>{gameCommands}</h1>
               <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
+              <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
               <br />
               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
             </div>
