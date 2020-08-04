@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateRoom({handleClose}) {
+export default function CreateRoom({ handleCloseCreateRoom }) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [stance, setStance] = useState("")
@@ -82,7 +82,7 @@ export default function CreateRoom({handleClose}) {
       stance: stance
     })
 
-    handleClose();
+    handleCloseCreateRoom();
   }
 
   useEffect(() => {

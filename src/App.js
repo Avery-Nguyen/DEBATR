@@ -143,7 +143,7 @@ const App = () => {
             color: "white", 
             backgroundColor: "rgb(64,81,182)"
             }}>
-        <NavBar />
+        <NavBar handleClickOpen={handleClickOpen} handleClose={handleClose}/>
       </header>
 
       {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
