@@ -156,7 +156,7 @@ class Room {
         io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
         // Post the game record to the database.
         // this.postGameToDatabase();
-        io.to(this.name).emit('gameOver', null)
+        // io.to(this.name).emit('gameOver', null)
         })
   }
 
@@ -194,11 +194,11 @@ io.sockets.on("connection", function (socket) {
     if (roomList.socketDirectory[socket.id]) {
         io.to(roomList.socketDirectory[socket.id]).emit('disconnect')
         roomList.delRoom(roomList.socketDirectory[socket.id])
-        roomList.sendRoomUpdate();
-    }
-    console.log('this sockets id', socket.id)
-    console.log('all sockets', Object.keys(io.sockets.sockets))
-    console.log("socket disconnected");
+      }
+      roomList.sendRoomUpdate();
+      console.log('this sockets id', socket.id)
+      console.log('all sockets', Object.keys(io.sockets.sockets))
+      console.log("socket disconnected");
   });
 
   socket.on("createRoom", function (data) {
@@ -229,6 +229,23 @@ io.sockets.on("connection", function (socket) {
     );
   });
 
+  socket.on("joinRoomSpectator", function (data) {
+    socket.join(data.roomName);
+    socket.leave('lobby')
+
+    io.to(data.roomName).emit(
+      "currentRoomUpdate",
+      roomList.roomList[data.roomName]
+    );
+  })
+  socket.on("leaveRoomSpectator", function (data) {
+    socket.leave(data.roomName);
+    socket.join('lobby')
+
+    roomList.sendRoomUpdate();
+
+  })
+
   socket.on("joinRoom", function (data) {
     console.log(
       `Request to join ${data.roomName} from ${data.userName} received.`
@@ -244,8 +261,9 @@ io.sockets.on("connection", function (socket) {
 
     // Socket Joins the 'socket'room'
     socket.join(data.roomName);
+    socket.leave('lobby')
 
-    // Send out update to everyone in lobby.
+    // Send out update to everyone in the room.
     roomList.sendRoomUpdate();
     io.to(data.roomName).emit(
       "currentRoomUpdate",
