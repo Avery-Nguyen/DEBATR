@@ -66,12 +66,12 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   // Assign random username for time being
-  //   if (state.username === undefined) {
-  //     dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
-  //   }
-  // }, [dispatch, state.username])
+  useEffect(() => {
+    // Assign random username for time being
+    if (state.username === undefined) {
+      dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
+    }
+  }, [dispatch, state.username])
 
   useEffect(() => {
     if (state.currentSocket) {

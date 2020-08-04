@@ -101,7 +101,8 @@ const createUser = (client, email, first_name, last_name, username, password, av
   console.log(client, email, first_name, last_name, username, password, avatar_url);
   return client.query(`
   INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
-  VALUES ($1, $2, $3, $4, $5, $6);
+  VALUES ($1, $2, $3, $4, $5, $6)
+  RETURNING *;
   `, [ first_name, last_name, email, username, password, avatar_url])
     .then(res => {
       return res.rows

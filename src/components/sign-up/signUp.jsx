@@ -46,11 +46,11 @@ export default function SignUp(props) {
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
   const [state, dispatch] = useStore();
- 
+
 
   const submitRegistration = (event) => {
     event.preventDefault();
-    axios.post('/api/register',  {
+    axios.post('/api/register', {
       email,
       firstName,
       lastName,
@@ -60,7 +60,8 @@ export default function SignUp(props) {
     })
       .then((res) => {
         console.log(res, 'res from sign-up request')
-        dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+        console.log(res.data[0].username, 'res from sign-up request')
+        dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
         props.handleClose();
       })
       .catch((error) => {
@@ -69,7 +70,7 @@ export default function SignUp(props) {
   }
 
   return (
-    <Container class='signup' component="main" maxWidth="xs" style={{ width: '400px'} }>
+    <Container class='signup' component="main" maxWidth="xs" style={{ width: '400px' }}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -90,7 +91,7 @@ export default function SignUp(props) {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                onChange={event => setfirstName(event.target.value)}        
+                onChange={event => setfirstName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

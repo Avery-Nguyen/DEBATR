@@ -124,7 +124,9 @@ export default function NavBar(props) {
                 keepMounted
                 onClose={handleCloseCreateRoom}
               >
-                <CreateRoom />
+                <CreateRoom
+                handleCloseCreateRoom={handleCloseCreateRoom}
+                 />
               </Dialog>
               <Typography variant="h7" className={classes.title} color="black">
                 Logged in as: {state.username}
