@@ -63,7 +63,7 @@ export default function PostDebate({activeRoomState}) {
       from_user_id: state.username,
       to_user_id : toUser,
       rating,
-      points
+      points:100+points
     })
 
     const agreementRatingPost = axios.post('/api/agreement_ratings', {
@@ -71,6 +71,8 @@ export default function PostDebate({activeRoomState}) {
       user_id: fromUser,
       agreement_rating: agreePoints
     })
+
+    console.log(`WILL POST WITH RATING OF ${rating} and sending ${points + 100} to other user`)
 
     axios.all([ratingPost, agreementRatingPost])
     .then(

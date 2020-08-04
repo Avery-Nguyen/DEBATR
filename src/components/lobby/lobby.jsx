@@ -10,7 +10,7 @@ import {useStore} from '../../Store'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 0,
-    margin: '200px',
+    margin: '20px',
   },
   paper: {
     padding: theme.spacing(1),

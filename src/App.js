@@ -18,6 +18,7 @@ import socketIOClient from "socket.io-client";
 import SignUp from './components/sign-up/signUp';
 import CreateRoom from './components/create-room/createRoom';
 import { useStore } from './Store'
+import Disconnect from './components/disconnect/Disconnect';
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
 
@@ -145,7 +146,7 @@ const App = () => {
       {state.visualMode === "WAITING" && <WaitingRoom />}
       {state.visualMode === "LOBBY" && lobby}
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
-      {state.visualMode === "CONNECTION_ERROR" && connectionError}
+      {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
 
       <footer style={{ fontSize: "10px" }}>
         <p>

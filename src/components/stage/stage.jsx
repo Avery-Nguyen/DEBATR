@@ -144,13 +144,15 @@ export default function Stage({ activeRoomState }) {
     //   publication.unpublish();
     // });
 
-    room.on('disconnected', room => {
-      // Detach the local media elements
-      room.localParticipant.tracks.forEach(publication => {
-        const attachedElements = publication.track.detach();
-        attachedElements.forEach(element => element.remove());
+    if (room) {
+      room.on('disconnected', room => {
+        // Detach the local media elements
+        room.localParticipant.tracks.forEach(publication => {
+          const attachedElements = publication.track.detach();
+          attachedElements.forEach(element => element.remove());
+        });
       });
-    });
+    }
     
     // To disconnect from a Room
     room.disconnect();

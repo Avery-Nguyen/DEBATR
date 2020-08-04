@@ -35,11 +35,13 @@ let intermissionTime = 3;
 class Rooms {
   constructor() {
     this.roomList = {};
+    this.socketDirectory={}
   }
 
-  newRoom(name, topic) {
+  newRoom(name, topic, socketID) {
     let r = new Room(name, topic);
     this.roomList[r.name] = r;
+    this.socketDirectory[socketID]=[r.name]
     return r;
   }
 
@@ -183,10 +185,18 @@ io.sockets.on("connection", function (socket) {
   rLString = JSON.stringify(roomList.allRooms);
   // Send room data to client that just connected.
   socket.emit("initialRoomList", rLString);
+  console.log('all sockets', Object.keys(io.sockets.sockets))
+
   // console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
 
-  socket.on("disconnect", function (socket) {
-    console.log('rooms socket was a part of: ', socket.rooms)
+  socket.on("disconnect", function() {
+    if (roomList.socketDirectory[socket.id]) {
+        io.to(roomList.socketDirectory[socket.id]).emit('disconnect')
+        roomList.delRoom(roomList.socketDirectory[socket.id])
+        roomList.sendRoomUpdate();
+    }
+    console.log('this sockets id', socket.id)
+    console.log('all sockets', Object.keys(io.sockets.sockets))
     console.log("socket disconnected");
   });
 
@@ -199,7 +209,7 @@ io.sockets.on("connection", function (socket) {
     socket.leave('lobby');
     socket.join(data.roomName);
     // Also create an instance of the room class.
-    roomList.newRoom(data.roomName, data.topic);
+    roomList.newRoom(data.roomName, data.topic, socket.id);
     // Assign the username as host of the newly created class.
 
     if (data.stance) {
@@ -228,6 +238,8 @@ io.sockets.on("connection", function (socket) {
     } else if (roomList.roomList[data.roomName]["contender"]) {
       roomList.roomList[data.roomName]["host"] = data.userName;
     }
+
+    roomList.socketDirectory[socket.id]=data.roomName;
 
     // Socket Joins the 'socket'room'
     socket.join(data.roomName);
@@ -266,8 +278,11 @@ io.sockets.on("connection", function (socket) {
     socket.leave(data.roomName);
     socket.join('lobby')
     io.to(data.roomName).emit('disconnect')
+    roomList.socketDirectory[socket.id] = null
     roomList.sendRoomUpdate();
   });
+
+  
 
   socket.on("message", function (data) {
     console.log(`Message received from ${data.userName} - ${data.message}`);
