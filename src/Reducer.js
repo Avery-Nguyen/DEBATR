@@ -20,6 +20,16 @@ const Reducer = (state, action) => {
         ...state,
         currentRoom: action.payload
       };
+    case 'SET_TOKEN':
+      return {
+        ...state,
+        token: action.payload
+      };
+    case 'SET_VISUAL_MODE':
+      return {
+        ...state,
+        visualMode: action.payload
+      };
     default:
       return state;
   }

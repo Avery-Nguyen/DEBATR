@@ -9,11 +9,7 @@ const useStyles = makeStyles({
   },
 });
 
-function valuetext(value) {
-  return `${value}°C`;
-}
-
-export default function DiscreteSlider() {
+export default function DiscreteSlider({setPoints, points}) {
   const classes = useStyles();
 
   return (
@@ -23,14 +19,16 @@ export default function DiscreteSlider() {
         
       </Typography>
       <Slider
-        defaultValue={2.5}
-        getAriaValueText={valuetext}
+        // defaultValue={2.5}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={1}
+        value={points}
         marks
         min={0}
-        max={5}
+        max={100}
+        onChange={(event,newValue) => {
+          setPoints(newValue);
+        }}
       />
       <div class="convinced">
           <p>

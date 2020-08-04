@@ -33,21 +33,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserCard() {
+export default function WaitingRoom() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} style={{border: "solid black 1px", width: "215px"}} >
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-         <h3> Waiting for oppponent</h3>
-        </Typography>
-        <LinearProgress />
-      {/* <LinearProgress color="secondary" /> */}
-      </CardContent>
-      {/* <CardActions>
+    <main>
+      <Card className={classes.root} style={{ border: "solid black 1px", width: "215px" }} >
+        <CardContent>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            <h3> Waiting for oppponent</h3>
+          </Typography>
+          <LinearProgress />
+          {/* <LinearProgress color="secondary" /> */}
+        </CardContent>
+        {/* <CardActions>
         <Button size="small">Links to social accounts?</Button>
       </CardActions> */}
-    </Card>
+      </Card>
+    </main>
   );
 }

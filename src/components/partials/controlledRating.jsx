@@ -5,8 +5,8 @@ import Box from '@material-ui/core/Box';
 
 //this will be used for the post debate card
 
-export default function UserRating() {
-  const [value, setValue] = React.useState(2);
+export default function UserRating({setRating, rating}) {
+  // const [value, setValue] = React.useState(2);
 
   return (
     <div>
@@ -14,9 +14,9 @@ export default function UserRating() {
         <Typography component="legend">Opponent Review</Typography>
         <Rating
           name="simple-controlled"
-          value={value}
+          value={rating}
           onChange={(event, newValue) => {
-            setValue(newValue);
+            setRating(newValue);
           }}
         />
       </Box>

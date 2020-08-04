@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import UserRating from '../partials/controlledRating';
 import DiscreteSlider from '../partials/slider';
 import Avatar from '@material-ui/core/Avatar';
@@ -14,16 +14,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
+import {useStore} from '../../Store'
 
-// export default function PostDebateReview() {
-
-//   return (
-//     <div>
-//       
-//       
-//       <button>Submit</button>
-//     </div>
-// }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,10 +38,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PostDebate() {
+export default function PostDebate({activeRoomState}) {
+  const [state, dispatch] = useStore(); 
+  const [rating, setRating] = useState(null);
+  const [points, setPoints] = useState(50);
+
   const classes = useStyles();
 
+
+  const submitRatingToDB = () => {
+    let toUser;
+    let fromUser;
+    let agreePoints;
+    if (state.username === activeRoomState.host) {
+      toUser = activeRoomState.contender_id
+      fromUser = activeRoomState.host_id
+      agreePoints = 100 - points;
+    } else {
+      toUser = activeRoomState.host_id
+      fromUser = activeRoomState.contender_id
+      agreePoints = points
+    }
+    const ratingPost = axios.post('/api/users/ratings', {
+      from_user_id: state.username,
+      to_user_id : toUser,
+      rating,
+      points:100+points
+    })
+
+    const agreementRatingPost = axios.post('/api/agreement_ratings', {
+      room_log_id: activeRoomState.game_id,
+      user_id: fromUser,
+      agreement_rating: agreePoints
+    })
+
+    console.log(`WILL POST WITH RATING OF ${rating} and sending ${points + 100} to other user`)
+
+    axios.all([ratingPost, agreementRatingPost])
+    .then(
+      axios.spread((...responses) => {
+        'Axios req successful'
+        console.log(responses[0])
+        console.log(responses[1])
+      })
+    )
+    .catch(errors => {
+      // react on errors.
+      console.error(errors);
+    });
+  }
+
   return (
+    <main>
     <Container component="main" maxWidth="xs" style={{ border: '2px solid black', borderRadius: '10px'}}>
       <CssBaseline />
       <div className={classes.paper}>
@@ -58,10 +99,10 @@ export default function PostDebate() {
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <UserRating />
+              <UserRating setRating={setRating} rating={rating} />
             </Grid>
             <Grid item xs={12}>
-              <DiscreteSlider />
+              <DiscreteSlider setPoints={setPoints} points={points} />
             </Grid>
 
           </Grid>
@@ -71,6 +112,7 @@ export default function PostDebate() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={submitRatingToDB}
           >
             Submit
           </Button>
@@ -88,5 +130,6 @@ export default function PostDebate() {
       <Box mt={5}>
       </Box>
     </Container>
+    </main>
   );
 }

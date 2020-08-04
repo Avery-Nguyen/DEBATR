@@ -5,7 +5,8 @@ const StoreContext = createContext();
 
 const initialState = {
   roomName: "",
-  currentSocket: null
+  currentSocket: null,
+  visualMode: "LOBBY"
 };
 
 const Store = ({ children }) => {

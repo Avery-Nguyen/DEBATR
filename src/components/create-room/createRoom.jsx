@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 // import Card from '@material-ui/core/Card';
 // import CardActions from '@material-ui/core/CardActions';
@@ -21,6 +21,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 // import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Container from '@material-ui/core/Container';
+import axios from "axios"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ export default function CreateRoom({handleClose}) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [stance, setStance] = useState("")
+  const [options, setOptions] = useState([])
 
 
 
@@ -67,10 +69,9 @@ export default function CreateRoom({handleClose}) {
   const bull = <span className={classes.bullet}>•</span>;
   
   const submitCreateRoom = (vals) => {
-    console.log('submitCreateRoom values', vals.target)
-  
     const randRoomName = Math.random().toFixed(5).toString();
     dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
+    dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
 
     // setRoomList([...roomList, testRoom])
     console.log('Sending topic and stance: ', topic, stance)
@@ -82,9 +83,18 @@ export default function CreateRoom({handleClose}) {
     })
 
     handleClose();
-
-
   }
+
+  useEffect(() => {
+    axios.get('/api/topics')
+    .then((data) => {
+      setOptions(data.data.topics)
+    });
+  }, [])
+
+  const topicOptions = options.map(topic =>
+      <option value={topic.question}>{topic.question}</option>
+  )
 
   return (
     <Container component="main" maxWidth="xs">
@@ -108,9 +118,7 @@ export default function CreateRoom({handleClose}) {
           <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
-            <option value={"Nudity API"}>Nudity API</option>
-            <option value={"Andy Lindsay"}>Andy Lindsay</option>
-            <option value={"Oranges"}>Oranges</option>
+            {topicOptions}
           </Select>
         </FormControl>
         <FormControl className={classes.formControl} style={{ width: "100px", marginTop:'15px', }}>

@@ -34,6 +34,8 @@ Team members?
 - Any user can make any topic
 - Implement our own RTC server instead of twilio.
 - Implement Secure websockets
+- Github OAuth login (can grab github prof pic)
+- ALlow user to upload image.
 
 # Routes
 - General Routes

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+// import { useStore } from './Store'
 
 const Participant = ({ participant }) => {
+  // const [state, dispatch] = useStore();
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
@@ -62,13 +64,13 @@ const Participant = ({ participant }) => {
     }
   }, [audioTracks]);
 
-  return (
+    return (
     <div className="participant">
       <h3>{participant.identity}</h3>
       <video ref={videoRef} autoPlay={true} />
       <audio ref={audioRef} autoPlay={true} />
     </div>
-  );
+  )
 };
 
 export default Participant;

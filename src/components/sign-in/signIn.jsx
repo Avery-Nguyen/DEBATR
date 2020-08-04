@@ -41,11 +41,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-
-
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+
   // const [state, dispatch] = useStore()
   // onChange={event => setEmail(event.target.value)}
 
@@ -81,6 +80,7 @@ export default function SignIn() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+            onChange={event => setEmail(event.target.value)}
             variant="outlined"
             margin="normal"
             required
@@ -93,6 +93,7 @@ export default function SignIn() {
             onChange={event => setEmail(event.target.value)}
           />
           <TextField
+            onChange={event => setPassword(event.target.value)}
             variant="outlined"
             margin="normal"
             required
@@ -105,6 +106,7 @@ export default function SignIn() {
             onChange={event => setPassword(event.target.value)}
           />
           <Button
+            onClick={submitLogin}
             type="submit"
             fullWidth
             variant="contained"

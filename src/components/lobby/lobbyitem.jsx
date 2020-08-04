@@ -22,6 +22,7 @@ import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
+import {useStore} from '../../Store'
 
 import Stage from '../stage/stage'
 
@@ -62,7 +63,10 @@ export default function LobbyItem({roomDetails}) {
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
 
+
   const [open, setOpen] = React.useState(false);
+  const [state, dispatch] = useStore();
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -71,7 +75,6 @@ export default function LobbyItem({roomDetails}) {
   const handleClose = () => {
     setOpen(false);
   };
-
 
   // Expandable arrow
   // const handleExpandClick = () => {
@@ -82,60 +85,70 @@ export default function LobbyItem({roomDetails}) {
   const [openStage, setOpenStage] = React.useState(false);
 
   const handleClickOpenStage = () => {
-    setOpenStage(true);
+    // Set the current room (socket emit)
+
+    dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
+    dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
+
+
+    state.currentSocket.emit('joinRoom', {
+      roomName : roomDetails.name,
+      userName : state.username
+    })
+
+
+
+    // setOpenStage(true);
   };
 
   const handleCloseStage = () => {
     setOpenStage(false);
   };
 
-  return (
-    <Card className={classes.root} style={{
-      border: "solid rgb(0,238,40) 3px", 
-      backgroundColor: "rgb(241,241,241)", 
-      borderRadius: "30px",  
-      display: "block",
-      // justifyContent: "center"
-      minWidth: "225px !important"
-      }}>
-      <CardHeader
-        avatar={
-          <div>
-            <Avatar onClick={handleClickOpen} />
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={handleClose}
-            >
-              <UserCard />
-            </Dialog>
-          </div>
-        }
-        title={roomDetails.topic}
-        subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
-      />
-      <CardActions disableSpacing>
-        <Button 
-          variant="contained" 
-          style={{ 
-            color: "white", 
-            backgroundColor: "rgb(64,81,182)",
-            borderRadius: "30px"
-            }} 
-          onClick={handleClickOpenStage}>Enter Stage
-          </Button>
-        
-        <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
-          <Stage />
-          <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-        </Dialog>
-        
-      </CardActions>
-    </Card>
-  );
+  if (roomDetails) {
+    return (
+      <Card className={classes.root} style={{border: "solid rgb(0,238,40) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", display: "flex", justifyContent: "center"}}>
+        <CardHeader
+          avatar={
+            <div>
+              <Avatar onClick={handleClickOpen} />
+              <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+              >
+                <UserCard />
+              </Dialog>
+            </div>
+          }
+          title={roomDetails.topic}
+          subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
+        />
+        <CardActions disableSpacing>
+          <Button 
+            variant="contained" 
+            style={{ 
+              color: "white", 
+              backgroundColor: "rgb(64,81,182)",
+              borderRadius: "30px"
+              }} 
+            onClick={handleClickOpenStage}>Enter Stage
+            </Button>
+          
+          <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
+            <Stage />
+            <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+          </Dialog>
+          
+        </CardActions>
+      </Card>
+    );
+  } else {
+    return null
+  }
 }
 
 

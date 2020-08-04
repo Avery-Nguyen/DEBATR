@@ -70,6 +70,8 @@ module.exports = (client) => {
     })
   })
 
+
+
   router.post('/agreement_ratings', function(req, res) {
     const room_log_id = req.body.room_log_id
     const user_id = req.body.user_id
@@ -89,11 +91,11 @@ module.exports = (client) => {
     // console.log(req.body)
     const loginInfo = req.body;
     getUserInfoByEmail(client, loginInfo.email)
-    .then(data => {
-      // console.log(data, "should be user object")
-      return res.send(data)
-    })
-  
+      .then(data => {
+        // console.log(data, "should be user object")
+        return res.send(data)
+      })
+
     // if (!userID) {
     //   // TODO: Add a 'user does not exist error'
     //   return res.redirect('login/401');
