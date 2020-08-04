@@ -134,14 +134,40 @@ export default function WaitingRoom() {
       <div className={classes.appBarSpacer} />
       <Container maxWidth="lg" className={classes.container}>
       <Card className={classes.root} style={{ 
-        width: "300px"
+        width: "100%"
          }} >
         <CardContent>
           <Typography className={classes.title} color="textSecondary" gutterBottom>
-            <h3> Waiting for oppponent</h3>
+            <h3 style={{zIndex: "1"}}> Waiting for oppponent...</h3>
           </Typography>
-          <LinearProgress />
-          <LinearProgress color="secondary" />
+          <LinearProgress color="secondary" style={{borderRadius: "150%"}}/>
+          <LinearProgress style={{borderRadius: "140%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "130%"}}/>
+          <LinearProgress style={{borderRadius: "120%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "110%"}}/>
+          <LinearProgress style={{borderRadius: "100%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "90%"}}/>
+          <LinearProgress style={{borderRadius: "80%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "70%"}}/>
+          <LinearProgress style={{borderRadius: "60%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "50%"}}/>
+          <LinearProgress style={{borderRadius: "40%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "30%"}}/>
+          <LinearProgress style={{borderRadius: "20%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "20%"}}/>
+          <LinearProgress style={{borderRadius: "30%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "40%"}}/>
+          <LinearProgress style={{borderRadius: "50%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "60%"}}/>
+          <LinearProgress style={{borderRadius: "70%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "80%"}}/>
+          <LinearProgress style={{borderRadius: "90%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "100%"}}/>
+          <LinearProgress style={{borderRadius: "110%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "120%"}}/>
+          <LinearProgress style={{borderRadius: "130%"}}/>
+          <LinearProgress color="secondary" style={{borderRadius: "140%"}}/>
+          <LinearProgress style={{borderRadius: "150%"}}/>
         </CardContent>
       </Card>
       </Container>

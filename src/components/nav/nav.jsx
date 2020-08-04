@@ -100,7 +100,7 @@ export default function NavBar(props) {
           <circle cx="19" cy="9" r="2" />
         </svg>
           </Link>
-          <h1 style={{color: 'white'}}> DebatR </h1>
+          <h1 style={{color: 'white', fontFamily: 'Courier New monospace'}}> DebatR </h1>
           <Typography variant="h6" className={classes.title}>
           </Typography>
           <div>
