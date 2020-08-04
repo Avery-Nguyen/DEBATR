@@ -2,30 +2,29 @@
 const getRoomRecords = (client, limit = 10) => {
   console.log('INSIDE GET ROOM RECORDS')
 
-  return client.query(`SELECT *, users.username FROM room_logs
+  return client.query(`SELECT * FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
-  JOIN users ON room_logs.host_id = users.id
   ORDER BY room_logs.date_time DESC
   LIMIT $1;
   `, [limit])
-  .then((res) => {
-    console.log(`res from sql ${res}`)
-    return res.rows
-  })
+    .then((res) => {
+      console.log(`res from sql ${res}`)
+      return res.rows
+    })
 }
 
-const getHostRecords = (client, limit = 10) => {
-  console.log('INSIDE GET ROOM RECORDS')
+const getLeaderboard = (client, limit = 10) => {
 
-  return client.query(`SELECT *, users.username FROM room_logs
-  JOIN topics ON room_logs.topic_id = topics.id
-  JOIN users ON room_logs.host_id = users.id
-  ORDER BY room_logs.date_time DESC;
+  return client.query(`SELECT  users.username, SUM(agreement_ratings.agreement_rating) FROM users 
+  JOIN agreement_ratings ON users.id = agreement_ratings.user_id
+  GROUP BY users.username
+  ORDER BY sum DESC
+  LIMIT $1;
   `, [limit])
-  .then((res) => {
-    console.log(`res from sql ${res}`)
-    return res.rows
-  })
+    .then((res) => {
+      console.log(`res from sql ${res}`)
+      return res.rows
+    })
 }
 
 const postResultsToDatabase = (client, data) => {
@@ -68,22 +67,24 @@ const getUserInfoByEmail = (client, email) => {
   return client.query(`SELECT * FROM users
   WHERE email = $1
   `, [email])
-  .then(res => {
-    console.log(res.rows)
-    return res.rows
-  })
+    .then(res => {
+      // console.log(res);
+      // console.log(res.rows, "empty array?")
+      return res.rows
+    })
 }
+
 const checkEmailTaken = (client, email) => {
   client.query(`SELECT * FROM users
   WHERE email = $1
   `, [email])
-  .then(res => {
-    if (res.rows) {
-      return true
-    } else {
-      return false
-    }
-  })
+    .then(res => {
+      if (res.rows) {
+        return true
+      } else {
+        return false
+      }
+    })
 
 }
 const createUser = (client, email, first_name, last_name, username, password, avatar_url) => {
@@ -91,18 +92,18 @@ const createUser = (client, email, first_name, last_name, username, password, av
   INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
   VALUES ($1, $2, $3, $4, $5, $6);
   `, [email, first_name, last_name, username, password, avatar_url])
-  .then(res => {
-    return res.rows
-  })
+    .then(res => {
+      return res.rows
+    })
 }
 
 module.exports = {
-  postResultsToDatabase, 
-  getRoomRecords, 
-  postUserRating, 
-  postAgreementRating, 
-  getUserInfoByEmail, 
-  checkEmailTaken, 
+  postResultsToDatabase,
+  getRoomRecords,
+  postUserRating,
+  postAgreementRating,
+  getUserInfoByEmail,
+  checkEmailTaken,
   createUser,
-  getHostRecords
+  getLeaderboard
 }

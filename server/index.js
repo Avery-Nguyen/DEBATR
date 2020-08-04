@@ -7,7 +7,6 @@ const apiRoutes = require('./routes')
 const cookieSession = require('cookie-session');
 
 const db = require('./db.js');
-app.use('/api', apiRoutes(db))
 
 
 const http=require('http').createServer(app)
@@ -24,6 +23,7 @@ app.use(cookieSession({
   // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
+app.use('/api', apiRoutes(db))
 
 app.use(pino);
 

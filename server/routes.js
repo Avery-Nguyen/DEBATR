@@ -7,7 +7,9 @@ const {
   postAgreementRating,
   getUserInfoByEmail,
   checkEmailTaken,
-  createUser } = require('./databaseCalls.js');
+  createUser,
+  getLeaderboard
+} = require('./databaseCalls.js');
 const bcrypt = require('bcrypt');
 
 
@@ -37,10 +39,9 @@ module.exports = (client) => {
       });
   });
 
-
-  router.get('/host', function(req, res) {
-    console.log('REQUEST TO /API/ROOMS')
-    getHostRecords(client)
+  router.get('/leaderboard', function(req, res) {
+    console.log('REQUEST TO /API/leaderboard')
+    getLeaderboard(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
       })
@@ -50,6 +51,8 @@ module.exports = (client) => {
           .json({ error: err.message });
       });
   });
+
+
 
   router.post('/users/ratings', function(req, res) {
     const from_user_id = req.body.from_user_id
@@ -81,24 +84,33 @@ module.exports = (client) => {
     })
   })
 
-  router.get('/login', function(req, res) {
+  router.post('/login', function(req, res) {
+    console.log('login route hit')
+    // console.log(req.body)
     const loginInfo = req.body;
-    const userID = getUserInfoByEmail(loginInfo.email);
+    getUserInfoByEmail(client, loginInfo.email)
+    .then(data => {
+      // console.log(data, "should be user object")
+      return res.send(data)
+    })
+  
+    // if (!userID) {
+    //   // TODO: Add a 'user does not exist error'
+    //   return res.redirect('login/401');
+    // }
 
-    if (!userID) {
-      // TODO: Add a 'user does not exist error'
-      return res.redirect('login/401');
-    }
+    // bcrypt.compare(loginInfo.password, userID.password, function(err, result) {
+    //   if (result) {
+    //     req.session.userID = userID;
+    //     console.log(userID, "userID in routes")
+    //     return res.redirect('/')
 
-    bcrypt.compare(loginInfo.password, userID.password, function(err, result) {
-      if (result) {
-        req.session.userID = userID;
-        return res.redirect('/urls');
-      } else {
-        // TODO: Add a incorrect login page or something
-        return res.redirect('login/401');
-      }
-    });
+    //   } else {
+    //     // TODO: Add a incorrect login page or something
+    //     return res.redirect('login/401');
+    //   }
+    // });
+
   })
 
   router.post('/users', function(req, res) {

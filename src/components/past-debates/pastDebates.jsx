@@ -24,9 +24,6 @@ export default function PastDebate() {
   const classes = useStyles();
 
   const [pastDebates, setpastDebates] = useState([]);
-
-  console.log(pastDebates, "outside")
-
   useEffect(() => {
     Promise.all([
       axios.get(`/api/rooms`)
@@ -39,7 +36,7 @@ export default function PastDebate() {
   }, []);
 
   const pastDebate = pastDebates.map((debate) => {
-    console.log(debate.question)
+    // console.log(debate.question)
     return(    <Grid item xs={4}>
     <PastDebateItem 
     roomQuestion={debate.question}

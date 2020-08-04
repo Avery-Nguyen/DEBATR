@@ -75,7 +75,8 @@ const App = () => {
     <div className="app" >
       <header style={{ 
             color: "white", 
-            backgroundColor: "rgb(64,81,182)"}}>
+            backgroundColor: "rgb(64,81,182)"
+            }}>
         <NavBar />
       </header>
       <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
@@ -87,11 +88,12 @@ const App = () => {
         >
           <CreateRoom handleClose={handleClose} />
         </Dialog>
-        <Stage />
+        <Dashboard />
+            
         <Lobby />
 
-        <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
-        <span></span>
+        <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black', marginBottom: '-125px' }}>Past Debates</h1>
+        {/* <span></span> */}
 
         <PastDebate />
       </main>

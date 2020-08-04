@@ -23,10 +23,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
 
-
-
-
-
 import Stage from '../stage/stage'
 
 const useStyles = makeStyles((theme) => ({
@@ -62,7 +58,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export default function LobbyItem({roomDetails}) {
-  console.log(roomDetails);
+  // console.log(roomDetails);
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
 
