@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
+import SpectatorStage from './components/stage/SpectatorStage';
 // import Rating from './components/partials/rating'
 // import DiscreteSlider from './components/partials/slider'
 // import UserCard from './components/user-card/userCard'
@@ -139,8 +140,8 @@ const App = () => {
       </Dialog> */}
 
       <Lobby roomState={roomState} />
-      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
-      <span></span>
+      {/* <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
+      <span></span> */}
       <PastDebate />
     </main>
   )
@@ -157,14 +158,15 @@ const App = () => {
             color: "white", 
             backgroundColor: "rgb(64,81,182)"
             }}>
-        <NavBar />
+        <NavBar handleClickOpen={handleClickOpen} handleClose={handleClose}/>
       </header>
-            
+      
       {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
       {state.visualMode === "WAITING" && <WaitingRoom />}
       {state.visualMode === "LOBBY" && lobby}
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
+      {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
 
       <footer style={{ fontSize: "10px" }}>
         <p>

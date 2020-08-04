@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {useStore} from '../../Store'
+import { useStore } from '../../Store'
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateRoom({handleClose}) {
+export default function CreateRoom({ handleCloseCreateRoom }) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [stance, setStance] = useState("")
@@ -67,11 +67,11 @@ export default function CreateRoom({handleClose}) {
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
-  
+
   const submitCreateRoom = (vals) => {
     const randRoomName = Math.random().toFixed(5).toString();
-    dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
-    dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
+    dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
+    dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
 
     // setRoomList([...roomList, testRoom])
     console.log('Sending topic and stance: ', topic, stance)
@@ -82,18 +82,18 @@ export default function CreateRoom({handleClose}) {
       stance: stance
     })
 
-    handleClose();
+    handleCloseCreateRoom();
   }
 
   useEffect(() => {
     axios.get('/api/topics')
-    .then((data) => {
-      setOptions(data.data.topics)
-    });
+      .then((data) => {
+        setOptions(data.data.topics)
+      });
   }, [])
 
   const topicOptions = options.map(topic =>
-      <option value={topic.question}>{topic.question}</option>
+    <option value={topic.question}>{topic.question}</option>
   )
 
   return (
@@ -102,26 +102,32 @@ export default function CreateRoom({handleClose}) {
       <Box mt={2}>
       </Box>
       <div className={classes.paper}>
-         <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/>
-        {/* <Typography component="h1" variant="h5">
-          Will you be the next master?
-      </Typography> */}
+        {/* <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/> */}
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+          <line x1="7" y1="4" x2="17" y2="4" />
+          <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
+          <circle cx="5" cy="9" r="2" />
+          <circle cx="19" cy="9" r="2" />
+        </svg>
         <FormControl className={classes.formControl} style={{
-              marginTop:'15px',
-            }}>
+          marginTop: '15px',
+        }}>
           <InputLabel htmlFor="grouped-native-select"
             variant="outlined"
             // margin="normal"
             fullWidth
             autoFocus
-            >Topic</InputLabel>
+          >Topic</InputLabel>
           <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
             {topicOptions}
           </Select>
         </FormControl>
-        <FormControl className={classes.formControl} style={{ width: "100px", marginTop:'15px', }}>
+        <FormControl className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
           <InputLabel htmlFor="grouped-select">Stance</InputLabel>
           <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
             <MenuItem value="">
@@ -137,7 +143,7 @@ export default function CreateRoom({handleClose}) {
           style={{
             color: "white",
             backgroundColor: "rgb(64,81,182)",
-            marginTop:'25px',
+            marginTop: '25px',
             borderRadius: "30px"
           }}
         >Create Stage
