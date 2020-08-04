@@ -22,7 +22,8 @@ import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
-import {useStore} from '../../Store'
+import {useStore} from '../../Store';
+import './lobbyItem.css';
 
 import Stage from '../stage/stage'
 
@@ -95,10 +96,9 @@ export default function LobbyItem({roomDetails}) {
       roomName : roomDetails.name,
       userName : state.username
     })
-
-
-
+    
     // setOpenStage(true);
+    
   };
 
   const handleCloseStage = () => {
@@ -107,7 +107,11 @@ export default function LobbyItem({roomDetails}) {
 
   if (roomDetails) {
     return (
-      <Card className={classes.root} style={{border: "solid rgb(0,238,40) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", display: "flex", justifyContent: "center"}}>
+      <Card className={classes.root} style={{
+        border: "solid rgb(0,238,40) 3px", 
+        backgroundColor: "rgb(241,241,241)", 
+        borderRadius: "30px"
+        }}>
         <CardHeader
           avatar={
             <div>

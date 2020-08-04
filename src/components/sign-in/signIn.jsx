@@ -80,7 +80,7 @@ export default function SignIn() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
-            onChange={event => setEmail(event.target.value)}
+            // onChange={event => setEmail(event.target.value)}
             variant="outlined"
             margin="normal"
             required
@@ -93,7 +93,7 @@ export default function SignIn() {
             onChange={event => setEmail(event.target.value)}
           />
           <TextField
-            onChange={event => setPassword(event.target.value)}
+            // onChange={event => setPassword(event.target.value)}
             variant="outlined"
             margin="normal"
             required

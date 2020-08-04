@@ -89,7 +89,12 @@ export default function PastDebateItem(props) {
   // )
 
   return (
-    <Card className={classes.root} style={{ border: "solid rgb(255,107,107) 3px", backgroundColor: "rgb(241,241,241)", borderRadius: "30px", marginLeft: '5px', justifySelf: 'center' }}>
+    <Card className={classes.root} style={{ 
+      border: "solid rgb(255,107,107) 3px", 
+      backgroundColor: "rgb(241,241,241)", 
+      borderRadius: "30px",  
+      minWidth: "345px" 
+      }}>
       <CardHeader
         avatar={
           <div>

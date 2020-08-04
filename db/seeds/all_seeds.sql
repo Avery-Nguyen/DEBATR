@@ -1,14 +1,13 @@
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Quill', 'Denes', 'qdenes0@pen.io', 'qdenes0', 'RYqGhw', '457', 'https://robohash.org/facilisquiaquo.jpg?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Claudianus', 'Karle', 'ckarle1@usnews.com', 'ckarle1', 'RBixnarR', '21', 'https://robohash.org/eaquiaeius.png?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Svend', 'McMahon', 'smcmahon2@nasa.gov', 'smcmahon2', 'zmjzom', '9331', 'https://robohash.org/rerumsintpossimus.bmp?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Matelda', 'Ervin', 'mervin3@reverbnation.com', 'mervin3', 'KZPSJhuQhjK', '42896', 'https://robohash.org/etnostrumnatus.jpg?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Tarrance', 'Magauran', 'tmagauran4@fema.gov', 'tmagauran4', 'vAENwXkos', '3926', 'https://robohash.org/nihilasperioreshic.jpg?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Lynda', 'Takkos', 'ltakkos5@twitter.com', 'ltakkos5', 'U3thFF', '070', 'https://robohash.org/impeditsolutaut.jpg?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Olive', 'Nijssen', 'onijssen6@comsenz.com', 'onijssen6', 'zx0co1ZSROEU', '10', 'https://robohash.org/totamrationeab.png?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Elton', 'Ochterlony', 'eochterlony7@quantcast.com', 'eochterlony7', 'iB9g6oFKKDHl', '2', 'https://robohash.org/etsintest.bmp?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Arnuad', 'Foulis', 'afoulis8@etsy.com', 'afoulis8', 'n9Ewi3i', '073', 'https://robohash.org/omnisfacilisnam.bmp?size=50x50&set=set1');
-insert into users (first_name, last_name, email, username, password, salt_hash, avatar_url) values ('Torre', 'Keaves', 'tkeaves9@census.gov', 'tkeaves9', '25Ta6s0VZ2', '8015', 'https://robohash.org/cumquibusdamest.jpg?size=50x50&set=set1');
-
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Quill', 'Denes', 'qdenes0@pen.io', 'qdenes0', 'RYqGhw', 'https://robohash.org/facilisquiaquo.jpg?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Claudianus', 'Karle', 'ckarle1@usnews.com', 'ckarle1', 'RBixnarR', 'https://robohash.org/eaquiaeius.png?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Svend', 'McMahon', 'smcmahon2@nasa.gov', 'smcmahon2', 'zmjzom', 'https://robohash.org/rerumsintpossimus.bmp?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Matelda', 'Ervin', 'mervin3@reverbnation.com', 'mervin3', 'KZPSJhuQhjK', 'https://robohash.org/etnostrumnatus.jpg?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Tarrance', 'Magauran', 'tmagauran4@fema.gov', 'tmagauran4', 'vAENwXkos', 'https://robohash.org/nihilasperioreshic.jpg?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Lynda', 'Takkos', 'ltakkos5@twitter.com', 'ltakkos5', 'U3thFF', 'https://robohash.org/impeditsolutaut.jpg?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Olive', 'Nijssen', 'onijssen6@comsenz.com', 'onijssen6', 'zx0co1ZSROEU', 'https://robohash.org/totamrationeab.png?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Elton', 'Ochterlony', 'eochterlony7@quantcast.com', 'eochterlony7', 'iB9g6oFKKDHl', 'https://robohash.org/etsintest.bmp?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Arnuad', 'Foulis', 'afoulis8@etsy.com', 'afoulis8', 'n9Ewi3i', 'https://robohash.org/omnisfacilisnam.bmp?size=50x50&set=set1');
+insert into users (first_name, last_name, email, username, password, avatar_url) values ('Torre', 'Keaves', 'tkeaves9@census.gov', 'tkeaves9', '25Ta6s0VZ2', 'https://robohash.org/cumquibusdamest.jpg?size=50x50&set=set1');
 
 INSERT INTO categories (name) VALUES ('Foods');
 INSERT INTO categories (name) VALUES ('Sports');

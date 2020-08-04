@@ -83,11 +83,13 @@ const getUserInfoByEmail = (client, email) => {
 }
 
 const checkEmailTaken = (client, email) => {
-  client.query(`SELECT * FROM users
+  // console.log(email)
+  return client.query(`SELECT * FROM users
   WHERE email = $1
   `, [email])
     .then(res => {
       if (res.rows) {
+        console.log(res.rows, 'this is res.rows')
         return true
       } else {
         return false
@@ -96,10 +98,11 @@ const checkEmailTaken = (client, email) => {
 
 }
 const createUser = (client, email, first_name, last_name, username, password, avatar_url) => {
+  console.log(client, email, first_name, last_name, username, password, avatar_url);
   return client.query(`
   INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
   VALUES ($1, $2, $3, $4, $5, $6);
-  `, [email, first_name, last_name, username, password, avatar_url])
+  `, [ first_name, last_name, email, username, password, avatar_url])
     .then(res => {
       return res.rows
     })
