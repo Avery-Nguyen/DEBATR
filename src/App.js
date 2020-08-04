@@ -100,7 +100,7 @@ const App = () => {
 
 
   const lobby = (
-    <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+    <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
       {/* <Button
         style={{
           color: "white",

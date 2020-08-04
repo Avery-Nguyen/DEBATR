@@ -8,7 +8,8 @@ const {
   getUserInfoByEmail,
   checkEmailTaken,
   createUser,
-  getLeaderboard
+  getLeaderboard,
+  getDebateCount
 } = require('./databaseCalls.js');
 const bcrypt = require('bcrypt');
 
@@ -42,6 +43,19 @@ module.exports = (client) => {
   router.get('/leaderboard', function(req, res) {
     console.log('REQUEST TO /API/leaderboard')
     getLeaderboard(client)
+      .then(sqlResponse => {
+        res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get('/totaldebates', function(req, res) {
+    console.log('REQUEST TO /API/totaldebates')
+    getDebateCount(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
       })

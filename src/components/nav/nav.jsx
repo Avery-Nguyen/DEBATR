@@ -87,7 +87,7 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{justifyContent: "spaceBetween"}}>
+      <AppBar position="fixed" style={{justifyContent: "spaceBetween"}}>
         <Toolbar>
           <Link href={'/'}>
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -100,7 +100,7 @@ export default function NavBar(props) {
           <circle cx="19" cy="9" r="2" />
         </svg>
           </Link>
-          <h3 style={{color: 'white'}}> DebatR </h3>
+          <h1 style={{color: 'white'}}> DebatR </h1>
           <Typography variant="h6" className={classes.title}>
           </Typography>
           <div>
