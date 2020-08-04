@@ -42,6 +42,20 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
+// useEffect(() => {
+  //   axios.get('/api/login/check',  {})
+  //     .then((res) => {
+  //       if (res.data.success) {
+  //         dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+  //         dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+  //       }
+  //       console.log(res, 'res from login check')
+  //       return true
+  //     })
+  //     .catch((error) => {
+  //       console.error(error, "error from axios request")
+  //     })
+  // })
 
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:3001";
@@ -145,7 +159,7 @@ const App = () => {
             }}>
         <NavBar />
       </header>
-
+            
       {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
       {state.visualMode === "WAITING" && <WaitingRoom />}
       {state.visualMode === "LOBBY" && lobby}

@@ -103,9 +103,9 @@ export default function CreateRoom({handleClose}) {
       </Box>
       <div className={classes.paper}>
          <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/>
-        <Typography component="h1" variant="h5">
+        {/* <Typography component="h1" variant="h5">
           Will you be the next master?
-      </Typography>
+      </Typography> */}
         <FormControl className={classes.formControl} style={{
               marginTop:'15px',
             }}>

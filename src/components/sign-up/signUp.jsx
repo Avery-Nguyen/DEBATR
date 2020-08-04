@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useStore } from '../../Store'
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -44,12 +45,11 @@ export default function SignUp() {
   const [lastName, setlastName] = useState('')
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
+  const [state, dispatch] = useStore();
+ 
 
-  const submitRegistration = () => {
-    console.log(email, 'email')
-    console.log(password, "password")
-
-    console.log('submitlogin called')
+  const submitRegistration = (event) => {
+    event.preventDefault();
     axios.post('/api/register',  {
       email,
       firstName,
@@ -60,8 +60,8 @@ export default function SignUp() {
     })
       .then((res) => {
         console.log(res, 'res from sign-up request')
-        // dispatch({ type: 'SET_USERNAME', payload: res })
-
+        dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+        props.handleClose();
       })
       .catch((error) => {
         console.error(error, "error from axios request")
