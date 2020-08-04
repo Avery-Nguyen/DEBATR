@@ -1,3 +1,5 @@
-.classes.root {
-  min-width: 345px important!;
+.MuiGrid-spacing-xs-3 > .MuiGrid-item {
+    padding: 12px;
+    min-width: 345px;
+    max-width: 170px;
 }

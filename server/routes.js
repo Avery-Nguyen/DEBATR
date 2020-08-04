@@ -11,7 +11,22 @@ const {
   getLeaderboard,
   getDebateCount
 } = require('./databaseCalls.js');
+
+//bcrypt stuff
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+//cookies session (encrypted, client-side)
+const cookieSession = require('cookie-session')
+router.use(cookieSession({
+  name: 'session',
+  keys: [
+    'salfkvlsdkvnslvnsvlknsdv',
+    'sknalcknfcslkkcvlknmdsclvkmsdvlksdvlk'
+  ],
+
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+})); //setting cookie-session params
 
 
 
@@ -100,54 +115,103 @@ module.exports = (client) => {
     })
   })
 
+  router.get('/login/check', function(req,res) {
+    
+    if (req.session.userID) {
+      res.json({
+        success: true,
+        message: "user has successfully authenticated",
+        userID: req.session.userID,
+        username: req.session.username
+      })
+    } else {
+      res.json({
+        success: false
+      })
+    }
+  })
+
   router.post('/login', function(req, res) {
-    console.log('login route hit')
-    // console.log(req.body)
     const loginInfo = req.body;
+
     getUserInfoByEmail(client, loginInfo.email)
       .then(data => {
-        // console.log(data, "should be user object")
-        return res.send(data)
-      })
+        console.log(data, "should be user object")
+        username = data[0].username;
+        userID = data[0].id;
+        password = data[0].password
 
-    // if (!userID) {
-    //   // TODO: Add a 'user does not exist error'
-    //   return res.redirect('login/401');
-    // }
+        if (!userID) {
+          console.log('error with userID')
+          // TODO: Add a 'user does not exist error'
+          return res.redirect('login/401');
+        }
+        
+        return bcrypt.compare(loginInfo.password, password).then(function(result) {
+          
+          req.session.userID = userID;
+          req.session.username = username;
+        //  return res.send(data)
 
-    // bcrypt.compare(loginInfo.password, userID.password, function(err, result) {
-    //   if (result) {
-    //     req.session.userID = userID;
-    //     console.log(userID, "userID in routes")
-    //     return res.redirect('/')
+         return res.json({
+            authenticated: true,
+            username,
+            userID,
+            password
+          })
+        })
+          .catch(error => {
+            console.log(error.message, "problem");
+          })
+        // if (result) {
+        
+        //   req.session.userID = userID;
+        //   console.log(userID, "userID in routes")
+        //   return res.send(data)
+        //   // return res.redirect('/')
 
-    //   } else {
-    //     // TODO: Add a incorrect login page or something
-    //     return res.redirect('login/401');
-    //   }
-    // });
+        // } else {
+        //   // TODO: Add a incorrect login page or something
+        //   return res.redirect('login/401');
+        // }
+      });
+
 
   })
 
-  router.post('/users', function(req, res) {
+
+
+  router.post('/register', function(req, res) {
     if (req.body.email === "" || req.body.password === "") {
       // TODO: Change this
       return res.redirect('/register/empty');
     }
+    // console.log(req.body, 'this is req from register') //  body:
+    // { email: 'tthomas@gmail.com',
+    //   firstName: 'Trevor',
+    //   lastName: 'Thomas',
+    //   username: 'tthomas1985',
+    //   password: 'password',
+    //   avatar: '' },
 
-    if (checkEmailTaken(req.body.email)) {
-      // TODO: Change this
-      return res.redirect('/register/taken');
-    }
+    console.log('after checkemail function');
+    bcrypt.hash(req.body.password, saltRounds).then(function(hash) {
+      // Store hash in your password DB.
 
-    createUser(req.body.email, req.body.first_name, req.body.last_name, req.body.username, req.body.password, req.body.avatar_url)
-      .then((sqlResponse) => {
-        console.log(sqlResponse.rows)
-        // Need to assign cookie
-        // req.session.userID = sqlResponse.rows;
+      console.log('after bcrypot')
+      createUser(client, req.body.email, req.body.firstName, req.body.lastName, req.body.username, hash, req.body.avatar_url)
+        .then((sqlResponse) => {
+          console.log('after create user');
+          // console.log(sqlResponse.rows)
+          // Need to assign cookie
+          // req.session.userID = sqlResponse.rows;
 
-        res.send(sqlResponse)
-      })
+          res.send(sqlResponse)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    });
   })
 
   return router;

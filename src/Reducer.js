@@ -15,6 +15,11 @@ const Reducer = (state, action) => {
         ...state,
         username: action.payload
       };
+    case 'SET_USER_ID':
+      return {
+        ...state,
+        userID: action.payload
+      };
     case 'SET_CURRENT_ROOM':
       return {
         ...state,

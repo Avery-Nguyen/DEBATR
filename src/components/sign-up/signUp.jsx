@@ -1,11 +1,13 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useStore } from '../../Store'
 
-import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -35,11 +37,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [firstName, setfirstName] = useState('')
+  const [lastName, setlastName] = useState('')
+  const [username, setUsername] = useState('')
+  const [avatar, setAvatar] = useState('')
+  const [state, dispatch] = useStore();
+
+
+  const submitRegistration = (event) => {
+    event.preventDefault();
+    axios.post('/api/register', {
+      email,
+      firstName,
+      lastName,
+      username,
+      password,
+      avatar
+    })
+      .then((res) => {
+        console.log(res, 'res from sign-up request')
+        console.log(res.data[0].username, 'res from sign-up request')
+        dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
+        props.handleClose();
+      })
+      .catch((error) => {
+        console.error(error, "error from axios request")
+      })
+  }
 
   return (
-    <Container class='signup' component="main" maxWidth="xs" style={{ width: '400px'} }>
+    <Container class='signup' component="main" maxWidth="xs" style={{ width: '400px' }}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -60,6 +91,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={event => setfirstName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -71,6 +103,19 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={event => setlastName(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                onChange={event => setUsername(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,6 +127,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={event => setEmail(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,6 +140,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={event => setPassword(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,6 +161,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={submitRegistration}
           >
             Sign Up
           </Button>

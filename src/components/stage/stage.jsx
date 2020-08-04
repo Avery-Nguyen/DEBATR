@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import Typography from '@material-ui/core/Typography';
+// import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Participant from '../../Participant'
 import {useStore} from '../../Store'
@@ -13,7 +13,7 @@ export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  // console.log("Stage -> participants", participants)
+  console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
@@ -101,15 +101,19 @@ export default function Stage({ activeRoomState }) {
         prevParticipants.filter(p => p !== participant)
       );
     };
+    
+      Video.connect(state.token, {
+        name: state.currentRoom
+      }).then(room => {
+        setRoom(room);
+   
+          room.on('participantConnected', participantConnected);
+          room.participants.forEach(participantConnected);
+          room.on('participantDisconnected', participantDisconnected);
+      });
+    
 
-    Video.connect(state.token, {
-      name: state.currentRoom
-    }).then(room => {
-      setRoom(room);
-      room.on('participantConnected', participantConnected);
-      room.on('participantDisconnected', participantDisconnected);
-      room.participants.forEach(participantConnected);
-    });
+
 
     return () => {
       setRoom(currentRoom => {
@@ -127,8 +131,8 @@ export default function Stage({ activeRoomState }) {
   }, [state.currentRoom, state.token]);
 
 
-  const remoteParticipants = participants.filter(p => p._tracks).map((participant) => {
-    console.log(participant);
+  const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host)  || (p.identity === activeRoomState.contender))).map((participant) => {
+    // console.log("this participant is being rendered",participant);
     
     return (<Participant key={participant.sid} participant={participant} />)
   });
@@ -187,6 +191,8 @@ export default function Stage({ activeRoomState }) {
     } , [active, time]);
 
 
+  console.log('Remote Participants from Debater Stage: ', remoteParticipants);
+
   return (
     <main> 
     <body id='stage' style={{height: '100%', zIndex:'1'}}>
@@ -213,6 +219,7 @@ export default function Stage({ activeRoomState }) {
             <div id='stage-details' style={{ display: 'flex', flexDirection:'column', justifyContent: 'space-around' }}>
               <h1 style={{ color: 'white' }}>{gameCommands}</h1>
               <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
+              <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
               <br />
               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
             </div>

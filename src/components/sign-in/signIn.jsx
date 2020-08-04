@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import MuiAlert from '@material-ui/lab/Alert';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -15,7 +16,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import useStore from '../../Store'
+import {useStore} from '../../Store'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,27 +39,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-export default function SignIn() {
+
+export default function SignIn(props) {
   const classes = useStyles();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-
-  // const [state, dispatch] = useStore()
-  // onChange={event => setEmail(event.target.value)}
-
-  
-  const submitLogin = () => {
-    console.log(email, 'email')
-    console.log(password, "password")
-    console.log('submitlogin called')
+  const [state, dispatch] = useStore();
+ 
+  const submitLogin = (event) => {
+    event.preventDefault();
+    // console.log(email, 'email')
+    // console.log(password, "password")
+    // console.log('submitlogin called')
     axios.post('/api/login',  {
       email,
       password
     })
       .then((res) => {
-        console.log(res, 'res from login request')
+        if (res.data.authenticated) {
+          dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+          dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+          props.handleCloseSignIn();
+
+        }
+        // if (!res.data.authenticated) {
+        //   console.log('is this e3')
+        //   props.handleCloseSignIn();
+        //   alert('something went wrong')
+          
+        // }
+        // console.log('other stuff')
+        return true
         // dispatch({ type: 'SET_USERNAME', payload: res })
 
       })
@@ -78,9 +93,9 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={submitLogin} noValidate>
           <TextField
-            onChange={event => setEmail(event.target.value)}
+            // onChange={event => setEmail(event.target.value)}
             variant="outlined"
             margin="normal"
             required
@@ -93,7 +108,7 @@ export default function SignIn() {
             onChange={event => setEmail(event.target.value)}
           />
           <TextField
-            onChange={event => setPassword(event.target.value)}
+
             variant="outlined"
             margin="normal"
             required
@@ -106,13 +121,11 @@ export default function SignIn() {
             onChange={event => setPassword(event.target.value)}
           />
           <Button
-            onClick={submitLogin}
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={submitLogin}
           >
             Sign In
           </Button>

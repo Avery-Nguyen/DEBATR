@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {useStore} from '../../Store'
+import { useStore } from '../../Store'
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -67,11 +67,11 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
-  
+
   const submitCreateRoom = (vals) => {
     const randRoomName = Math.random().toFixed(5).toString();
-    dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
-    dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
+    dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
+    dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
 
     // setRoomList([...roomList, testRoom])
     console.log('Sending topic and stance: ', topic, stance)
@@ -87,13 +87,13 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
 
   useEffect(() => {
     axios.get('/api/topics')
-    .then((data) => {
-      setOptions(data.data.topics)
-    });
+      .then((data) => {
+        setOptions(data.data.topics)
+      });
   }, [])
 
   const topicOptions = options.map(topic =>
-      <option value={topic.question}>{topic.question}</option>
+    <option value={topic.question}>{topic.question}</option>
   )
 
   return (
@@ -113,21 +113,21 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
             <circle cx="19" cy="9" r="2" />
           </svg>
         <FormControl className={classes.formControl} style={{
-              marginTop:'15px',
-            }}>
+          marginTop: '15px',
+        }}>
           <InputLabel htmlFor="grouped-native-select"
             variant="outlined"
             // margin="normal"
             fullWidth
             autoFocus
-            >Topic</InputLabel>
+          >Topic</InputLabel>
           <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
             {topicOptions}
           </Select>
         </FormControl>
-        <FormControl className={classes.formControl} style={{ width: "100px", marginTop:'15px', }}>
+        <FormControl className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
           <InputLabel htmlFor="grouped-select">Stance</InputLabel>
           <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
             <MenuItem value="">
@@ -143,7 +143,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
           style={{
             color: "white",
             backgroundColor: "rgb(64,81,182)",
-            marginTop:'25px',
+            marginTop: '25px',
             borderRadius: "30px"
           }}
         >Create Stage

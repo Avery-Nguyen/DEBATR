@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Chart from './Chart';
 import TotalDebates from './totalDebates';
-import Orders from './Orders';
+import LeaderBoard from './leaderBoard';
 
 //Likely won't need these but could make for a very interactive stats page
 // import Link from '@material-ui/core/Link';
@@ -134,7 +134,7 @@ export default function Dashboard() {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Orders />
+                <LeaderBoard />
               </Paper>
             </Grid>
           </Grid>

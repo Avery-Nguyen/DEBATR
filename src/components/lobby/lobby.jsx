@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 import LobbyItem from './lobbyitem'
 import {useStore} from '../../Store'
 
@@ -121,8 +121,8 @@ export default function Lobby({roomState}) {
 
   return (
     <div className={classes.root} >
-      <Grid container spacing={2}>
-        <Grid container item xs={12} spacing={3} margin='24px'>
+      <Grid container spacing={2} >
+        <Grid container item xs={12} spacing={3} margin='24px' style={{display: "flex"}}>
           <FormRow />
         </Grid>
       </Grid>

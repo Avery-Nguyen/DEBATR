@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
+import SpectatorStage from './components/stage/SpectatorStage';
 // import Rating from './components/partials/rating'
 // import DiscreteSlider from './components/partials/slider'
 // import UserCard from './components/user-card/userCard'
@@ -42,6 +43,20 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
+// useEffect(() => {
+  //   axios.get('/api/login/check',  {})
+  //     .then((res) => {
+  //       if (res.data.success) {
+  //         dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+  //         dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+  //       }
+  //       console.log(res, 'res from login check')
+  //       return true
+  //     })
+  //     .catch((error) => {
+  //       console.error(error, "error from axios request")
+  //     })
+  // })
 
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:3001";
@@ -151,7 +166,8 @@ const App = () => {
       {state.visualMode === "LOBBY" && lobby}
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
-      
+      {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
+
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}
