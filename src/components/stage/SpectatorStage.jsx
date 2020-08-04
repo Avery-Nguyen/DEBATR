@@ -9,7 +9,7 @@ import Video from 'twilio-video';
 
 const startTime = 5.0;
 
-export default function Stage({ activeRoomState }) {
+export default function SpectatorStage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
@@ -28,10 +28,10 @@ export default function Stage({ activeRoomState }) {
 
       state.currentSocket.on("gameOver", data => {
 
-        state.currentSocket.emit('leaveRoom', {
-          roomName : state.currentRoom,
-          userName : state.username
-        })
+        // state.currentSocket.emit('leaveRoom', {
+        //   roomName : state.currentRoom,
+        //   userName : state.username
+        // })
 
         dispatch({type: 'SET_TOKEN', payload: null})
         dispatch({type: 'SET_VISUAL_MODE', payload: "GAME_OVER"})
@@ -46,37 +46,36 @@ export default function Stage({ activeRoomState }) {
         disableMedia()
       })
 
-      state.currentSocket.on("mute", data => {
-        // console.log('Room mute request', room)
-        if (room) {
-          if (state.username === data.mute) {
-            room.localParticipant.audioTracks.forEach(publication => {
-              // console.log(room.localParticipant.identity,'is muted');
-              publication.track.disable();
-            });
-          }
+      // state.currentSocket.on("mute", data => {
+      //   // console.log('Room mute request', room)
+      //   if (room) {
+      //     if (state.username === data.mute) {
+      //       room.localParticipant.audioTracks.forEach(publication => {
+      //         // console.log(room.localParticipant.identity,'is muted');
+      //         publication.track.disable();
+      //       });
+      //     }
 
-          // Start Timer
-          if (!data.intermission) {
-            setActive(true)
-            setTime(data.timer);
-          } else {
-            // setTime(data.timer)
-          }
-        }
+      //     // Start Timer
+      //     if (!data.intermission) {
+      //       setActive(true)
+      //       setTime(data.timer);
+      //     } else {
+      //       // setTime(data.timer)
+      //     }
+      //   }
 
-      })
-      state.currentSocket.on("unMute", data => {
-        // console.log('Room UNmute request', room)
-        if (room) {
-          if(state.username === data){
-            room.localParticipant.audioTracks.forEach(publication => {
-              // console.log(room.localParticipant.identity,' is unmuted');
-              publication.track.enable();
-            });
-          }
-        }
-      })
+      // })
+    //   state.currentSocket.on("unMute", data => {
+    //     // console.log('Room UNmute request', room)
+    //     if (room) {
+    //       if(state.username === data){
+    //         room.localParticipant.audioTracks.forEach(publication => {
+    //           // console.log(room.localParticipant.identity,' is unmuted');
+    //           publication.track.enable();
+    //         });
+    //       }
+    //     }
     }
 
     return (() => {
@@ -100,18 +99,18 @@ export default function Stage({ activeRoomState }) {
       setParticipants(prevParticipants =>
         prevParticipants.filter(p => p !== participant)
       );
-    };
-    
-      Video.connect(state.token, {
-        name: state.currentRoom
-      }).then(room => {
-        setRoom(room);
-   
-          room.on('participantConnected', participantConnected);
-          room.participants.forEach(participantConnected);
-          room.on('participantDisconnected', participantDisconnected);
-      });
-    
+    }
+    ;
+    Video.connect(state.token, {
+      name: state.currentRoom,
+      audio: false,
+      video: false
+    }).then(room => {
+      setRoom(room);
+      room.on('participantConnected', participantConnected);
+        room.participants.forEach(participantConnected);
+        room.on('participantDisconnected', participantDisconnected);
+    });
 
 
 
@@ -131,12 +130,12 @@ export default function Stage({ activeRoomState }) {
   }, [state.currentRoom, state.token]);
 
 
-  const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host)  || (p.identity === activeRoomState.contender))).map((participant) => {
-    // console.log("this participant is being rendered",participant);
+  const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host )||  (p.identity === activeRoomState.contender))).map((participant) => {
+    console.log(participant);
     
     return (<Participant key={participant.sid} participant={participant} />)
   });
-
+  console.log("from sepectator stage --->",remoteParticipants);
   function disableMedia() {
     // room.localParticipant.audioTracks.forEach(publication => {
     //   publication.track.disable();
@@ -164,7 +163,7 @@ export default function Stage({ activeRoomState }) {
   }
 
   const handleLogout = function () {
-    state.currentSocket.emit('leaveRoom', {
+    state.currentSocket.emit('leaveRoomSpectator', {
       roomName : state.currentRoom,
       userName : state.username
     })
@@ -191,8 +190,6 @@ export default function Stage({ activeRoomState }) {
     } , [active, time]);
 
 
-  console.log('Remote Participants: ', remoteParticipants);
-
   return (
     <main> 
     <body id='stage' style={{height: '100%', zIndex:'1'}}>
@@ -203,11 +200,13 @@ export default function Stage({ activeRoomState }) {
         <div class="w3-row-padding w3-grayscale">
           <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
             <div class='participants'>
+              {/* LOCAL PARTICIPANT - DON'T RENDER */}
             {room ? (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-          />
+              ""
+          // <Participant
+          //   key={room.localParticipant.sid}
+          //   participant={room.localParticipant}
+          // />
         ) : (
             ''
           )}

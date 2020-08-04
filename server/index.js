@@ -156,7 +156,7 @@ class Room {
         io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
         // Post the game record to the database.
         // this.postGameToDatabase();
-        io.to(this.name).emit('gameOver', null)
+        // io.to(this.name).emit('gameOver', null)
         })
   }
 
@@ -229,6 +229,11 @@ io.sockets.on("connection", function (socket) {
     );
   });
 
+  socket.on("joinRoomSpectator", function (data) {
+    socket.join(data.roomName);
+    socket.leave('lobby')
+  })
+
   socket.on("joinRoom", function (data) {
     console.log(
       `Request to join ${data.roomName} from ${data.userName} received.`
@@ -244,8 +249,9 @@ io.sockets.on("connection", function (socket) {
 
     // Socket Joins the 'socket'room'
     socket.join(data.roomName);
+    socket.leave('lobby')
 
-    // Send out update to everyone in lobby.
+    // Send out update to everyone in the room.
     roomList.sendRoomUpdate();
     io.to(data.roomName).emit(
       "currentRoomUpdate",

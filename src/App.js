@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
+import SpectatorStage from './components/stage/SpectatorStage';
 // import Rating from './components/partials/rating'
 // import DiscreteSlider from './components/partials/slider'
 // import UserCard from './components/user-card/userCard'
@@ -151,6 +152,7 @@ const App = () => {
       {state.visualMode === "LOBBY" && lobby}
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
+      {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
 
       <footer style={{ fontSize: "10px" }}>
         <p>
