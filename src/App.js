@@ -157,7 +157,7 @@ const App = () => {
   
   const postDebate = (
     <main>
-      <PostDebate/>
+      <PostDebate activeRoomState={activeRoomState}/>
     </main>
   )
 

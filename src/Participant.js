@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+// import { useStore } from './Store'
 
 const Participant = ({ participant }) => {
+  // const [state, dispatch] = useStore();
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 

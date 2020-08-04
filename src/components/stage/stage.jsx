@@ -27,7 +27,7 @@ export default function Stage({ activeRoomState }) {
       })
 
       state.currentSocket.on("gameOver", data => {
-        
+
         state.currentSocket.emit('leaveRoom', {
           roomName : state.currentRoom,
           userName : state.username
@@ -134,15 +134,27 @@ export default function Stage({ activeRoomState }) {
   });
 
   function disableMedia() {
-    room.localParticipant.audioTracks.forEach(publication => {
-      publication.track.disable();
+    // room.localParticipant.audioTracks.forEach(publication => {
+    //   publication.track.disable();
+    // });
+    
+    // room.localParticipant.videoTracks.forEach(publication => {
+    //   publication.track.disable();
+    //   publication.track.stop();
+    //   publication.unpublish();
+    // });
+
+    room.on('disconnected', room => {
+      // Detach the local media elements
+      room.localParticipant.tracks.forEach(publication => {
+        const attachedElements = publication.track.detach();
+        attachedElements.forEach(element => element.remove());
+      });
     });
     
-    room.localParticipant.videoTracks.forEach(publication => {
-      publication.track.disable();
-      publication.track.stop();
-      publication.unpublish();
-    });
+    // To disconnect from a Room
+    room.disconnect();
+
   }
 
   const handleLogout = function () {
