@@ -123,7 +123,7 @@ export default function NavBar(props) {
             keepMounted
             onClose={handleCloseCreateRoom}
           >
-            <CreateRoom />
+            <CreateRoom handleCloseCreateRoom={handleCloseCreateRoom}/>
           </Dialog>
           </div>
           <div>
