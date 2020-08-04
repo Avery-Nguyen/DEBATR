@@ -28,7 +28,7 @@ const getLeaderboard = (client, limit = 10) => {
 }
 
 const getDebateCount = (client) => {
-  return client.query(`select count(*) from room_logs;`
+  return client.query(`select count(*) from room_logs;`)
     .then((res) => {
       console.log(`res from sql ${res}`)
       return res.rows
