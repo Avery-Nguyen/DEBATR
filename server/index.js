@@ -191,6 +191,7 @@ io.sockets.on("connection", function (socket) {
     );
 
     // Socket Joins the 'socket'room'
+    socket.leave('lobby');
     socket.join(data.roomName);
     // Also create an instance of the room class.
     roomList.newRoom(data.roomName, data.topic);
@@ -249,7 +250,8 @@ io.sockets.on("connection", function (socket) {
       roomList.sendRoomUpdate();
 
       // Starts the game method!
-      roomList.roomList[data.roomName].startGame();
+      roomList.roomList[data.roomName].startGame()
+      // .then(console.log('GAME OVER - DELETE OBJECT'))
     }
   });
 
@@ -259,13 +261,6 @@ io.sockets.on("connection", function (socket) {
     );
 
     roomList.roomList[data.roomName] = null
-
-    // if (roomList.roomList[data.roomName]["contender"] === data.userName) {
-    //   roomList.roomList[data.roomName]["contender"] = null;
-    // } else if (roomList.roomList[data.roomName]["host"] === data.userName) {
-    //   // Removes the instance of the class
-    //   roomList.roomList[data.roomName] = null;
-    // }
 
     socket.leave(data.roomName);
     socket.join('lobby')

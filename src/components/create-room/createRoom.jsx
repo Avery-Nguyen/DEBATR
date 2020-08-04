@@ -68,8 +68,6 @@ export default function CreateRoom({handleClose}) {
   const bull = <span className={classes.bullet}>•</span>;
   
   const submitCreateRoom = (vals) => {
-    console.log('submitCreateRoom values', vals.target)
-  
     const randRoomName = Math.random().toFixed(5).toString();
     dispatch({type: 'SET_CURRENT_ROOM', payload: randRoomName});
     dispatch({type: 'SET_VISUAL_MODE', payload: "WAITING"});
@@ -84,10 +82,7 @@ export default function CreateRoom({handleClose}) {
     })
 
     handleClose();
-
   }
-
-  
 
   useEffect(() => {
     axios.get('/api/topics')
