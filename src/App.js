@@ -145,13 +145,13 @@ const App = () => {
             }}>
         <NavBar />
       </header>
-
+     
       {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
       {state.visualMode === "WAITING" && <WaitingRoom />}
       {state.visualMode === "LOBBY" && lobby}
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
-
+      <WaitingRoom />
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}
