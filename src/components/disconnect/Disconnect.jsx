@@ -40,11 +40,13 @@ export default function Disconnect() {
 
 
   return (
-    <main>
-      <Card className={classes.root} style={{ border: "solid black 1px", width: "315px" }} >
+    <main style={{display: "flex",
+      justifyContent: "center"
+      }}>
+      <Card className={classes.root} style={{ border: "solid black 1px", width: "315px", marginTop: "63px", justifyContent: "center" }} >
       <CardContent>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
-            <h3> Your oppenent disconnected!</h3>
+            <h3> Your opponent disconnected!</h3>
             <h4>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mood-sad" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#3F51B5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z"/>

@@ -9,7 +9,8 @@ const {
   checkEmailTaken,
   createUser,
   getLeaderboard,
-  getDebateCount
+  getDebateCount,
+  postLikes
 } = require('./databaseCalls.js');
 
 //bcrypt stuff
@@ -99,6 +100,22 @@ module.exports = (client) => {
     })
   })
 
+  router.post('/likes', function(req, res) {
+    // const room_log_id = req.body.room_log_id
+    // const user_id = req.body.user_id
+    // const agreement_rating = req.body.agreement_rating
+    console.log(req.body)
+    const likes = req.body.likes;
+    const room_id = req.body.room_id
+
+    postLikes({
+      likes,
+      room_id
+    }).then(res => {
+      return res.rows
+    })
+  })
+
 
 
   router.post('/agreement_ratings', function(req, res) {
@@ -163,20 +180,7 @@ module.exports = (client) => {
           .catch(error => {
             console.log(error.message, "problem");
           })
-        // if (result) {
-        
-        //   req.session.userID = userID;
-        //   console.log(userID, "userID in routes")
-        //   return res.send(data)
-        //   // return res.redirect('/')
-
-        // } else {
-        //   // TODO: Add a incorrect login page or something
-        //   return res.redirect('login/401');
-        // }
       });
-
-
   })
 
 
@@ -201,10 +205,7 @@ module.exports = (client) => {
       console.log('after bcrypot')
       createUser(client, req.body.email, req.body.firstName, req.body.lastName, req.body.username, hash, req.body.avatar_url)
         .then((sqlResponse) => {
-          console.log('after create user');
-          // console.log(sqlResponse.rows)
-          // Need to assign cookie
-          // req.session.userID = sqlResponse.rows;
+
 
           res.send(sqlResponse)
         })
