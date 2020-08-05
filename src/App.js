@@ -160,7 +160,7 @@ const App = () => {
             }}>
         <NavBar handleClickOpen={handleClickOpen} handleClose={handleClose}/>
       </header>
-      <WaitingRoom />
+      
       <div style={{ paddingTop: '0px'}}>
         {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
         {state.visualMode === "WAITING" && <WaitingRoom />}
