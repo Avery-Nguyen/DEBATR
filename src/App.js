@@ -43,20 +43,20 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
-// useEffect(() => {
-  //   axios.get('/api/login/check',  {})
-  //     .then((res) => {
-  //       if (res.data.success) {
-  //         dispatch({ type: 'SET_USERNAME', payload: res.data.username })
-  //         dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
-  //       }
-  //       console.log(res, 'res from login check')
-  //       return true
-  //     })
-  //     .catch((error) => {
-  //       console.error(error, "error from axios request")
-  //     })
-  // })
+  useEffect(() => {
+      axios.get('/api/login/check',  {})
+        .then((res) => {
+          if (res.data.success) {
+            dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+            dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+          }
+          console.log(res, 'res from persistent login check')
+          return true
+        })
+        .catch((error) => {
+          console.error(error, "error from axios request")
+        })
+    }, [dispatch])
 
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:3001";
@@ -66,12 +66,12 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
 
-  useEffect(() => {
-    // Assign random username for time being
-    if (state.username === undefined) {
-      dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
-    }
-  }, [dispatch, state.username])
+  // useEffect(() => {
+  //   // Assign random username for time being
+  //   if (state.username === undefined) {
+  //     dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
+  //   }
+  // }, [dispatch, state.username])
 
   useEffect(() => {
     if (state.currentSocket) {
@@ -160,13 +160,14 @@ const App = () => {
             }}>
         <NavBar handleClickOpen={handleClickOpen} handleClose={handleClose}/>
       </header>
-      {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
-      {state.visualMode === "WAITING" && <WaitingRoom />}
-      {state.visualMode === "LOBBY" && lobby}
-      {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
-      {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
-      {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
-      
+      <div style={{ paddingTop: '650px'}}>
+        {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
+        {state.visualMode === "WAITING" && <WaitingRoom />}
+        {state.visualMode === "LOBBY" && lobby}
+        {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
+        {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
+        {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
+      </div>
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}

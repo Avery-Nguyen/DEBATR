@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateRoom({ handleCloseCreateRoom }) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
+  const [topicID, setTopicID] = useState("")
   const [stance, setStance] = useState("")
   const [options, setOptions] = useState([])
 
@@ -84,6 +85,16 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
       })
 
       handleCloseCreateRoom();
+    // setRoomList([...roomList, testRoom])
+    console.log('Sending topic and stance and topicID: ', topic, stance, topicID)
+    state.currentSocket.emit('createRoom', {
+      roomName: randRoomName,
+      userName: state.username,
+      userID: state.userID,
+      topicID,
+      topic,
+      stance
+    })
 
     }
     
@@ -96,9 +107,16 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
       });
   }, [])
 
-  const topicOptions = options.map(topic =>
-    <option value={topic.question}>{topic.question}</option>
+  const topicOptions = options.map(topic =>{
+    return <option value={topic.id}>{topic.question}</option>
+  }
   )
+
+  const handleChange = function(id) {
+    const question = options.find((option) => option.id === parseInt(id))
+    setTopic(question.question)
+    setTopicID(parseInt(id))
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -126,9 +144,12 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
             autoFocus
             required
           >Topic</InputLabel>
-          <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
-            {/* TODO: Add topic_ids when we render with map! */}
-            <option aria-label="None" value="" />
+          <Select native defaultValue="" id="grouped-native-select" onChange={(event, a,b,c) => {
+            // debugger;
+            return handleChange(event.target.value)}}>
+           
+           {/* TODO: Add topic_ids when we render with map! */}
+           <option aria-label="None" value="" />
             {topicOptions}
           </Select>
         </FormControl>

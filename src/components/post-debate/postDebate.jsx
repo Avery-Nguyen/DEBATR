@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import UserRating from '../partials/controlledRating';
 import DiscreteSlider from '../partials/slider';
 import Avatar from '@material-ui/core/Avatar';
@@ -42,33 +42,45 @@ export default function PostDebate({activeRoomState}) {
   const [state, dispatch] = useStore(); 
   const [rating, setRating] = useState(null);
   const [points, setPoints] = useState(50);
+  const [fromUserID, setFromUserID] = useState(null)
+  console.log("PostDebate -> fromUserID", fromUserID)
+  const [toUserID, setToUserID] = useState(null)
+  console.log("PostDebate -> toUserID", toUserID)
 
   const classes = useStyles();
-
+  useEffect(() => {
+    if (state.username === activeRoomState.host) {
+      setToUserID(activeRoomState.contender_id);
+      setFromUserID(activeRoomState.host_id);
+    } else {
+      setToUserID(activeRoomState.host_id);
+      setFromUserID(activeRoomState.contender_id);
+    }
+  }, [activeRoomState.contender_id, activeRoomState.host_id, state.username, activeRoomState.host])
+  
 
   const submitRatingToDB = () => {
-    let toUser;
-    let fromUser;
+
     let agreePoints;
     if (state.username === activeRoomState.host) {
-      toUser = activeRoomState.contender_id
-      fromUser = activeRoomState.host_id
+      setToUserID(activeRoomState.contender_id);
+      setFromUserID(activeRoomState.host_id);
       agreePoints = 100 - points;
     } else {
-      toUser = activeRoomState.host_id
-      fromUser = activeRoomState.contender_id
+      setToUserID(activeRoomState.host_id);
+      setFromUserID(activeRoomState.contender_id);
       agreePoints = points
     }
     const ratingPost = axios.post('/api/users/ratings', {
-      from_user_id: state.username,
-      to_user_id : toUser,
+      from_user_id: state.userID,
+      to_user_id : toUserID,
       rating,
       points:100+points
     })
 
     const agreementRatingPost = axios.post('/api/agreement_ratings', {
       room_log_id: activeRoomState.game_id,
-      user_id: fromUser,
+      user_id: fromUserID,
       agreement_rating: agreePoints
     })
 
