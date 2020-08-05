@@ -37,7 +37,7 @@ export default function UserCard() {
           Andy Lindsay
         </Typography>
         <UserRating />
-        <p>69 debates</p>
+        <p>Probably be props.totaldebates 69 debates</p>
         <br></br>
         <p>7.88 Debate Average</p>
       </CardContent>

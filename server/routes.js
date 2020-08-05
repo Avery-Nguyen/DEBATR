@@ -108,12 +108,10 @@ module.exports = (client) => {
     postLikes(
       client,
       data
-    ).then(res => {
-      console.log(res, 'in routes')
-      return res.json()
-      .catch((error) => {
-        console.log(error)
-      })
+    ).then(data => {
+      // console.log(res, 'in routes')
+      res.send(data)
+    
     })
   })
 

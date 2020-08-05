@@ -67,7 +67,7 @@ const postLikes = (client, data) => {
   RETURNING *;
   `, [data.room_id])
       .then(res => {
-        console.log('Response from SQL', res.rows);
+        // console.log('Response from SQL', res.rows);
         return res.rows;
       });
   }
@@ -80,7 +80,7 @@ const postLikes = (client, data) => {
    RETURNING *;
    `, [data.room_id])
       .then(res => {
-        console.log('Response from SQL', res.rows);
+        // console.log('Response from SQL', res.rows);
         return res.rows;
       });
   }
