@@ -59,7 +59,10 @@ export default function PastDebate() {
   }
 
   return (
-    <div className={classes.root} style={{marginTop: '-1px'}}>
+    <div className={classes.root} style={{
+      marginTop: '-1px', 
+      width: '100%',
+      marginLeft: "20px"}}>
       <Grid container spacing={2}>
         <Grid container item xs={12} spacing={3} margin='24px' style={{display: "flex"}}>
           <FormRow />

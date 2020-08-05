@@ -79,6 +79,7 @@ export default function LeaderBoard() {
             </TableBody>
           </Table>
         </div>
+
         <div style={{ display: 'block' }}>
           <h1>Most Popular Topics</h1>
           <br></br>

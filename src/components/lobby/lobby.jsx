@@ -11,9 +11,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 0,
     margin: '20px',
+    // marginTop: "150px"
   },
   paper: {
-    padding: theme.spacing(1),
+    padding: "15px",
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -121,7 +122,7 @@ export default function Lobby({roomState}) {
 
   return (
     <div className={classes.root} >
-      <Grid container spacing={2} style={{marginTop: "400px"}}>
+      <Grid container spacing={2} style={{marginTop: "25px"}}>
         <Grid container item xs={12} spacing={3} margin='24px' style={{display: "flex"}}>
           <FormRow />
         </Grid>
