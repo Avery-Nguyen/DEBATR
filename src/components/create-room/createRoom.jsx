@@ -102,17 +102,17 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
       <Box mt={2}>
       </Box>
       <div className={classes.paper}>
-        {/* <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/> */}
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" />
-          <line x1="8" y1="21" x2="16" y2="21" />
-          <line x1="12" y1="17" x2="12" y2="21" />
-          <line x1="7" y1="4" x2="17" y2="4" />
-          <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
-          <circle cx="5" cy="9" r="2" />
-          <circle cx="19" cy="9" r="2" />
-        </svg>
-        <FormControl required className={classes.formControl} style={{
+         {/* <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/> */}
+         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z"/>
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+            <line x1="7" y1="4" x2="17" y2="4" />
+            <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
+            <circle cx="5" cy="9" r="2" />
+            <circle cx="19" cy="9" r="2" />
+          </svg>
+        <FormControl className={classes.formControl} style={{
           marginTop: '15px',
         }}>
           <InputLabel htmlFor="grouped-native-select"
