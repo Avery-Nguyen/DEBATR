@@ -59,9 +59,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateRoom({ handleCloseCreateRoom }) {
   const [state, dispatch] = useStore();
-  const [topic, setTopic] = useState("")
+  const [topic, setTopic] = useState([])
+  console.log("CreateRoom -> topic", typeof topic[0])
+  // console.log("CreateRoom -> topic", JSON.parse(topic))
+  console.log("CreateRoom -> topic", Array.isArray(topic))
+  
   const [stance, setStance] = useState("")
   const [options, setOptions] = useState([])
+  console.log("CreateRoom -> options", options)
+ 
+
 
 
 
@@ -75,10 +82,14 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
 
     // setRoomList([...roomList, testRoom])
     console.log('Sending topic and stance: ', topic, stance)
+    const topicParse = JSON.parse('[' + topic + ']')
+    console.log('TOPIC PARSE!!!', topicParse)
     state.currentSocket.emit('createRoom', {
       roomName: randRoomName,
       userName: state.username,
-      topic: topic,
+      userID: state.userID,
+      topic: topicParse[0],
+      topicID: topicParse[1],
       stance: stance
     })
 
@@ -88,12 +99,13 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   useEffect(() => {
     axios.get('/api/topics')
       .then((data) => {
+        // console.log('res from topics request', data.data)
         setOptions(data.data.topics)
       });
   }, [])
 
   const topicOptions = options.map(topic =>
-    <option value={topic.question}>{topic.question}</option>
+    <option value={[topic.question, topic.id]} data-topicid={topic.id} >{topic.question}</option>
   )
 
   return (
@@ -121,7 +133,11 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
             fullWidth
             autoFocus
           >Topic</InputLabel>
-          <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
+          <Select native defaultValue="" id="grouped-native-select" onChange={(event) => {
+            console.log('Change topic', event.target.getAttribute('data-topicid'))
+            setTopic(event.target.value)
+            
+            }}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
             {topicOptions}

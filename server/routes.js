@@ -99,8 +99,6 @@ module.exports = (client) => {
     })
   })
 
-
-
   router.post('/agreement_ratings', function(req, res) {
     const room_log_id = req.body.room_log_id
     const user_id = req.body.user_id
@@ -116,7 +114,6 @@ module.exports = (client) => {
   })
 
   router.get('/login/check', function(req,res) {
-    
     if (req.session.userID) {
       res.json({
         success: true,
@@ -131,15 +128,21 @@ module.exports = (client) => {
     }
   })
 
+  router.get('/logout', function(req, res) {
+    req.session.userID = null;
+    req.session.username = null;
+
+    return res.send('success')
+  })
+
   router.post('/login', function(req, res) {
     const loginInfo = req.body;
-
     getUserInfoByEmail(client, loginInfo.email)
       .then(data => {
         console.log(data, "should be user object")
-        username = data[0].username;
-        userID = data[0].id;
-        password = data[0].password
+        const username = data[0].username;
+        const userID = data[0].id;
+        const password = data[0].password
 
         if (!userID) {
           console.log('error with userID')
@@ -163,23 +166,8 @@ module.exports = (client) => {
           .catch(error => {
             console.log(error.message, "problem");
           })
-        // if (result) {
-        
-        //   req.session.userID = userID;
-        //   console.log(userID, "userID in routes")
-        //   return res.send(data)
-        //   // return res.redirect('/')
-
-        // } else {
-        //   // TODO: Add a incorrect login page or something
-        //   return res.redirect('login/401');
-        // }
       });
-
-
   })
-
-
 
   router.post('/register', function(req, res) {
     if (req.body.email === "" || req.body.password === "") {

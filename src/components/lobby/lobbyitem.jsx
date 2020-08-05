@@ -93,7 +93,8 @@ export default function LobbyItem({roomDetails}) {
 
     state.currentSocket.emit('joinRoom', {
       roomName : roomDetails.name,
-      userName : state.username
+      userName : state.username,
+      userID : state.userID
     })
     // setOpenStage(true);
   };

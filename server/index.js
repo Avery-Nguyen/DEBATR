@@ -155,19 +155,22 @@ class Room {
         io.to(this.name).emit('unMute', this.host)
         io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
         // Post the game record to the database.
-        // this.postGameToDatabase();
-        // io.to(this.name).emit('gameOver', null)
+        this.postGameToDatabase();
+
+        // Ends the game for the user - Brings up post-debtate review screen
+        io.to(this.name).emit('gameOver', null)
         })
   }
 
   postGameToDatabase() {
     // use function imported from databaseCalls.js
-    postResultsToDatabase({
+    postResultsToDatabase(db, {
       topic_id: this.topic_id,
       host_id: this.host_id,
       contender_id: this.contender_id,
     }).then((res) => {
       console.log("Response from SQL server after posting: ", res);
+      console.log("Response from SQL server after posting: ", res.rows);
     });
   }
 }
@@ -203,8 +206,9 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("createRoom", function (data) {
     console.log(
-      `Request to Create ${data.roomName} by ${data.userName} received.`
+      `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
     );
+    
 
     // Socket Joins the 'socket'room'
     socket.leave('lobby');
@@ -215,10 +219,13 @@ io.sockets.on("connection", function (socket) {
 
     if (data.stance) {
       roomList.roomList[data.roomName]["host"] = data.userName;
+      roomList.roomList[data.roomName]["host_id"] = data.userID;
     } else {
       roomList.roomList[data.roomName]["contender"] = data.userName;
+      roomList.roomList[data.roomName]["contender_id"] = data.userID;
     }
-
+    
+    roomList.roomList[data.roomName]["topic_id"] = data.topicID;
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate();
     console.log(`Current roomList is ${roomList.allRooms}`);
@@ -253,8 +260,10 @@ io.sockets.on("connection", function (socket) {
     // Add to room list
     if (roomList.roomList[data.roomName]["host"]) {
       roomList.roomList[data.roomName]["contender"] = data.userName;
+      roomList.roomList[data.roomName]["contender_id"] = data.userID;
     } else if (roomList.roomList[data.roomName]["contender"]) {
       roomList.roomList[data.roomName]["host"] = data.userName;
+      roomList.roomList[data.roomName]["host_id"] = data.userID;
     }
 
     roomList.socketDirectory[socket.id]=data.roomName;

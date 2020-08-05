@@ -13,7 +13,7 @@ export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  console.log("Debater Stage -> state participants", participants)
+  // console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
@@ -191,7 +191,7 @@ export default function Stage({ activeRoomState }) {
     } , [active, time]);
 
 
-  console.log('Remote Participants from Debater Stage: ', remoteParticipants);
+  // console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
   return (
     <main> 
