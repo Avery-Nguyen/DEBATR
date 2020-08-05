@@ -29,9 +29,36 @@ import axios from 'axios';
 // import getRoomRecords from '../../server/databaseCalls'
 import Stage from '../stage/stage'
 
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     minwidth: "345px",
+//     display: "block"
+//   },
+//   media: {
+//     height: 0,
+//     paddingTop: '56.25%', // 16:9
+//   },
+//   expand: {
+//     transform: 'rotate(0deg)',
+//     marginLeft: 'auto',
+//     transition: theme.transitions.create('transform', {
+//       duration: theme.transitions.duration.shortest,
+//     }),
+//   },
+//   expandOpen: {
+//     transform: 'rotate(180deg)',
+//   },
+//   avatar: {
+//     backgroundColor: 'red[500]',
+//     padding: '2px',
+//   },
+// }));
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    maxWidth: '345px',
+    minwidth: "345px",
+    display: "block"
   },
   media: {
     height: 0,
@@ -104,10 +131,10 @@ export default function PastDebateItem(props) {
 
   return (
     <Card className={classes.root} style={{
-      border: "solid rgb(255,107,107) 3px",
+      // border: "solid rgb(255,107,107) 3px",
       backgroundColor: "rgb(241,241,241)",
       borderRadius: "30px",
-      minWidth: "345px"
+      minWidth: "315px"
     }}>
       <CardHeader
         avatar={
@@ -140,6 +167,9 @@ export default function PastDebateItem(props) {
         }
 
       />
+      {/* <div class="inner">
+            <p>Live</p>
+        </div> */}
       <CardActions disableSpacing style={{ display: 'flex', justifyContent: 'space-between' }}>
         <IconButton aria-label="add to favorites">
           <ThumbUpIcon onClick={addLikes('like', props.room_id)} />

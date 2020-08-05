@@ -132,7 +132,7 @@ export default function LobbyItem({roomDetails}) {
   if (roomDetails) {
     return (
       <Card className={classes.root} style={{
-        border: "solid rgb(0,238,40) 3px", 
+        // border: "solid rgb(0,238,40) 3px", 
         backgroundColor: "rgb(241,241,241)", 
         borderRadius: "30px"
         }}>
@@ -150,10 +150,13 @@ export default function LobbyItem({roomDetails}) {
               </Dialog>
             </div>
           }
+          
           title={roomDetails.topic}
           subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
         />
-
+        <div class="inner" style={{marginLeft: "10px"}}>
+            <p>Live</p>
+        </div>
         <CardActions disableSpacing>
           {roomDetails.host && roomDetails.contender && <Button
             variant="contained" 
@@ -162,7 +165,7 @@ export default function LobbyItem({roomDetails}) {
               backgroundColor: "rgb(252, 232, 76)",
               borderRadius: "30px"
               }} 
-            onClick={handleClickOpenSpectate}>Spectate Stage
+            onClick={handleClickOpenSpectate}>Spectator Stage
             </Button>}
           {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <Button 
             variant="contained" 
@@ -174,8 +177,6 @@ export default function LobbyItem({roomDetails}) {
             onClick={handleClickOpenStage}>Enter Stage
             </Button>}
             
-          
-          
           <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
             <Stage />
             <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">

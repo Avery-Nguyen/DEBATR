@@ -3,3 +3,28 @@
   min-width: 345px;
   max-width: 170px;
 }
+
+/* @-webkit-keyframes pulse {
+  0% { box-shadow:0 0 8px rgb(255,107,107), inset 0 0 8px rgb(255,107,107); }
+  50% { box-shadow:0 0 16px rgb(255,107,107), inset 0 0 14px rgb(255,107,107); }
+  100% { box-shadow:0 0 8px rgb(255,107,107), inset 0 0 8px rgb(255,107,107); }
+}
+
+.inner {
+  background-color:transparent;
+  width:50px;
+  height:50px;
+  border-radius:50px;
+  box-shadow: 0 0 8px rgb(255,107,107), inset 0 0 8px rgb(255,107,107);
+  -webkit-animation: pulse 2s linear 1s infinite;
+}
+.inner p {
+  display:block;
+  text-align: center;
+  line-height: 50px;
+  font-family:sans-serif;
+  font-weight:100;
+  font-size:18px;
+  color: rgb(255,107,107);
+  text-shadow: 0 0 4px rgb(255,107,107);
+} */
