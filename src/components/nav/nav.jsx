@@ -21,7 +21,7 @@ import Slide from '@material-ui/core/Slide';
 // import DialogContent from '@material-ui/core/DialogContent';
 // import DialogContentText from '@material-ui/core/DialogContentText';
 // import DialogTitle from '@material-ui/core/DialogTitle';
-
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -81,7 +81,36 @@ export default function NavBar(props) {
   };
 
   const handleLogout = () => {
-    dispatch({ type: 'SET_USERNAME', payload: null })
+    if(state.visualMode !== 'LOBBY' && state.visualMode !== 'SPECTATOR' ) {
+      dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
+      dispatch({ type: 'SET_TOKEN', payload: null })
+      state.currentSocket.emit('leaveRoom', {
+        roomName : state.currentRoom,
+        userName : state.username
+      })
+    } else if (state.visualMode !== 'LOBBY' && state.visualMode === 'SPECTATOR') {
+      dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
+      state.currentSocket.emit('leaveRoomSpectator', {
+        roomName : state.currentRoom,
+        userName : state.username
+      })
+    }
+
+    axios.get('/api/logout', {})
+      .then((res) => {
+        console.log('response from logout', res)
+        if (res.data === 'success') {
+          dispatch({ type: 'SET_USERNAME', payload: null })
+          dispatch({ type: 'SET_USER_ID', payload: null })
+        }
+
+        // This is cheap but it works
+        window.location.reload();
+        return true
+      })
+      .catch((error) => {
+        console.error(error, "error from axios request")
+      })
   }
 
     return (
@@ -132,12 +161,12 @@ export default function NavBar(props) {
                 onClose={handleCloseCreateRoom}
               >
                 <CreateRoom
-                handleCloseCreateRoom={handleCloseCreateRoom}
-                 />
+                  handleCloseCreateRoom={handleCloseCreateRoom}
+                />
               </Dialog>
               <Typography variant="h7" className={classes.title} color="black">
                 Logged in as: {state.username}
-            </Typography>
+              </Typography>
               <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </div>
 : 
@@ -168,9 +197,9 @@ export default function NavBar(props) {
                 />
               </Dialog>
             </div>
-            }
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
+          }
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 }

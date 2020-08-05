@@ -42,16 +42,19 @@ const getDebateCount = (client) => {
 
 const postResultsToDatabase = (client, data) => {
   // Get topic ID from room state?
+  console.log('data to postResultsToDatabase', data)
 
   // Query to get host_id and contender id?
   return client.query(`
   INSERT INTO room_logs (topic_id, host_id, contender_id) 
-  VALUES ($1, $2, $3);
+  VALUES ($1, $2, $3)
+  RETURNING id, date_time;
   `, [data.topic_id, data.host_id, data.contender_id])
     .then(res => {
-      // console.log('Response from SQL', res);
+      console.log('Response from SQL after posting', res);
       return res.rows;
-    });
+    })
+    .catch(err => console.log(err))
 }
 
 const postLikes = (client, data) => {
@@ -88,17 +91,19 @@ const postLikes = (client, data) => {
 
 
 const postUserRating = (client, data) => {
+  console.log('Data in postUserRating', data)
   return client.query(`
   INSERT INTO ratings (from_user_id, to_user_id, rating, points) 
-  VALUES ($1, $2, $3);
+  VALUES ($1, $2, $3, $4);
   `, [data.from_user_id, data.to_user_id, data.rating, data.points])
-    .then(res => {
-      // console.log('Response from SQL', res);
-      return res.rows;
-    });
+  .then(res => {
+    // console.log('Response from SQL', res);
+    return res.rows;
+  });
 }
 
 const postAgreementRating = (client, data) => {
+  console.log('Data in postAgreementRating', data)
   return client.query(`
   INSERT INTO agreement_ratings (room_log_id, user_id, agreement_rating) 
   VALUES ($1, $2, $3);

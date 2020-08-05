@@ -13,7 +13,7 @@ export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  console.log("Debater Stage -> state participants", participants)
+  // console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
@@ -85,6 +85,7 @@ export default function Stage({ activeRoomState }) {
         state.currentSocket.off("unMute")
         state.currentSocket.off("disconnect")
         state.currentSocket.off("gameOver")
+        state.currentSocket.off("gameCommand")
         state.currentSocket.off("leaveStage")
       }
     })
@@ -188,10 +189,13 @@ export default function Stage({ activeRoomState }) {
         clearTimeout(timer)
       
       }
+
+      return () => clearTimeout(timer);
+      // clearTimeout(timer)
     } , [active, time]);
 
 
-  console.log('Remote Participants from Debater Stage: ', remoteParticipants);
+  // console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
   return (
     <main> 

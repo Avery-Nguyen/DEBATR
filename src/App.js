@@ -44,20 +44,20 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
-// useEffect(() => {
-  //   axios.get('/api/login/check',  {})
-  //     .then((res) => {
-  //       if (res.data.success) {
-  //         dispatch({ type: 'SET_USERNAME', payload: res.data.username })
-  //         dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
-  //       }
-  //       console.log(res, 'res from login check')
-  //       return true
-  //     })
-  //     .catch((error) => {
-  //       console.error(error, "error from axios request")
-  //     })
-  // })
+  useEffect(() => {
+      axios.get('/api/login/check',  {})
+        .then((res) => {
+          if (res.data.success) {
+            dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+            dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+          }
+          console.log(res, 'res from persistent login check')
+          return true
+        })
+        .catch((error) => {
+          console.error(error, "error from axios request")
+        })
+    }, [dispatch])
 
   useEffect(() => {
     const ENDPOINT = "http://127.0.0.1:3001";
@@ -141,8 +141,8 @@ const App = () => {
       </Dialog> */}
 
       <Lobby roomState={roomState} />
-      {/* <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
-      <span></span> */}
+      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
+      <span></span>
       <PastDebate />
     </main>
   )

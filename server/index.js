@@ -39,8 +39,8 @@ class Rooms {
     this.socketDirectory={}
   }
 
-  newRoom(name, topic, socketID) {
-    let r = new Room(name, topic);
+  newRoom(name, topic, socketID, topic_id) {
+    let r = new Room(name, topic, topic_id);
     this.roomList[r.name] = r;
     this.socketDirectory[socketID]=[r.name]
     return r;
@@ -48,10 +48,10 @@ class Rooms {
 
   delRoom(name) {
     // this.roomList[name] = null;
-    console.log('Deleteing', name)
-    console.log('org roomList: ', this.roomList)
+    console.log('Deleting room ', name)
+    // console.log('org roomList: ', this.roomList)
     delete this.roomList[name]
-    console.log('new roomList: ', this.roomList)
+    // console.log('new roomList: ', this.roomList)
   }
 
   get allRooms() {
@@ -72,7 +72,7 @@ class Rooms {
 // Could potentially do objects to but I think this is smarter
 // https://socket.io/docs/rooms/
 class Room {
-  constructor(name, topic) {
+  constructor(name, topic, topic_id=null) {
     this.name = name; //random string to connect to twilio room
     this.game_id = null;
     this.host = null; //username
@@ -81,7 +81,7 @@ class Room {
     this.contender_id = null;
     this.spectators = [];
     this.topic = topic;
-    this.topic_id = null;
+    this.topic_id = topic_id;
     this.status = "Waiting";
     this.hostPoints = 0;
     this.contenderPoints = 0;
@@ -143,6 +143,7 @@ class Room {
       })
       .then(() => this.sleep(intermissionTime * 1000))
       .then(() => {
+        this.postGameToDatabase();
         io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
         io.to(this.name).emit('unMute', this.contender)
         io.to(this.name).emit('mute', {
@@ -155,19 +156,27 @@ class Room {
         io.to(this.name).emit('unMute', this.host)
         io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
         // Post the game record to the database.
-        // this.postGameToDatabase();
-        // io.to(this.name).emit('gameOver', null)
+
+        // Ends the game for the user - Brings up post-debtate review screen
+        io.to(this.name).emit('gameOver', null)
         })
   }
 
   postGameToDatabase() {
     // use function imported from databaseCalls.js
-    postResultsToDatabase({
+    postResultsToDatabase(db, {
       topic_id: this.topic_id,
       host_id: this.host_id,
       contender_id: this.contender_id,
     }).then((res) => {
       console.log("Response from SQL server after posting: ", res);
+      this.game_id=res[0].id
+      io.to(this.name).emit(
+        "currentRoomUpdate",
+        roomList.roomList[this.name]
+      );
+      roomList.roomList[this.name].sendRoomUpdate()
+
     });
   }
 }
@@ -186,9 +195,7 @@ io.sockets.on("connection", function (socket) {
   rLString = JSON.stringify(roomList.allRooms);
   // Send room data to client that just connected.
   socket.emit("initialRoomList", rLString);
-  console.log('all sockets', Object.keys(io.sockets.sockets))
-
-  // console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
+  // console.log('all sockets', Object.keys(io.sockets.sockets))
 
   socket.on("disconnect", function() {
     if (roomList.socketDirectory[socket.id]) {
@@ -203,22 +210,24 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("createRoom", function (data) {
     console.log(
-      `Request to Create ${data.roomName} by ${data.userName} received.`
+      `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
     );
-
+    
     // Socket Joins the 'socket'room'
     socket.leave('lobby');
     socket.join(data.roomName);
     // Also create an instance of the room class.
-    roomList.newRoom(data.roomName, data.topic, socket.id);
+    roomList.newRoom(data.roomName, data.topic, socket.id, data.topicID);
     // Assign the username as host of the newly created class.
 
     if (data.stance) {
       roomList.roomList[data.roomName]["host"] = data.userName;
+      roomList.roomList[data.roomName]["host_id"] = data.userID;
     } else {
       roomList.roomList[data.roomName]["contender"] = data.userName;
+      roomList.roomList[data.roomName]["contender_id"] = data.userID;
     }
-
+    
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate();
     console.log(`Current roomList is ${roomList.allRooms}`);
@@ -241,9 +250,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("leaveRoomSpectator", function (data) {
     socket.leave(data.roomName);
     socket.join('lobby')
-
     roomList.sendRoomUpdate();
-
   })
 
   socket.on("joinRoom", function (data) {
@@ -253,8 +260,10 @@ io.sockets.on("connection", function (socket) {
     // Add to room list
     if (roomList.roomList[data.roomName]["host"]) {
       roomList.roomList[data.roomName]["contender"] = data.userName;
+      roomList.roomList[data.roomName]["contender_id"] = data.userID;
     } else if (roomList.roomList[data.roomName]["contender"]) {
       roomList.roomList[data.roomName]["host"] = data.userName;
+      roomList.roomList[data.roomName]["host_id"] = data.userID;
     }
 
     roomList.socketDirectory[socket.id]=data.roomName;

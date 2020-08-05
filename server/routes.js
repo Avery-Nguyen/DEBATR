@@ -90,7 +90,7 @@ module.exports = (client) => {
     const rating = req.body.rating
     const points = req.body.points
 
-    postUserRating({
+    postUserRating(client, {
       from_user_id,
       to_user_id,
       rating,
@@ -122,7 +122,7 @@ module.exports = (client) => {
     const user_id = req.body.user_id
     const agreement_rating = req.body.agreement_rating
 
-    postAgreementRating({
+    postAgreementRating(client, {
       room_log_id,
       user_id,
       agreement_rating,
@@ -132,7 +132,6 @@ module.exports = (client) => {
   })
 
   router.get('/login/check', function(req,res) {
-    
     if (req.session.userID) {
       res.json({
         success: true,
@@ -147,15 +146,21 @@ module.exports = (client) => {
     }
   })
 
+  router.get('/logout', function(req, res) {
+    req.session.userID = null;
+    req.session.username = null;
+
+    return res.send('success')
+  })
+
   router.post('/login', function(req, res) {
     const loginInfo = req.body;
-
     getUserInfoByEmail(client, loginInfo.email)
       .then(data => {
         console.log(data, "should be user object")
-        username = data[0].username;
-        userID = data[0].id;
-        password = data[0].password
+        const username = data[0].username;
+        const userID = data[0].id;
+        const password = data[0].password
 
         if (!userID) {
           console.log('error with userID')
@@ -181,8 +186,6 @@ module.exports = (client) => {
           })
       });
   })
-
-
 
   router.post('/register', function(req, res) {
     if (req.body.email === "" || req.body.password === "") {

@@ -13,7 +13,7 @@ export default function SpectatorStage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  console.log("SpectatorStage -> participants state", participants)
+  // console.log("SpectatorStage -> participants state", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
@@ -28,13 +28,13 @@ export default function SpectatorStage({ activeRoomState }) {
 
       state.currentSocket.on("gameOver", data => {
 
-        // state.currentSocket.emit('leaveRoom', {
-        //   roomName : state.currentRoom,
-        //   userName : state.username
-        // })
+        state.currentSocket.emit('leaveRoomSpectator', {
+          roomName : state.currentRoom,
+          userName : state.username
+        })
 
         dispatch({ type: 'SET_TOKEN', payload: null })
-        dispatch({ type: 'SET_VISUAL_MODE', payload: "GAME_OVER" })
+        dispatch({ type: 'SET_VISUAL_MODE', payload: "LOBBY" })
         dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
         disableMedia()
       })
@@ -111,8 +111,8 @@ export default function SpectatorStage({ activeRoomState }) {
     };
   }, [state.currentRoom, state.token]);
 
-  console.log("SpectatorStage -> activeRoomState.host", activeRoomState.host)
-  console.log("SpectatorStage -> activeRoomState.contender", activeRoomState.contender)
+  // console.log("SpectatorStage -> activeRoomState.host", activeRoomState.host)
+  // console.log("SpectatorStage -> activeRoomState.contender", activeRoomState.contender)
 
   const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host) || (p.identity === activeRoomState.contender))).map((participant) => {
     return (<Participant key={participant.sid} participant={participant} />)
@@ -125,7 +125,7 @@ export default function SpectatorStage({ activeRoomState }) {
     participant2 = remoteParticipants[1].identity
   }
 
-  console.log("from sepectator stage ---> rendered components", remoteParticipants);
+  // console.log("from sepectator stage ---> rendered components", remoteParticipants);
   function disableMedia() {
 
     if (room) {
@@ -136,10 +136,10 @@ export default function SpectatorStage({ activeRoomState }) {
           attachedElements.forEach(element => element.remove());
         });
       });
+      // To disconnect from a Room
+      room.disconnect();
     }
 
-    // To disconnect from a Room
-    room.disconnect();
 
   }
 
