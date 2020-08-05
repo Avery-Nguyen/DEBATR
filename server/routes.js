@@ -101,17 +101,14 @@ module.exports = (client) => {
   })
 
   router.post('/likes', function(req, res) {
-    // const room_log_id = req.body.room_log_id
-    // const user_id = req.body.user_id
-    // const agreement_rating = req.body.agreement_rating
-    console.log(req.body)
-    const likes = req.body.likes;
+    const likes = req.body.typeOfLike;
     const room_id = req.body.room_id
+    const data = {likes, room_id}
 
-    postLikes({
-      likes,
-      room_id
-    }).then(res => {
+    postLikes(
+      client,
+      data
+    ).then(res => {
       return res.rows
     })
   })

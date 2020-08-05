@@ -29,8 +29,8 @@ export default function TotalDebates() {
     ]).then((data) => {
       // console.log(data[0].data, "this is data in orders")
       // console.log(Object.values(data[0].data));
-      // console.log(data[0].count, "this is data in orders")
-      settotaldebates(data[0].data.count);
+      console.log(data[0].data[0].count, "this is data in orders")
+      settotaldebates(data[0].data[0].count);
     })
       .catch(error => {
         console.log(error.message, "problem");

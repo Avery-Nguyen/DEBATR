@@ -56,18 +56,34 @@ const postResultsToDatabase = (client, data) => {
 
 const postLikes = (client, data) => {
   // Get topic ID from room state?
-console.log(data);
-  // Query to get host_id and contender id?
-  return client.query(`
+console.log(data, 'data in postLikes');
+console.log(data.likes)
+
+ if (data.likes === 'likes'){
+     return client.query(`
   UPDATE room_logs 
-  SET $1 = $1 + 1
-  WHERE id = '$2';($1, $2);
-  `, [data.likes, data.room_id])
+  SET likes = likes + 1
+  WHERE id = $1
+  RETURNING *;
+  `, [data.room_id])
     .then(res => {
-      // console.log('Response from SQL', res);
+      console.log('Response from SQL', res.rows);
       return res.rows;
-    });
+    });}
+
+    if (data.likes === 'dislikes'){
+      return client.query(`
+   UPDATE room_logs 
+   SET dislikes = dislikes + 1
+   WHERE id = $1
+   RETURNING *;
+   `, [data.room_id])
+     .then(res => {
+       console.log('Response from SQL', res.rows);
+       return res.rows;
+     });}
 }
+
 
 const postUserRating = (client, data) => {
   return client.query(`
