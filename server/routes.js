@@ -109,7 +109,11 @@ module.exports = (client) => {
       client,
       data
     ).then(res => {
-      return res.rows
+      console.log(res, 'in routes')
+      return res.json()
+      .catch((error) => {
+        console.log(error)
+      })
     })
   })
 

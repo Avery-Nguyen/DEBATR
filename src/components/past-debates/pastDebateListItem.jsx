@@ -85,14 +85,15 @@ export default function PastDebateItem(props) {
   const [dislikes, setDislikes] = useState('0')
 
   const addLikes = (typeOfLike, room_id) => {
-    // console.log(typeOfLike, room_id)
+    console.log(typeOfLike, room_id)
     axios.post('/api/likes', {
       room_id,
-      typeOfLike,
+      typeOfLike
     })
       .then((res) => {
+        console.log('testing')
         console.log(res, 'res from pastdebatelist request')
-        console.log(res.data[0], 'res from sign-up request')
+        // console.log(res.data[0], 'res from sign-up request')
       })
       .catch((error) => {
         console.error(error, "error from axios request")

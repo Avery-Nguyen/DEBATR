@@ -41,8 +41,8 @@ CREATE TABLE room_logs (
   contender_id SERIAL NOT NULL REFERENCES users(id),
   video_url VARCHAR(255),
   date_time TIMESTAMP DEFAULT NOW()::timestamp,
-  likes SMALLINT,
-  dislikes SMALLINT
+  likes SMALLINT DEFAULT 0,
+  dislikes SMALLINT DEFAULT 0
 );
 
 DROP TABLE IF EXISTS agreement_ratings CASCADE;
