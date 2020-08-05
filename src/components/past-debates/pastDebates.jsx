@@ -28,6 +28,7 @@ export default function PastDebate() {
     Promise.all([
       axios.get(`/api/rooms`)
     ]).then((data) => {
+      console.log(data);
       setpastDebates(prev => [...prev, ...data[0].data]);
     })
       .catch(error => {
@@ -36,11 +37,13 @@ export default function PastDebate() {
   }, []);
 
   const pastDebate = pastDebates.map((debate) => {
-    // console.log(debate.question)
+    console.log(debate)
     return(    <Grid item xs={4}>
     <PastDebateItem 
     roomQuestion={debate.question}
     agreement={debate.agreement_rating}
+    likes={debate.likes}
+    dislikes={debate.dislikes}
     />
   </Grid>
     )

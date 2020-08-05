@@ -121,13 +121,13 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
             fullWidth
             autoFocus
           >Topic</InputLabel>
-          <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
+          <Select  native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
             {topicOptions}
           </Select>
         </FormControl>
-        <FormControl className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
+        <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
           <InputLabel htmlFor="grouped-select">Stance</InputLabel>
           <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
             <MenuItem value="">

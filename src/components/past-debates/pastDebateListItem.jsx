@@ -22,6 +22,8 @@ import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
+import './pastDebates.css'
+import axios from 'axios';
 
 
 // import getRoomRecords from '../../server/databaseCalls'
@@ -71,7 +73,7 @@ export default function PastDebateItem(props) {
   };
 
   //stage state logic - will need to change after
-  const [openStage, setOpenStage] = React.useState(false);
+  const [openStage, setOpenStage] = useState(false);
   const handleClickOpenStage = () => {
     setOpenStage(true);
   };
@@ -79,22 +81,34 @@ export default function PastDebateItem(props) {
     setOpenStage(false);
   };
 
+  const [likes, setLikes] = useState('0')
+  const [dislikes, setDislikes] = useState('0')
+
+  const addLikes = (typeOfLike, room_id) => {
+      axios.post('/api/likes', {
+        room_id,
+        typeOfLike
+      })
+        .then((res) => {
+          console.log(res, 'res from sign-up request')
+          console.log(res.data[0].username, 'res from sign-up request')
+        })
+        .catch((error) => {
+          console.error(error, "error from axios request")
+        })
+    }
+  
 
 
-  // console.log(getRoomRecords());
-
-  // pastDebates = getRoomRecords();
-
-  // pastDebates.map((e) => 
-  // )
+// console.log(props)
 
   return (
-    <Card className={classes.root} style={{ 
-      border: "solid rgb(255,107,107) 3px", 
-      backgroundColor: "rgb(241,241,241)", 
-      borderRadius: "30px",  
-      minWidth: "345px" 
-      }}>
+    <Card className={classes.root} style={{
+      border: "solid rgb(255,107,107) 3px",
+      backgroundColor: "rgb(241,241,241)",
+      borderRadius: "30px",
+      minWidth: "345px"
+    }}>
       <CardHeader
         avatar={
           <div>
@@ -111,9 +125,9 @@ export default function PastDebateItem(props) {
         }
         title={props.roomQuestion}
         subheader={"Agreement Rating: " + props.agreement}
-        avatar={
+        rightAvatar={
           <div>
-            <Avatar onClick={handleClickOpen} img="test" />
+            <Avatar onClick={handleClickOpen} />
             <Dialog
               open={open}
               TransitionComponent={Transition}
@@ -124,11 +138,12 @@ export default function PastDebateItem(props) {
             </Dialog>
           </div>
         }
+
       />
-      <CardActions disableSpacing style={{display:'flex', justifyContent:'space-between'}}>
+      <CardActions disableSpacing style={{ display: 'flex', justifyContent: 'space-between' }}>
         <IconButton aria-label="add to favorites">
-          <ThumbUpIcon />
-          <p>78</p>
+          <ThumbUpIcon onClick={addLikes('like', props.room_id)} />
+          <p>{props.likes}</p>
         </IconButton>
 
         <Button variant="contained"
@@ -136,9 +151,9 @@ export default function PastDebateItem(props) {
           onClick={() => console.log('url callback will go here')}>
           Watch
           </Button>
-          <IconButton aria-label="share">
+        <IconButton aria-label="share">
           <ThumbDownIcon />
-          <p>5</p>
+          <p>{props.dislikes}</p>
         </IconButton>
 
         <Dialog fullScreen open={openStage} TransitionComponent={Transition}>

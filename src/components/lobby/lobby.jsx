@@ -121,7 +121,7 @@ export default function Lobby({roomState}) {
 
   return (
     <div className={classes.root} >
-      <Grid container spacing={2} >
+      <Grid container spacing={2} style={{marginTop: "400px"}}>
         <Grid container item xs={12} spacing={3} margin='24px' style={{display: "flex"}}>
           <FormRow />
         </Grid>

@@ -2,10 +2,15 @@
 const getRoomRecords = (client, limit = 10) => {
   console.log('INSIDE GET ROOM RECORDS')
 
-  return client.query(`SELECT * FROM room_logs
+  return client.query(`SELECT room_logs.*, sum(agreement_ratings.agreement_rating) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
+  FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
+  JOIN agreement_ratings on room_logs.id = agreement_ratings.room_log_id
+  JOIN users AS Host ON room_logs.host_id = Host.id
+  JOIN users AS Contender ON room_logs.contender_id = Contender.id
+  GROUP BY room_logs.id, topics.question, host.username, contender.username 
   ORDER BY room_logs.date_time DESC
-  LIMIT $1;
+  limit $1;
   `, [limit])
     .then((res) => {
       console.log(`res from sql ${res}`)
@@ -43,6 +48,21 @@ const postResultsToDatabase = (client, data) => {
   INSERT INTO room_logs (topic_id, host_id, contender_id) 
   VALUES ($1, $2, $3);
   `, [data.topic_id, data.host_id, data.contender_id])
+    .then(res => {
+      // console.log('Response from SQL', res);
+      return res.rows;
+    });
+}
+
+const postLikes = (client, data) => {
+  // Get topic ID from room state?
+console.log(data);
+  // Query to get host_id and contender id?
+  return client.query(`
+  UPDATE room_logs 
+  SET $1 = $1 + 1
+  WHERE id = '$2';($1, $2);
+  `, [data.likes, data.room_id])
     .then(res => {
       // console.log('Response from SQL', res);
       return res.rows;
@@ -103,7 +123,7 @@ const createUser = (client, email, first_name, last_name, username, password, av
   INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
   VALUES ($1, $2, $3, $4, $5, $6)
   RETURNING *;
-  `, [ first_name, last_name, email, username, password, avatar_url])
+  `, [first_name, last_name, email, username, password, avatar_url])
     .then(res => {
       return res.rows
     })
@@ -119,5 +139,6 @@ module.exports = {
   checkEmailTaken,
   createUser,
   getLeaderboard,
-  getDebateCount
+  getDebateCount,
+  postLikes
 }
