@@ -7,14 +7,14 @@ import Participant from '../../Participant'
 import {useStore} from '../../Store'
 import Video from 'twilio-video';
 
-const startTime = 5.0;
+
 
 export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   // console.log("Debater Stage -> state participants", participants)
-  const [time, setTime] = useState(startTime);
+  const [time, setTime] = useState(0);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
 

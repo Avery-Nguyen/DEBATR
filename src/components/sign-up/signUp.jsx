@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useStore } from '../../Store'
 
@@ -45,7 +45,7 @@ export default function SignUp(props) {
   const [lastName, setlastName] = useState('')
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
-  const [state, dispatch] = useStore();
+  const [dispatch] = useStore();
 
 
   const submitRegistration = (event) => {

@@ -48,7 +48,7 @@ export default function SignIn(props) {
   const classes = useStyles();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [state, dispatch] = useStore();
+  const [dispatch] = useStore();
  
   const submitLogin = (event) => {
     event.preventDefault();
@@ -146,8 +146,8 @@ export default function SignIn(props) {
 }
 
 
-//Remember me logic
-{/* <FormControlLabel
-control={<Checkbox value="remember" color="primary" />}
-label="Remember me" */}
-{/* /> */ }
+// //Remember me logic
+// {/* <FormControlLabel
+// control={<Checkbox value="remember" color="primary" />}
+// label="Remember me" */}
+// {/* /> */ }

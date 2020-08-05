@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 // import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -195,10 +195,4 @@ export default function LobbyItem({roomDetails}) {
 
 
 
-{/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
-<Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
-  <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
-    <CloseIcon />
-  </IconButton>
-  <Dashboard />
-</Dialog> */}
+

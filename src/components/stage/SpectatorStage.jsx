@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import Typography from '@material-ui/core/Typography';
+// import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Participant from '../../Participant'
 import { useStore } from '../../Store'
 import Video from 'twilio-video';
 
-const startTime = 5.0;
+
 
 export default function SpectatorStage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   // console.log("SpectatorStage -> participants state", participants)
-  const [time, setTime] = useState(startTime);
+  const [time, setTime] = useState(0);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
 

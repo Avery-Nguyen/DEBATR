@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import LobbyItem from '../lobby/lobbyitem'
+// import Avatar from '@material-ui/core/Avatar';
+// import LobbyItem from '../lobby/lobbyitem'
 import PastDebateItem from './pastDebateListItem'
 
 const useStyles = makeStyles((theme) => ({

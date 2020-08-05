@@ -1,32 +1,32 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import ReactDOM from 'react-dom';
+// import Button from '@material-ui/core/Button';
+// import Dialog from '@material-ui/core/Dialog';
+// import Slide from '@material-ui/core/Slide';
+// import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
 import SpectatorStage from './components/stage/SpectatorStage';
 // import Rating from './components/partials/rating'
 // import DiscreteSlider from './components/partials/slider'
 // import UserCard from './components/user-card/userCard'
-import Dashboard from './components/dashboard/dashboard'
+// import Dashboard from './components/dashboard/dashboard'
 import Lobby from './components/lobby/lobby'
 import NavBar from './components/nav/nav'
 import PostDebate from './components/post-debate/postDebate'
 import './components/partials/slider.css'
 // import SocketContext from './SocketContext'
 import socketIOClient from "socket.io-client";
-import SignUp from './components/sign-up/signUp';
-import CreateRoom from './components/create-room/createRoom';
+// import SignUp from './components/sign-up/signUp';
+// import CreateRoom from './components/create-room/createRoom';
 import { useStore } from './Store'
 import Disconnect from './components/disconnect/Disconnect';
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 const App = () => {
   const [state, dispatch] = useStore();
@@ -116,28 +116,7 @@ const App = () => {
 
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
-      {/* <Button
-        style={{
-          color: "white",
-          backgroundColor: "rgb(64,81,182)",
-          border: "rgb(64,81,182) solid 1px",
-          borderRadius: "30px",
-          marginTop: '5px',
-          // maxWidth: '55px',
-          justifySelf: 'center'
-        }}
-        onClick={handleClickOpen}
-      >
-        Create Stage
-        </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-      >
-        <CreateRoom handleClose={handleClose} />
-      </Dialog> */}
+    
 
       <Lobby roomState={roomState} />
       <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
@@ -146,11 +125,6 @@ const App = () => {
     </main>
   )
 
-  const connectionError = (
-    <main>
-      <h1>your BUDDY left the game!</h1>
-    </main>
-  )
 
   return (
     <div className="app" >
