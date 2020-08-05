@@ -63,26 +63,30 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const [stance, setStance] = useState("")
   const [options, setOptions] = useState([])
 
-
-
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
 
   const submitCreateRoom = (vals) => {
-    const randRoomName = Math.random().toFixed(5).toString();
-    dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
-    dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
+    //put validation of form here
 
-    // setRoomList([...roomList, testRoom])
-    console.log('Sending topic and stance: ', topic, stance)
-    state.currentSocket.emit('createRoom', {
-      roomName: randRoomName,
-      userName: state.username,
-      topic: topic,
-      stance: stance
-    })
+    if (topic && stance) {
+      const randRoomName = Math.random().toFixed(5).toString();
+      dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
+      dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
 
-    handleCloseCreateRoom();
+      // setRoomList([...roomList, testRoom])
+      console.log('Sending topic and stance: ', topic, stance)
+      state.currentSocket.emit('createRoom', {
+        roomName: randRoomName,
+        userName: state.username,
+        topic: topic,
+        stance: stance
+      })
+
+      handleCloseCreateRoom();
+
+    }
+    
   }
 
   useEffect(() => {
@@ -102,16 +106,16 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
       <Box mt={2}>
       </Box>
       <div className={classes.paper}>
-         {/* <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/> */}
-         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z"/>
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
-            <line x1="7" y1="4" x2="17" y2="4" />
-            <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
-            <circle cx="5" cy="9" r="2" />
-            <circle cx="19" cy="9" r="2" />
-          </svg>
+        {/* <img alt="angry face" style={{borderRadius: "50%"}}src="https://i.imgur.com/2E7lUT0.jpg"/> */}
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+          <line x1="7" y1="4" x2="17" y2="4" />
+          <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
+          <circle cx="5" cy="9" r="2" />
+          <circle cx="19" cy="9" r="2" />
+        </svg>
         <FormControl className={classes.formControl} style={{
           marginTop: '15px',
         }}>
@@ -120,8 +124,9 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
             // margin="normal"
             fullWidth
             autoFocus
+            required
           >Topic</InputLabel>
-          <Select  native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
+          <Select native defaultValue="" id="grouped-native-select" onChange={(event) => setTopic(event.target.value)}>
             {/* TODO: Add topic_ids when we render with map! */}
             <option aria-label="None" value="" />
             {topicOptions}
@@ -144,7 +149,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
             color: "white",
             backgroundColor: "rgb(64,81,182)",
             marginTop: '25px',
-            borderRadius: "30px"
+            borderRadius: "30px",
           }}
         >Create Stage
       </Button>

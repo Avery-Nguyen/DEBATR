@@ -85,22 +85,23 @@ export default function PastDebateItem(props) {
   const [dislikes, setDislikes] = useState('0')
 
   const addLikes = (typeOfLike, room_id) => {
-      axios.post('/api/likes', {
-        room_id,
-        typeOfLike
+    // console.log(typeOfLike, room_id)
+    axios.post('/api/likes', {
+      room_id,
+      typeOfLike,
+    })
+      .then((res) => {
+        console.log(res, 'res from pastdebatelist request')
+        console.log(res.data[0], 'res from sign-up request')
       })
-        .then((res) => {
-          console.log(res, 'res from sign-up request')
-          console.log(res.data[0].username, 'res from sign-up request')
-        })
-        .catch((error) => {
-          console.error(error, "error from axios request")
-        })
-    }
-  
+      .catch((error) => {
+        console.error(error, "error from axios request")
+      })
+  }
 
 
-// console.log(props)
+
+  // console.log(props)
 
   return (
     <Card className={classes.root} style={{
@@ -142,7 +143,7 @@ export default function PastDebateItem(props) {
       />
       <CardActions disableSpacing style={{ display: 'flex', justifyContent: 'space-between' }}>
         <IconButton aria-label="add to favorites">
-          <ThumbUpIcon onClick={addLikes('like', props.room_id)} />
+          <ThumbUpIcon onClick={() => addLikes('likes', props.room_id)} />
           <p>{props.likes}</p>
         </IconButton>
 
@@ -152,7 +153,7 @@ export default function PastDebateItem(props) {
           Watch
           </Button>
         <IconButton aria-label="share">
-          <ThumbDownIcon />
+          <ThumbDownIcon onClick={() => addLikes('dislikes', props.room_id)} />
           <p>{props.dislikes}</p>
         </IconButton>
 

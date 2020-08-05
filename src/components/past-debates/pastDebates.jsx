@@ -37,13 +37,14 @@ export default function PastDebate() {
   }, []);
 
   const pastDebate = pastDebates.map((debate) => {
-    console.log(debate)
+    // console.log(debate)
     return(    <Grid item xs={4}>
     <PastDebateItem 
     roomQuestion={debate.question}
     agreement={debate.agreement_rating}
     likes={debate.likes}
     dislikes={debate.dislikes}
+    room_id={debate.id}
     />
   </Grid>
     )

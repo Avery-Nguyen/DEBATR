@@ -65,6 +65,7 @@ export default function SignUp(props) {
         props.handleClose();
       })
       .catch((error) => {
+        console.log(error)
         console.error(error, "error from axios request")
       })
   }
