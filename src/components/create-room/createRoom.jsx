@@ -61,7 +61,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [topicID, setTopicID] = useState("")
-  const [stance, setStance] = useState("")
+  const [stance, setStance] = useState(true)
   const [options, setOptions] = useState([])
 
   const classes = useStyles();
@@ -155,10 +155,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
         </FormControl>
         <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
           <InputLabel htmlFor="grouped-select">Stance</InputLabel>
-          <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
+          <Select defaultValue="For" id="grouped-select" onChange={event => setStance(event.target.value)}>
             <MenuItem value={true}>For</MenuItem>
             <MenuItem value={false}>Against</MenuItem>
           </Select>

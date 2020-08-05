@@ -236,6 +236,11 @@ export default function Stage({ activeRoomState }) {
             </div>
           </div>
         </div>
+
+        <div id="game-log" class="info-box">
+          <span><b>'Welcome to the Chatroom!'</b> Debate starts soon.</span>
+
+          </div>
         <footer style={{ backgroundColor: "rgb(64,81,182)", display:'flex' }}>
         <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
         </footer>
