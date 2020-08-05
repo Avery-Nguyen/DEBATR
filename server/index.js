@@ -175,6 +175,7 @@ class Room {
         "currentRoomUpdate",
         roomList.roomList[this.name]
       );
+      roomList.roomList[this.name].sendRoomUpdate()
 
     });
   }
@@ -194,9 +195,7 @@ io.sockets.on("connection", function (socket) {
   rLString = JSON.stringify(roomList.allRooms);
   // Send room data to client that just connected.
   socket.emit("initialRoomList", rLString);
-  console.log('all sockets', Object.keys(io.sockets.sockets))
-
-  // console.log('all rooms being sent: ', Object.keys(roomList.allRooms))
+  // console.log('all sockets', Object.keys(io.sockets.sockets))
 
   socket.on("disconnect", function() {
     if (roomList.socketDirectory[socket.id]) {
@@ -214,7 +213,6 @@ io.sockets.on("connection", function (socket) {
       `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
     );
     
-
     // Socket Joins the 'socket'room'
     socket.leave('lobby');
     socket.join(data.roomName);
@@ -252,9 +250,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("leaveRoomSpectator", function (data) {
     socket.leave(data.roomName);
     socket.join('lobby')
-
     roomList.sendRoomUpdate();
-
   })
 
   socket.on("joinRoom", function (data) {

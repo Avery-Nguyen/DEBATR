@@ -140,8 +140,8 @@ const App = () => {
       </Dialog> */}
 
       <Lobby roomState={roomState} />
-      {/* <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
-      <span></span> */}
+      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
+      <span></span>
       <PastDebate />
     </main>
   )
@@ -160,7 +160,7 @@ const App = () => {
             }}>
         <NavBar handleClickOpen={handleClickOpen} handleClose={handleClose}/>
       </header>
-      <div style={{ paddingTop: '650px'}}>
+      <div style={{ paddingTop: '0px'}}>
         {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
         {state.visualMode === "WAITING" && <WaitingRoom />}
         {state.visualMode === "LOBBY" && lobby}
