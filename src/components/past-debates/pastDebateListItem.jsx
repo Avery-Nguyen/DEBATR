@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -108,27 +108,35 @@ export default function PastDebateItem(props) {
     setOpenStage(false);
   };
 
-  const [likes, setLikes] = useState('0')
-  const [dislikes, setDislikes] = useState('0')
+  const [likes, setLikes] = useState(props.likes)
+  const [dislikes, setDislikes] = useState(props.dislikes)
 
   const addLikes = (typeOfLike, room_id) => {
-    // console.log(typeOfLike, room_id)
+    console.log(typeOfLike, room_id)
     axios.post('/api/likes', {
       room_id,
-      typeOfLike,
+      typeOfLike
     })
       .then((res) => {
-        console.log(res, 'res from pastdebatelist request')
-        console.log(res.data[0], 'res from sign-up request')
+        setLikes(res.data[0].likes);
+        setDislikes(res.data[0].dislikes);
+
+        console.log(likes, 'before');
+        console.log(res.data[0].likes, 'res likes ')
+        console.log(likes, 'after')
       })
       .catch((error) => {
         console.error(error, "error from axios request")
       })
   }
 
+  // useEffect(() => {
+  //   setLikes(likes);
+  //   setDislikes(dislikes);
+  //   // console.log(likes)
+  //   // console.log(dislikes)
+  // }, [likes, dislikes]);
 
-
-  // console.log(props)
 
   return (
     <Card className={classes.root} style={{
@@ -174,18 +182,14 @@ export default function PastDebateItem(props) {
         </div> */}
       <CardActions disableSpacing style={{ display: 'flex', justifyContent: 'space-between' }}>
         <IconButton aria-label="add to favorites">
-          <ThumbUpIcon onClick={() => addLikes('likes', props.room_id)} />
-          <p>{props.likes}</p>
+          <ThumbUpIcon onClick={
+            () => addLikes('likes', props.room_id)
+            } />
+          <p>{likes}</p>
         </IconButton>
-
-        <Button variant="contained"
-          style={{ color: "white", backgroundColor: "rgb(64,81,182)", justifySelf: 'right', borderRadius: "30px", display: "flex", justifyContent: "center" }}
-          onClick={() => console.log('url callback will go here')}>
-          Watch
-          </Button>
         <IconButton aria-label="share">
           <ThumbDownIcon onClick={() => addLikes('dislikes', props.room_id)} />
-          <p>{props.dislikes}</p>
+          <p>{dislikes}</p>
         </IconButton>
 
         <Dialog fullScreen open={openStage} TransitionComponent={Transition}>

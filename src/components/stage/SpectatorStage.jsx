@@ -28,13 +28,13 @@ export default function SpectatorStage({ activeRoomState }) {
 
       state.currentSocket.on("gameOver", data => {
 
-        // state.currentSocket.emit('leaveRoom', {
-        //   roomName : state.currentRoom,
-        //   userName : state.username
-        // })
+        state.currentSocket.emit('leaveRoomSpectator', {
+          roomName : state.currentRoom,
+          userName : state.username
+        })
 
         dispatch({ type: 'SET_TOKEN', payload: null })
-        dispatch({ type: 'SET_VISUAL_MODE', payload: "GAME_OVER" })
+        dispatch({ type: 'SET_VISUAL_MODE', payload: "LOBBY" })
         dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
         disableMedia()
       })
@@ -136,10 +136,10 @@ export default function SpectatorStage({ activeRoomState }) {
           attachedElements.forEach(element => element.remove());
         });
       });
+      // To disconnect from a Room
+      room.disconnect();
     }
 
-    // To disconnect from a Room
-    room.disconnect();
 
   }
 
