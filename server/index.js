@@ -39,8 +39,8 @@ class Rooms {
     this.socketDirectory={}
   }
 
-  newRoom(name, topic, socketID) {
-    let r = new Room(name, topic);
+  newRoom(name, topic, socketID, topic_id) {
+    let r = new Room(name, topic, topic_id);
     this.roomList[r.name] = r;
     this.socketDirectory[socketID]=[r.name]
     return r;
@@ -72,7 +72,7 @@ class Rooms {
 // Could potentially do objects to but I think this is smarter
 // https://socket.io/docs/rooms/
 class Room {
-  constructor(name, topic) {
+  constructor(name, topic, topic_id=null) {
     this.name = name; //random string to connect to twilio room
     this.game_id = null;
     this.host = null; //username
@@ -81,7 +81,7 @@ class Room {
     this.contender_id = null;
     this.spectators = [];
     this.topic = topic;
-    this.topic_id = null;
+    this.topic_id = topic_id;
     this.status = "Waiting";
     this.hostPoints = 0;
     this.contenderPoints = 0;
@@ -214,7 +214,7 @@ io.sockets.on("connection", function (socket) {
     socket.leave('lobby');
     socket.join(data.roomName);
     // Also create an instance of the room class.
-    roomList.newRoom(data.roomName, data.topic, socket.id);
+    roomList.newRoom(data.roomName, data.topic, socket.id, data.topicID);
     // Assign the username as host of the newly created class.
 
     if (data.stance) {
@@ -225,7 +225,6 @@ io.sockets.on("connection", function (socket) {
       roomList.roomList[data.roomName]["contender_id"] = data.userID;
     }
     
-    roomList.roomList[data.roomName]["topic_id"] = data.topicID;
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate();
     console.log(`Current roomList is ${roomList.allRooms}`);
