@@ -135,7 +135,8 @@ export default function LobbyItem({roomDetails}) {
       <Card className={classes.root} style={{
         // border: "solid rgb(0,238,40) 3px", 
         backgroundColor: "rgb(241,241,241)", 
-        borderRadius: "30px"
+        borderRadius: "30px",
+        position: "relative"
         }}>
         <CardHeader
           avatar={
@@ -155,7 +156,12 @@ export default function LobbyItem({roomDetails}) {
           title={roomDetails.topic}
           subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
         />
-        <div class="inner" style={{marginLeft: "10px"}}>
+        <div class="inner" style={{
+                    marginLeft: "10px", 
+                    position: "absolute", 
+                    top: "10px",
+                    right: "10px"
+                    }}>
             <p>Live</p>
         </div>
         <CardActions disableSpacing>

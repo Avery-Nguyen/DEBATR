@@ -108,8 +108,10 @@ module.exports = (client) => {
     postLikes(
       client,
       data
-    ).then(res => {
-      return res.rows
+    ).then(data => {
+      // console.log(res, 'in routes')
+      res.send(data)
+    
     })
   })
 

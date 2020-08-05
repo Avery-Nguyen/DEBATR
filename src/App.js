@@ -1,3 +1,4 @@
+ 
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -124,14 +125,13 @@ const App = () => {
             }}>
         <NavBar handleClickOpen={handleClickOpen} handleClose={handleClose}/>
       </header>
-      <div style={{ paddingTop: '0px'}}>
-        {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
-        {state.visualMode === "WAITING" && <WaitingRoom />}
-        {state.visualMode === "LOBBY" && lobby}
-        {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
-        {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
-        {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
-      </div>
+      {state.visualMode === "ACTIVE" && state.token && <Stage activeRoomState={activeRoomState} />}
+      {state.visualMode === "WAITING" && <WaitingRoom />}
+      {state.visualMode === "LOBBY" && lobby}
+      {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
+      {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
+      {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
+      
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}

@@ -4,6 +4,12 @@
   max-width: 170px;
 }
 
+.MuiCardHeader-root {
+  display: flex;
+  padding: 7px !important;
+  align-items: center;
+}
+
 /* @-webkit-keyframes pulse {
   0% { box-shadow:0 0 8px rgb(255,107,107), inset 0 0 8px rgb(255,107,107); }
   50% { box-shadow:0 0 16px rgb(255,107,107), inset 0 0 14px rgb(255,107,107); }

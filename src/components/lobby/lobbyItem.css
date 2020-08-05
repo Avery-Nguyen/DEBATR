@@ -1,7 +1,13 @@
 .MuiGrid-spacing-xs-3 > .MuiGrid-item {
-    padding: 12px;
-    min-width: 345px;
+    padding: 5px;
+    min-width: 345px; 
     max-width: 170px;
+}
+
+.MuiCardHeader-root {
+  display: flex;
+  padding: 7px !important;
+  align-items: center;
 }
 
 @-webkit-keyframes pulse {

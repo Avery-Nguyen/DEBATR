@@ -59,32 +59,34 @@ const postResultsToDatabase = (client, data) => {
 
 const postLikes = (client, data) => {
   // Get topic ID from room state?
-console.log(data, 'data in postLikes');
-console.log(data.likes)
+  console.log(data, 'data in postLikes');
+  console.log(data.likes)
 
- if (data.likes === 'likes'){
-     return client.query(`
+  if (data.likes === 'likes') {
+    return client.query(`
   UPDATE room_logs 
   SET likes = likes + 1
   WHERE id = $1
   RETURNING *;
   `, [data.room_id])
-    .then(res => {
-      console.log('Response from SQL', res.rows);
-      return res.rows;
-    });}
+      .then(res => {
+        // console.log('Response from SQL', res.rows);
+        return res.rows;
+      });
+  }
 
-    if (data.likes === 'dislikes'){
-      return client.query(`
+  if (data.likes === 'dislikes') {
+    return client.query(`
    UPDATE room_logs 
    SET dislikes = dislikes + 1
    WHERE id = $1
    RETURNING *;
    `, [data.room_id])
-     .then(res => {
-       console.log('Response from SQL', res.rows);
-       return res.rows;
-     });}
+      .then(res => {
+        // console.log('Response from SQL', res.rows);
+        return res.rows;
+      });
+  }
 }
 
 

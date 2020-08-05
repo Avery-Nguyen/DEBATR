@@ -11,7 +11,7 @@ import UserRating from '../partials/staticRating'
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-    zIndex: '3'
+    zIndex: '3',
   },
   bullet: {
     display: 'inline-block',
@@ -30,22 +30,31 @@ export default function UserCard() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} style={{border: "solid black 1px", width: "25px"}} >
+    <Card className={classes.root} style={{border: "solid black 1px", width: "25px", display: "flex", flexDirection: "row", position: "relative"}} >
       <CardContent>
       <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           Andy Lindsay
         </Typography>
+        <div style={{position: "absolute", 
+                    top: "20px",
+                    right: "15px",
+                    }}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-award" width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z"/>
+            <circle cx="12" cy="9" r="6" />
+            <polyline points="9 14.2 9 21 12 19 15 21 15 14.2" transform="rotate(-30 12 9)" />
+            <polyline points="9 14.2 9 21 12 19 15 21 15 14.2" transform="rotate(30 12 9)" />
+          </svg>
+        </div>
         <UserRating />
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
         <p>69 debates</p>
-        <br></br>
+        </Typography>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
         <p>7.88 Debate Average</p>
+        </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Links to social accounts?</Button>
-      </CardActions>
     </Card>
   );
 }
-
-
