@@ -48,10 +48,10 @@ class Rooms {
 
   delRoom(name) {
     // this.roomList[name] = null;
-    console.log('Deleteing', name)
-    console.log('org roomList: ', this.roomList)
+    console.log('Deleting room ', name)
+    // console.log('org roomList: ', this.roomList)
     delete this.roomList[name]
-    console.log('new roomList: ', this.roomList)
+    // console.log('new roomList: ', this.roomList)
   }
 
   get allRooms() {
@@ -143,6 +143,7 @@ class Room {
       })
       .then(() => this.sleep(intermissionTime * 1000))
       .then(() => {
+        this.postGameToDatabase();
         io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
         io.to(this.name).emit('unMute', this.contender)
         io.to(this.name).emit('mute', {
@@ -155,7 +156,6 @@ class Room {
         io.to(this.name).emit('unMute', this.host)
         io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
         // Post the game record to the database.
-        this.postGameToDatabase();
 
         // Ends the game for the user - Brings up post-debtate review screen
         io.to(this.name).emit('gameOver', null)
@@ -170,7 +170,12 @@ class Room {
       contender_id: this.contender_id,
     }).then((res) => {
       console.log("Response from SQL server after posting: ", res);
-      console.log("Response from SQL server after posting: ", res.rows);
+      this.game_id=res[0].id
+      io.to(this.name).emit(
+        "currentRoomUpdate",
+        roomList.roomList[this.name]
+      );
+
     });
   }
 }

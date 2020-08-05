@@ -85,6 +85,7 @@ export default function Stage({ activeRoomState }) {
         state.currentSocket.off("unMute")
         state.currentSocket.off("disconnect")
         state.currentSocket.off("gameOver")
+        state.currentSocket.off("gameCommand")
         state.currentSocket.off("leaveStage")
       }
     })
@@ -188,6 +189,9 @@ export default function Stage({ activeRoomState }) {
         clearTimeout(timer)
       
       }
+
+      return () => clearTimeout(timer);
+      // clearTimeout(timer)
     } , [active, time]);
 
 

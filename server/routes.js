@@ -89,7 +89,7 @@ module.exports = (client) => {
     const rating = req.body.rating
     const points = req.body.points
 
-    postUserRating({
+    postUserRating(client, {
       from_user_id,
       to_user_id,
       rating,
@@ -104,7 +104,7 @@ module.exports = (client) => {
     const user_id = req.body.user_id
     const agreement_rating = req.body.agreement_rating
 
-    postAgreementRating({
+    postAgreementRating(client, {
       room_log_id,
       user_id,
       agreement_rating,
