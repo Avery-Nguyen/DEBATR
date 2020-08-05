@@ -166,7 +166,7 @@ const App = () => {
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
       {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
-      
+      <WaitingRoom />
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}
