@@ -104,7 +104,8 @@ export default function Stage({ activeRoomState }) {
     };
     
       Video.connect(state.token, {
-        name: state.currentRoom
+        name: state.currentRoom,
+        video: { width: 640 }
       }).then(room => {
         setRoom(room);
    
@@ -139,16 +140,6 @@ export default function Stage({ activeRoomState }) {
   });
 
   function disableMedia() {
-    // room.localParticipant.audioTracks.forEach(publication => {
-    //   publication.track.disable();
-    // });
-    
-    // room.localParticipant.videoTracks.forEach(publication => {
-    //   publication.track.disable();
-    //   publication.track.stop();
-    //   publication.unpublish();
-    // });
-
     if (room) {
       room.on('disconnected', room => {
         // Detach the local media elements
@@ -224,8 +215,9 @@ export default function Stage({ activeRoomState }) {
               <h1 style={{ color: 'white' }}>{gameCommands}</h1>
               <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
               <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
-              <br />
-              <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
+              {/* <br />
+              <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button> */}
+              <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
             </div>
             <div class='participants'>
             {remoteParticipants}
@@ -242,7 +234,7 @@ export default function Stage({ activeRoomState }) {
 
           </div>
         <footer style={{ backgroundColor: "rgb(64,81,182)", display:'flex' }}>
-        <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
+        {/* <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button> */}
         </footer>
       </div>
     </body>

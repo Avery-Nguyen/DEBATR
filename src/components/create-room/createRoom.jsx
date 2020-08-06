@@ -70,7 +70,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const submitCreateRoom = (vals) => {
     //put validation of form here
 
-    if (topic && stance) {
+    if (topic) {
       const randRoomName = Math.random().toFixed(5).toString();
       dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
       dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
@@ -155,7 +155,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
         </FormControl>
         <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
           <InputLabel htmlFor="grouped-select">Stance</InputLabel>
-          <Select defaultValue="For" id="grouped-select" onChange={event => setStance(event.target.value)}>
+          <Select defaultValue={true} id="grouped-select" onChange={event => setStance(event.target.value)}>
             <MenuItem value={true}>For</MenuItem>
             <MenuItem value={false}>Against</MenuItem>
           </Select>
