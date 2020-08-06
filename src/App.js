@@ -141,7 +141,7 @@ const App = () => {
       </Dialog> */}
 
       <Lobby roomState={roomState} />
-      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black' }}>Past Debates</h1>
+      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black', marginBottom: "20px" }}>Past Debates</h1>
       <span></span>
       <PastDebate />
     </main>
