@@ -261,7 +261,6 @@ export default function Stage({ activeRoomState }) {
                     return null;
                     
                     // return e.key === 'Enter' ? sendMessage() : null;
-                    
                     }}/>
                   <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>
