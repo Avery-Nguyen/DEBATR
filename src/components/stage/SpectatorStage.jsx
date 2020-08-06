@@ -196,8 +196,7 @@ export default function SpectatorStage({ activeRoomState }) {
                 <h1 style={{ color: 'white' }}>{gameCommands}</h1>
                 <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
                 <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
-                <br />
-                <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
+                
               </div>
               <div class='participants'>
                 {remoteParticipants[1]}
@@ -208,6 +207,16 @@ export default function SpectatorStage({ activeRoomState }) {
               </div>
             </div>
           </div>
+          
+          <div>
+
+          </div>
+          <div id="game-log" class="info-box">
+          <span><b>'Welcome to the Chatroom!'</b> Debate starts soon.</span>
+
+          </div>
+
+
           <footer style={{ backgroundColor: "rgb(64,81,182)", display: 'flex' }}>
             <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Return To Lobby</Button>
           </footer>

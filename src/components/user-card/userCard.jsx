@@ -26,16 +26,29 @@ const useStyles = makeStyles({
   },
 });
 
-export default function UserCard() {
+export default function UserCard(props) {
   const classes = useStyles();
+console.log(props.hostUsercard, 'props')
 
+let {username, points_avg, rating_avg, host_count, contender_count } = props.hostUsercard || ''
+
+
+// {username: "coder", points_avg: "166.8571428571428571", rating_avg: "4.7142857142857143", host_count: "1155", contender_count: "1155"}/
+
+// const { username }= props.hostUsercard
+console.log(username)
+// console.log(userDetails)
   return (
     <Card className={classes.root} style={{border: "solid black 1px", width: "25px", display: "flex", flexDirection: "row", position: "relative"}} >
       <CardContent>
       <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Andy Lindsay
+         {username}
         </Typography>
+        <UserRating rating={rating_avg}/>
+        <p>{host_count + contender_count} debates</p>
+        <br></br>
+        <p>{Math.round(points_avg)} Debate Average</p>
         <div style={{position: "absolute", 
                     top: "20px",
                     right: "15px",
@@ -47,13 +60,6 @@ export default function UserCard() {
             <polyline points="9 14.2 9 21 12 19 15 21 15 14.2" transform="rotate(30 12 9)" />
           </svg>
         </div>
-        <UserRating />
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-        <p>69 debates</p>
-        </Typography>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-        <p>7.88 Debate Average</p>
-        </Typography>
       </CardContent>
     </Card>
   );

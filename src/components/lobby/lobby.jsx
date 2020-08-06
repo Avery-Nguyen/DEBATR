@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -20,19 +21,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Lobby({roomState}) {
+export default function Lobby({roomState}, props) {
   const [state, dispatch] = useStore();
 
   const classes = useStyles();
   const [username, setUsername] = useState(Math.random().toFixed(5).toString());
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
   const [activeRoomState, setActiveRoomState] = useState({})
   // const [topic, setTopic] = useState("");
   // const [stance, setStance] = useState(null);
   const [currentRoomName, setCurrentRoomName] = useState("")
 
-  // console.log('roomState', roomState)
 
+  
   // ALEX CODE: Assign socket handlers
   useEffect(() => {
     
@@ -108,9 +109,10 @@ export default function Lobby({roomState}) {
 
   const roomItems = Object.keys(roomState).filter(room => room).map(room =>
     <Grid item xs={4}>
-      <LobbyItem roomDetails={roomState[room]}/>
+      <LobbyItem roomDetails={roomState[room]} />
     </Grid>
   )
+
 
   function FormRow() {
     return (

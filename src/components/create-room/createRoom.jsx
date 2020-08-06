@@ -22,6 +22,8 @@ import Box from '@material-ui/core/Box';
 // import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Container from '@material-ui/core/Container';
 import axios from "axios"
+import TextField from '@material-ui/core/TextField';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,8 +63,12 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const [state, dispatch] = useStore();
   const [topic, setTopic] = useState("")
   const [topicID, setTopicID] = useState("")
-  const [stance, setStance] = useState("")
+  const [stance, setStance] = useState(true)
   const [options, setOptions] = useState([])
+  const [categoriesOptions, setCategoriesOptions] = useState([]);
+  const [createdTopic, setCreatedTopic] = useState('')
+  const [categoryID, setCategoryID] = useState(null)
+  console.log("CreateRoom -> categoryID", categoryID)
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
@@ -70,32 +76,51 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const submitCreateRoom = (vals) => {
     //put validation of form here
 
-    if (topic && stance) {
+    if (topic) {
+
       const randRoomName = Math.random().toFixed(5).toString();
       dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
       dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
 
       // setRoomList([...roomList, testRoom])
-      console.log('Sending topic and stance: ', topic, stance)
+      console.log('Sending topic and stance and topicID: ', topic, stance, topicID)
       state.currentSocket.emit('createRoom', {
         roomName: randRoomName,
         userName: state.username,
-        topic: topic,
-        stance: stance
+        userID: state.userID,
+        topicID,
+        topic,
+        stance
       })
-
       handleCloseCreateRoom();
-    // setRoomList([...roomList, testRoom])
-    console.log('Sending topic and stance and topicID: ', topic, stance, topicID)
-    state.currentSocket.emit('createRoom', {
-      roomName: randRoomName,
-      userName: state.username,
-      userID: state.userID,
-      topicID,
-      topic,
-      stance
-    })
+      
+    } else if (createdTopic) {
+      console.log(categoryID)
+      axios.post('/api/topics', {
+        question: createdTopic,
+        category_id: parseInt(categoryID)
+      }) 
+      .then((res) => {
+      console.log("submitCreateRoom -> res", res.data[0])
+      // res.data[0]
+        
+        const randRoomName = Math.random().toFixed(5).toString();
+        dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
+        dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
 
+        
+      // setRoomList([...roomList, testRoom])
+      // console.log('Sending topic and stance and topicID: ', topic, stance, topicID)
+      state.currentSocket.emit('createRoom', {
+        roomName: randRoomName,
+        userName: state.username,
+        userID: state.userID,
+        topicID: res.data[0].id,
+        topic: res.data[0].question,
+        stance
+      })
+      })
+      handleCloseCreateRoom();
     }
     
   }
@@ -107,17 +132,30 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
       });
   }, [])
 
+  useEffect(() => {
+    axios.get('/api/categories')
+      .then((data) => {
+      console.log("CreateRoom -> data", data.data.topics)
+      setCategoriesOptions(data.data.topics);
+      });
+  }, [])
+
+  const categoryOptions = categoriesOptions.map(category => {
+    return <option value={category.id}>{category.name}</option>
+  })
+
   const topicOptions = options.map(topic =>{
     return <option value={topic.id}>{topic.question}</option>
-  }
-  )
+  })
 
-  const handleChange = function(id) {
+
+  const handleChangeTopic = function(id) {
     const question = options.find((option) => option.id === parseInt(id))
     setTopic(question.question)
     setTopicID(parseInt(id))
   }
 
+ 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -134,19 +172,44 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
           <circle cx="5" cy="9" r="2" />
           <circle cx="19" cy="9" r="2" />
         </svg>
+        <InputLabel htmlFor="grouped-native-select"
+            variant="outlined"
+            // margin="normal"
+            fullWidth
+            autoFocus
+            required
+          >Categories</InputLabel>
+          <Select native defaultValue="" id="grouped-native-select" onChange={event => setCategoryID(event.target.value)}>
+           <option aria-label="None" value="" />
+            {/* loops through categories */}
+            {categoryOptions}
+            
+          </Select>
+        <TextField
+            // onChange={event => setEmail(event.target.value)}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Create a Topic"
+            name="createTopic"
+            onChange={event => setCreatedTopic(event.target.value)}
+          />
         <FormControl className={classes.formControl} style={{
           marginTop: '15px',
         }}>
+        
           <InputLabel htmlFor="grouped-native-select"
             variant="outlined"
             // margin="normal"
             fullWidth
             autoFocus
             required
-          >Topic</InputLabel>
+          >Choose a Topic</InputLabel>
           <Select native defaultValue="" id="grouped-native-select" onChange={(event, a,b,c) => {
             // debugger;
-            return handleChange(event.target.value)}}>
+            return handleChangeTopic(event.target.value)}}>
            
            {/* TODO: Add topic_ids when we render with map! */}
            <option aria-label="None" value="" />
@@ -155,10 +218,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
         </FormControl>
         <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
           <InputLabel htmlFor="grouped-select">Stance</InputLabel>
-          <Select defaultValue="" id="grouped-select" onChange={event => setStance(event.target.value)}>
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
+          <Select defaultValue={true} id="grouped-select" onChange={event => setStance(event.target.value)}>
             <MenuItem value={true}>For</MenuItem>
             <MenuItem value={false}>Against</MenuItem>
           </Select>

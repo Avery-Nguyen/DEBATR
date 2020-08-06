@@ -40,6 +40,11 @@ const Reducer = (state, action) => {
         ...state,
         loginErrors: action.payload
       };
+    case 'SET_OPEN_SIGN_IN':
+      return {
+        ...state,
+        openSignIn: action.payload
+      };
     default:
       return state;
   }

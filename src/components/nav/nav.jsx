@@ -54,13 +54,18 @@ export default function NavBar(props) {
     setOpen(false);
   };
 
+  
   //sign-in open/close logic
-  const [openSignIn, setOpenSignIn] = useState(false);
+  // const [openSignIn, setOpenSignIn] = useState(false);
   const handleClickOpenSignIn = () => {
-    setOpenSignIn(true);
+    dispatch({ type: 'SET_OPEN_SIGN_IN', payload: true })
+    // setOpenSignIn(true);
   };
+  
+  
   const handleCloseSignIn = () => {
-    setOpenSignIn(false);
+    dispatch({ type: 'SET_OPEN_SIGN_IN', payload: false })
+    // setOpenSignIn(false);
   };
 
   //stats open/close logic
@@ -142,7 +147,7 @@ export default function NavBar(props) {
               </Dialog>
               {state.username ? 
             <div style={{display:'flex', alignContent:'center', alignItems: 'baseline'}}>
-              <Button
+              {state.visualMode !== 'ACTIVE' && state.visualMode !== 'WAITING' && <Button
                 style={{
                   color: "rgb(64,81,182)",
                   backgroundColor: "white",
@@ -155,7 +160,7 @@ export default function NavBar(props) {
                 onClick={handleCreateRoomOpen}
               >
                 Create Stage
-          </Button>
+          </Button>}
               <Dialog
                 open={openCreateRoom}
                 TransitionComponent={Transition}
@@ -178,7 +183,7 @@ export default function NavBar(props) {
 
               <Button color="inherit" onClick={handleClickOpenSignIn}>Login</Button>
               <Dialog
-                open={openSignIn}
+                open={state.openSignIn}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleCloseSignIn}

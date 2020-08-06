@@ -40,21 +40,32 @@ const getDebateCount = (client) => {
     })
 }
 
+const getUserCard = (client, id) => {
+  return client.query(`SELECT username, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
+  FROM users
+  JOIN ratings ON ratings.to_user_id = users.id
+  JOIN room_logs AS host ON users.id = host.host_id
+  JOIN room_logs AS contender ON users.id = contender.contender_id
+  WHERE users.id = $1
+  group by username;;`, [id])
+  .then((res) => {
+    console.log(`res from sql ${res}`)
+    return res
+  })
+}
+
 const postResultsToDatabase = (client, data) => {
   // Get topic ID from room state?
-  console.log('data to postResultsToDatabase', data)
 
   // Query to get host_id and contender id?
   return client.query(`
   INSERT INTO room_logs (topic_id, host_id, contender_id) 
-  VALUES ($1, $2, $3)
-  RETURNING id, date_time;
+  VALUES ($1, $2, $3);
   `, [data.topic_id, data.host_id, data.contender_id])
     .then(res => {
-      console.log('Response from SQL after posting', res);
+      // console.log('Response from SQL', res);
       return res.rows;
-    })
-    .catch(err => console.log(err))
+    });
 }
 
 const postLikes = (client, data) => {
@@ -91,19 +102,17 @@ const postLikes = (client, data) => {
 
 
 const postUserRating = (client, data) => {
-  console.log('Data in postUserRating', data)
   return client.query(`
   INSERT INTO ratings (from_user_id, to_user_id, rating, points) 
-  VALUES ($1, $2, $3, $4);
+  VALUES ($1, $2, $3);
   `, [data.from_user_id, data.to_user_id, data.rating, data.points])
-  .then(res => {
-    // console.log('Response from SQL', res);
-    return res.rows;
-  });
+    .then(res => {
+      // console.log('Response from SQL', res);
+      return res.rows;
+    });
 }
 
 const postAgreementRating = (client, data) => {
-  console.log('Data in postAgreementRating', data)
   return client.query(`
   INSERT INTO agreement_ratings (room_log_id, user_id, agreement_rating) 
   VALUES ($1, $2, $3);
@@ -151,7 +160,15 @@ const createUser = (client, email, first_name, last_name, username, password, av
       return res.rows
     })
 }
-
+const createTopic = (client, question, categoryID) => {
+  return client.query(`
+  INSERT INTO topics (question, category_id) VALUES ($1, $2)
+  RETURNING *;
+  `, [question, categoryID])
+    .then(res => {
+      return res.rows
+    })
+}
 
 module.exports = {
   postResultsToDatabase,
@@ -163,5 +180,7 @@ module.exports = {
   createUser,
   getLeaderboard,
   getDebateCount,
-  postLikes
+  postLikes,
+  getUserCard,
+  createTopic
 }

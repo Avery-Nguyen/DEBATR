@@ -10,7 +10,9 @@ const {
   createUser,
   getLeaderboard,
   getDebateCount,
-  postLikes
+  postLikes,
+  getUserCard,
+  createTopic
 } = require('./databaseCalls.js');
 
 //bcrypt stuff
@@ -70,10 +72,26 @@ module.exports = (client) => {
   });
 
   router.get('/totaldebates', function(req, res) {
-    console.log('REQUEST TO /API/totaldebates')
+    // console.log('REQUEST TO /API/totaldebates')
     getDebateCount(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post('/usercard', function(req, res) {
+    console.log('REQUEST TO /API/usercard')
+    console.log(req.body.host)
+    // console.log(res, 'res in usercard')
+    getUserCard(client, req.body.host)
+      .then(sqlResponse => {
+        console.log(sqlResponse.rows, 'inusercard')
+        res.send(sqlResponse.rows)
       })
       .catch(err => {
         res
@@ -170,6 +188,7 @@ module.exports = (client) => {
         
         return bcrypt.compare(loginInfo.password, password).then(function(result) {
           
+          if (result){
           req.session.userID = userID;
           req.session.username = username;
         //  return res.send(data)
@@ -180,6 +199,9 @@ module.exports = (client) => {
             userID,
             password
           })
+        } else {
+          console.log(error.message, "problem");
+        }
         })
           .catch(error => {
             console.log(error.message, "problem");
@@ -216,6 +238,30 @@ module.exports = (client) => {
         })
     });
   })
+
+  router.get("/categories", function(req, res) {
+    client.query(`SELECT * FROM categories;`)
+      .then(data => {
+        // console.log(data);
+        const topics = data.rows;
+        res.json({ topics });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post("/topics", function(req, res) {
+    createTopic(client, req.body.question, req.body.category_id)
+    .then((sqlResponse) => {
+      res.send(sqlResponse)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  });
 
   return router;
 }

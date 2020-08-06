@@ -33,7 +33,6 @@ const App = () => {
   const [state, dispatch] = useStore();
   const [roomState, setRoomState] = useState({})
   const [activeRoomState, setActiveRoomState] = useState({})
-
   const [open, setOpen] = React.useState(false);
 
 
@@ -66,13 +65,6 @@ const App = () => {
     // setCurrentSocket(socket)
     return () => socket.disconnect();
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   // Assign random username for time being
-  //   if (state.username === undefined) {
-  //     dispatch({ type: 'SET_USERNAME', payload: Math.random().toFixed(5).toString() })
-  //   }
-  // }, [dispatch, state.username])
 
   useEffect(() => {
     if (state.currentSocket) {
@@ -115,41 +107,14 @@ const App = () => {
 
 
 
+
+
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
-      {/* <Button
-        style={{
-          color: "white",
-          backgroundColor: "rgb(64,81,182)",
-          border: "rgb(64,81,182) solid 1px",
-          borderRadius: "30px",
-          marginTop: '5px',
-          // maxWidth: '55px',
-          justifySelf: 'center'
-        }}
-        onClick={handleClickOpen}
-      >
-        Create Stage
-        </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-      >
-        <CreateRoom handleClose={handleClose} />
-      </Dialog> */}
-
       <Lobby roomState={roomState} />
       <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black', marginBottom: "20px" }}>Past Debates</h1>
       <span></span>
       <PastDebate />
-    </main>
-  )
-
-  const connectionError = (
-    <main>
-      <h1>your BUDDY left the game!</h1>
     </main>
   )
 
