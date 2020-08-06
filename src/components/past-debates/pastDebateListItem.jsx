@@ -173,7 +173,8 @@ export default function PastDebateItem(props) {
       // border: "solid rgb(255,107,107) 3px",
       backgroundColor: "rgb(241,241,241)",
       borderRadius: "30px",
-      minWidth: "315px"
+      minWidth: "315px",
+      maxHeight: "140px"
     }}>
 
       <div style={{display:'flex', padding:'5px 7px 0px 7px', justifyContent:'space-between'}}>

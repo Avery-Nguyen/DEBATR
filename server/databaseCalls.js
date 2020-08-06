@@ -160,7 +160,15 @@ const createUser = (client, email, first_name, last_name, username, password, av
       return res.rows
     })
 }
-
+const createTopic = (client, question, categoryID) => {
+  return client.query(`
+  INSERT INTO topics (question, category_id) VALUES ($1, $2)
+  RETURNING *;
+  `, [question, categoryID])
+    .then(res => {
+      return res.rows
+    })
+}
 
 module.exports = {
   postResultsToDatabase,
@@ -173,5 +181,6 @@ module.exports = {
   getLeaderboard,
   getDebateCount,
   postLikes,
-  getUserCard
+  getUserCard,
+  createTopic
 }

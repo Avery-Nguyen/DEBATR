@@ -11,7 +11,8 @@ const {
   getLeaderboard,
   getDebateCount,
   postLikes,
-  getUserCard
+  getUserCard,
+  createTopic
 } = require('./databaseCalls.js');
 
 //bcrypt stuff
@@ -237,6 +238,30 @@ module.exports = (client) => {
         })
     });
   })
+
+  router.get("/categories", function(req, res) {
+    client.query(`SELECT * FROM categories;`)
+      .then(data => {
+        // console.log(data);
+        const topics = data.rows;
+        res.json({ topics });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post("/topics", function(req, res) {
+    createTopic(client, req.body.question, req.body.category_id)
+    .then((sqlResponse) => {
+      res.send(sqlResponse)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  });
 
   return router;
 }

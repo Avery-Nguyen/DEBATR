@@ -11,7 +11,7 @@ import UserRating from '../partials/staticRating'
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-    zIndex: '3'
+    zIndex: '3',
   },
   bullet: {
     display: 'inline-block',
@@ -39,7 +39,7 @@ let {username, points_avg, rating_avg, host_count, contender_count } = props.hos
 console.log(username)
 // console.log(userDetails)
   return (
-    <Card className={classes.root} style={{border: "solid black 1px", width: "25px"}} >
+    <Card className={classes.root} style={{border: "solid black 1px", width: "25px", display: "flex", flexDirection: "row", position: "relative"}} >
       <CardContent>
       <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -49,12 +49,18 @@ console.log(username)
         <p>{host_count + contender_count} debates</p>
         <br></br>
         <p>{Math.round(points_avg)} Debate Average</p>
+        <div style={{position: "absolute", 
+                    top: "20px",
+                    right: "15px",
+                    }}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-award" width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4051B6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z"/>
+            <circle cx="12" cy="9" r="6" />
+            <polyline points="9 14.2 9 21 12 19 15 21 15 14.2" transform="rotate(-30 12 9)" />
+            <polyline points="9 14.2 9 21 12 19 15 21 15 14.2" transform="rotate(30 12 9)" />
+          </svg>
+        </div>
       </CardContent>
-      <CardActions>
-        <Button size="small">Links to social accounts?</Button>
-      </CardActions>
     </Card>
   );
 }
-
-
