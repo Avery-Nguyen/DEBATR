@@ -195,6 +195,7 @@ export default function Stage({ activeRoomState }) {
       message: messageText,
       roomName: state.currentRoom
     })
+    setMessageText('')
   }
 
   const messageList = activeRoomState.messages.map(message => {
@@ -251,7 +252,17 @@ export default function Stage({ activeRoomState }) {
               </article>
               <form>
                 <div class="chat-message-box">
-                  <TextField id="outlined-basic" label="Outlined" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={e => (e.key === 'Enter' ? sendMessage() : null)}/>
+                  <TextField id="outlined-basic" label="Outlined" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={(e) => {
+                    if (e.key === 'Enter'){
+                      e.preventDefault();
+                      sendMessage()
+                      return setMessageText('')
+                    } 
+                    return null;
+                    
+                    // return e.key === 'Enter' ? sendMessage() : null;
+                    
+                    }}/>
                   <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>
               </form>
