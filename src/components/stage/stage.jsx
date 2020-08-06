@@ -18,7 +18,7 @@ export default function Stage({ activeRoomState }) {
   // console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
-  const [gameCommands, setGameCommands] = useState([])
+  const [gameCommands, setGameCommands] = useState("Welcome to the Debate")
   const [messages, setMessages] = useState([])
   const [messageText, setMessageText] = useState("")
 
@@ -212,6 +212,7 @@ export default function Stage({ activeRoomState }) {
         <div class="w3-content" >
           <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
             <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
+            <h2 style={{ color: 'white' }}>{gameCommands}</h2>
           </header>
           <div class="w3-row-padding w3-grayscale">
             <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
@@ -230,12 +231,14 @@ export default function Stage({ activeRoomState }) {
                 </div>
               </div>
               <div id='stage-details' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                <h1 style={{ color: 'white' }}>{gameCommands}</h1>
-                <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
-                <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
+                
+                <div class="timer-box">
+                <h4 class="timer" style={{ color: 'white' }}>Time Remaining: </h4>
+                <h1 class="timer" style={{ color: 'white' }}>{time}</h1>
+                </div>
                 {/* <br />
               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button> */}
-                <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
+                {/* <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button> */}
               </div>
               <div class='participants'>
                 {remoteParticipants}
@@ -251,7 +254,7 @@ export default function Stage({ activeRoomState }) {
               </article>
               <form>
                 <div class="chat-message-box">
-                  <TextField id="outlined-basic" label="Outlined" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={e => (e.key === 'Enter' ? sendMessage() : null)}/>
+                  <TextField id="outlined-basic" label="Message" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={e => (e.key === 'Enter' ? sendMessage() : null)}/>
                   <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>
               </form>
@@ -260,6 +263,8 @@ export default function Stage({ activeRoomState }) {
 
             <footer style={{ backgroundColor: "rgb(64,81,182)", display: 'flex' }}>
               <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
+              <h5 style={{ color: 'white' }}>'Viewers Watching': {participants.length - 1}</h5>
+
             </footer>
           </div>
       </body>
