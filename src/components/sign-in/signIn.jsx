@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import './signin.css'
 //all the material-ui components
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,7 +16,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {useStore} from '../../Store'
+import { useStore } from '../../Store'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,37 +49,54 @@ export default function SignIn(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [state, dispatch] = useStore();
- 
+
   const submitLogin = (event) => {
     event.preventDefault();
-    // console.log(email, 'email')
-    // console.log(password, "password")
-    // console.log('submitlogin called')
-    axios.post('/api/login',  {
-      email,
-      password
+
+    if (email === '') {
+      dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Email cannot be blank' } })
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Email address is invalid' } })
+    } else if (password === '') {
+      dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Password cannot be blank' } })
+    } else {
+      // console.log(email, 'email')
+      // console.log(password, "password")
+      // console.log('submitlogin called')
+      axios.post('/api/login', {
+        email,
+        password
+      })
+        .then((res) => {
+          if (res.data.authenticated) {
+            dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: null } })
+
+            dispatch({ type: 'SET_USERNAME', payload: res.data.username })
+            dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+            props.handleCloseSignIn();
+          } else {
+            dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Incorrect login credentials.' } })
+
+          }
+         
+          return true
+        })
+        .catch((error) => {
+          console.error(error, "error from axios request")
+          dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Login failed.' } })
+        })
+    }
+  }
+
+  let signinErrors;
+  if (state.loginErrors) {
+    signinErrors = Object.keys(state.loginErrors).map(error => {
+      return (
+        <span class="error">
+          {state.loginErrors[error]}
+        </span>
+      )
     })
-      .then((res) => {
-        if (res.data.authenticated) {
-          dispatch({ type: 'SET_USERNAME', payload: res.data.username })
-          dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
-          props.handleCloseSignIn();
-
-        }
-        // if (!res.data.authenticated) {
-        //   console.log('is this e3')
-        //   props.handleCloseSignIn();
-        //   alert('something went wrong')
-          
-        // }
-        // console.log('other stuff')
-        return true
-        // dispatch({ type: 'SET_USERNAME', payload: res })
-
-      })
-      .catch((error) => {
-        console.error(error, "error from axios request")
-      })
   }
 
 
@@ -101,6 +118,7 @@ export default function SignIn(props) {
             required
             fullWidth
             id="email"
+            type="email"
             label="Email Address"
             name="email"
             autoComplete="email"
@@ -129,6 +147,7 @@ export default function SignIn(props) {
           >
             Sign In
           </Button>
+          {signinErrors}
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

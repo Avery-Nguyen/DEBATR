@@ -128,7 +128,9 @@ export default function NavBar(props) {
                 <circle cx="19" cy="9" r="2" />
               </svg>
             </Link>
-            <h1 style={{ color: 'white' }}> DebatR </h1>
+            <Link href={'/'} style={{ color: 'white', textDecoration: 'none' }}>
+              <h1 style={{ color: 'white', textDecoration: 'none' }}> DebatR </h1>
+            </Link>
             <Typography variant="h6" className={classes.title}>
             </Typography>
             <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>

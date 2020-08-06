@@ -46,28 +46,46 @@ export default function SignUp(props) {
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
   const [state, dispatch] = useStore();
+  const [error, setError] = useState('')
 
 
   const submitRegistration = (event) => {
     event.preventDefault();
-    axios.post('/api/register', {
-      email,
-      firstName,
-      lastName,
-      username,
-      password,
-      avatar
-    })
-      .then((res) => {
-        console.log(res, 'res from sign-up request')
-        console.log(res.data[0].username, 'res from sign-up request')
-        dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
-        props.handleClose();
+
+    if (firstName === '') {
+      setError('First Name cannot be blank')
+    } else if (lastName === '') {
+      setError('Last Name cannot be blank')
+    } else if (username === '') {
+      setError('Username cannot be blank')
+    } else if (email === '') {
+      setError('Email cannot be blank')
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setError('Email address is invalid')
+    } else if (password === '') {
+      setError('Password cannot be blank')
+    } else if (password.length) {
+      setError('Password must be at least 8 characters long')
+    } else {
+      axios.post('/api/register', {
+        email,
+        firstName,
+        lastName,
+        username,
+        password,
+        avatar
       })
-      .catch((error) => {
-        console.log(error)
-        console.error(error, "error from axios request")
-      })
+        .then((res) => {
+          console.log(res, 'res from sign-up request')
+          console.log(res.data[0].username, 'res from sign-up request')
+          dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
+          props.handleClose();
+        })
+        .catch((error) => {
+          console.log(error)
+          console.error(error, "error from axios request")
+        })
+    }
   }
 
   return (
@@ -166,6 +184,9 @@ export default function SignUp(props) {
           >
             Sign Up
           </Button>
+          <div className='error'>
+            {error}
+          </div>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="#" variant="body2">
