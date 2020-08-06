@@ -19,6 +19,8 @@ export default function Stage({ activeRoomState }) {
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState("Welcome to the Debate")
+  const [readyState, setReadyState] = useState(false)
+  const [gameState, setGameState] = useState(false)
   const [messages, setMessages] = useState([])
   const [messageText, setMessageText] = useState("")
 
@@ -195,6 +197,17 @@ export default function Stage({ activeRoomState }) {
       message: messageText,
       roomName: state.currentRoom
     })
+    setMessageText('')
+  }
+
+  const readyUp = () => {
+    state.currentSocket.emit('ready', {
+      userName: state.username,
+      roomName: state.currentRoom
+    })
+
+    setReadyState(true);
+
   }
 
   const messageList = activeRoomState.messages.map(message => {
@@ -231,14 +244,15 @@ export default function Stage({ activeRoomState }) {
                 </div>
               </div>
               <div id='stage-details' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                
+                {gameState ? <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'green', color: 'white' }} onClick={readyUp}>{readyState ? 'Waiting for opponent...' : 'Ready'}</Button> :
                 <div class="timer-box">
                 <h4 class="timer" style={{ color: 'white' }}>Time Remaining: </h4>
                 <h1 class="timer" style={{ color: 'white' }}>{time}</h1>
                 </div>
+                }
+                
                 {/* <br />
               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button> */}
-                {/* <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button> */}
               </div>
               <div class='participants'>
                 {remoteParticipants}
@@ -254,7 +268,16 @@ export default function Stage({ activeRoomState }) {
               </article>
               <form>
                 <div class="chat-message-box">
-                  <TextField id="outlined-basic" label="Message" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={e => (e.key === 'Enter' ? sendMessage() : null)}/>
+                  <TextField id="outlined-basic" label="Outlined" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={(e) => {
+                    if (e.key === 'Enter'){
+                      e.preventDefault();
+                      sendMessage()
+                      return setMessageText('')
+                    } 
+                    return null;
+                    
+                    // return e.key === 'Enter' ? sendMessage() : null;
+                    }}/>
                   <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>
               </form>
