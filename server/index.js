@@ -9,10 +9,10 @@ const cookieSession = require('cookie-session');
 const db = require('./db.js');
 const topicRoutes = require("./topics");
 
-const http=require('http').createServer(app)
+const http = require('http').createServer(app)
 const io = require('socket.io')(http);
-const { 
-  postResultsToDatabase 
+const {
+  postResultsToDatabase
 } = require('./databaseCalls.js');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,13 +36,13 @@ let intermissionTime = 3;
 class Rooms {
   constructor() {
     this.roomList = {};
-    this.socketDirectory={}
+    this.socketDirectory = {}
   }
 
   newRoom(name, topic, socketID, topic_id) {
     let r = new Room(name, topic, topic_id);
     this.roomList[r.name] = r;
-    this.socketDirectory[socketID]=[r.name]
+    this.socketDirectory[socketID] = [r.name]
     return r;
   }
 
@@ -72,13 +72,15 @@ class Rooms {
 // Could potentially do objects to but I think this is smarter
 // https://socket.io/docs/rooms/
 class Room {
-  constructor(name, topic, topic_id=null) {
+  constructor(name, topic, topic_id = null) {
     this.name = name; //random string to connect to twilio room
     this.game_id = null;
     this.host = null; //username
     this.host_id = null;
+    this.host_ready = false;
     this.contender = null; //username
     this.contender_id = null;
+    this.contender_ready = false;
     this.spectators = [];
     this.topic = topic;
     this.topic_id = topic_id;
@@ -117,9 +119,10 @@ class Room {
 
   startGame() {
     // The framework of the game! Toggles the turns
-    io.to(this.name).emit("startGame", {
-      roomName: this.name,
-    });
+
+    io.to(this.name).emit(
+      "bothReady"
+    );
     this.sleep(5000)
       .then(() => {
         io.to(this.name).emit(
@@ -150,7 +153,8 @@ class Room {
           mute: this.host,
           intermission: false,
           timer: debtateTime
-        })})
+        })
+      })
       .then(() => this.sleep(debtateTime * 1000))
       .then(() => {
         io.to(this.name).emit('unMute', this.host)
@@ -158,8 +162,8 @@ class Room {
         // Post the game record to the database.
 
         // Ends the game for the user - Brings up post-debtate review screen
-        // io.to(this.name).emit('gameOver', null)
-        })
+        io.to(this.name).emit('gameOver', null)
+      })
   }
 
   postGameToDatabase() {
@@ -170,7 +174,7 @@ class Room {
       contender_id: this.contender_id,
     }).then((res) => {
       console.log("Response from SQL server after posting: ", res);
-      this.game_id=res[0].id
+      this.game_id = res[0].id
       io.to(this.name).emit(
         "currentRoomUpdate",
         roomList.roomList[this.name]
@@ -197,22 +201,22 @@ io.sockets.on("connection", function (socket) {
   socket.emit("initialRoomList", rLString);
   // console.log('all sockets', Object.keys(io.sockets.sockets))
 
-  socket.on("disconnect", function() {
+  socket.on("disconnect", function () {
     if (roomList.socketDirectory[socket.id]) {
-        io.to(roomList.socketDirectory[socket.id]).emit('disconnect')
-        roomList.delRoom(roomList.socketDirectory[socket.id])
-      }
-      roomList.sendRoomUpdate();
-      console.log('this sockets id', socket.id)
-      console.log('all sockets', Object.keys(io.sockets.sockets))
-      console.log("socket disconnected");
+      io.to(roomList.socketDirectory[socket.id]).emit('disconnect')
+      roomList.delRoom(roomList.socketDirectory[socket.id])
+    }
+    roomList.sendRoomUpdate();
+    console.log('this sockets id', socket.id)
+    console.log('all sockets', Object.keys(io.sockets.sockets))
+    console.log("socket disconnected");
   });
 
   socket.on("createRoom", function (data) {
     console.log(
       `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
     );
-    
+
     // Socket Joins the 'socket'room'
     socket.leave('lobby');
     socket.join(data.roomName);
@@ -227,7 +231,7 @@ io.sockets.on("connection", function (socket) {
       roomList.roomList[data.roomName]["contender"] = data.userName;
       roomList.roomList[data.roomName]["contender_id"] = data.userID;
     }
-    
+
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate();
     console.log(`Current roomList is ${roomList.allRooms}`);
@@ -241,6 +245,33 @@ io.sockets.on("connection", function (socket) {
   socket.on("joinRoomSpectator", function (data) {
     socket.join(data.roomName);
     socket.leave('lobby')
+
+    io.to(data.roomName).emit(
+      "currentRoomUpdate",
+      roomList.roomList[data.roomName]
+    );
+  })
+  socket.on("ready", function (data) {
+    if (roomList.roomList[data.roomName]["host"] === data.userName) {
+      roomList.roomList[data.roomName]["host_ready"] = true
+    } else if (roomList.roomList[data.roomName]["contender"] === data.userName) {
+      roomList.roomList[data.roomName]["contender_ready"] = true
+    }
+
+    if (roomList.roomList[data.roomName]["host_ready"] && roomList.roomList[data.roomName]["contender_ready"]) {
+      roomList.roomList[data.roomName]["messages"].push({
+        timeStamp: 20200700456,
+        fromUser: "Server",
+        message: "Both players are ready!",
+      });
+
+      roomList.sendRoomUpdate();
+
+      // Starts the game method!
+      roomList.roomList[data.roomName].startGame()
+    }
+
+
 
     io.to(data.roomName).emit(
       "currentRoomUpdate",
@@ -266,12 +297,21 @@ io.sockets.on("connection", function (socket) {
       roomList.roomList[data.roomName]["host_id"] = data.userID;
     }
 
-    roomList.socketDirectory[socket.id]=data.roomName;
+
+    roomList.socketDirectory[socket.id] = data.roomName;
 
     // Socket Joins the 'socket'room'
     socket.join(data.roomName);
     socket.leave('lobby')
 
+
+    if (roomList.roomList[data.roomName]["host"] && roomList.roomList[data.roomName]["contender"]) {
+      //  Assigns token to both users
+      io.to(data.roomName).emit("startGame", {
+        roomName: data.roomName,
+      });
+
+    }
     // Send out update to everyone in the room.
     roomList.sendRoomUpdate();
     io.to(data.roomName).emit(
@@ -279,22 +319,6 @@ io.sockets.on("connection", function (socket) {
       roomList.roomList[data.roomName]
     );
 
-    // Room is full if host & contender spots exist
-    if (roomList.roomList[data.roomName]["contender"] &&
-      roomList.roomList[data.roomName]["host"]) {
-      console.log(`${data.roomName} is FULL`);
-
-      roomList.roomList[data.roomName]["messages"].push({
-        timeStamp: 20200700456,
-        fromUser: "Server",
-        message: "Room is full!",
-      });
-
-      roomList.sendRoomUpdate();
-
-      // Starts the game method!
-      roomList.roomList[data.roomName].startGame()
-    }
   });
 
   socket.on("leaveRoom", function (data) {
@@ -310,7 +334,7 @@ io.sockets.on("connection", function (socket) {
     roomList.sendRoomUpdate();
   });
 
-  
+
 
   socket.on("message", function (data) {
     console.log(`Message received from ${data.userName} - ${data.message}`);

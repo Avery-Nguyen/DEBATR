@@ -31,6 +31,9 @@ export default function Stage({ activeRoomState }) {
       state.currentSocket.on("gameCommand", data => {
         setGameCommands(data)
       })
+      state.currentSocket.on("bothReady", data => {
+        setGameState(true)
+      })
 
       state.currentSocket.on("gameOver", data => {
 
@@ -92,6 +95,7 @@ export default function Stage({ activeRoomState }) {
         state.currentSocket.off("disconnect")
         state.currentSocket.off("gameOver")
         state.currentSocket.off("gameCommand")
+        state.currentSocket.off("bothReady")
         state.currentSocket.off("leaveStage")
       }
     })
@@ -244,8 +248,9 @@ export default function Stage({ activeRoomState }) {
                 </div>
               </div>
               <div id='stage-details' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                {gameState ? <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'green', color: 'white' }} onClick={readyUp}>{readyState ? 'Waiting for opponent...' : 'Ready'}</Button> :
-                <div class="timer-box">
+                {!readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'green', color: 'white' }} onClick={readyUp}>Ready</Button>}
+                {!gameState && readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'yellow', color: 'black' }}>Waiting for Opponent...</Button>}
+                {gameState && readyState && <div class="timer-box">
                 <h4 class="timer" style={{ color: 'white' }}>Time Remaining: </h4>
                 <h1 class="timer" style={{ color: 'white' }}>{time}</h1>
                 </div>
