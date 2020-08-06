@@ -33,7 +33,6 @@ const App = () => {
   const [state, dispatch] = useStore();
   const [roomState, setRoomState] = useState({})
   const [activeRoomState, setActiveRoomState] = useState({})
-
   const [open, setOpen] = React.useState(false);
 
 
@@ -112,6 +111,8 @@ const App = () => {
       }
     })
   }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
+
+
 
 
 

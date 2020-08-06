@@ -26,20 +26,29 @@ const useStyles = makeStyles({
   },
 });
 
-export default function UserCard() {
+export default function UserCard(props) {
   const classes = useStyles();
+console.log(props.hostUsercard, 'props')
 
+let {username, points_avg, rating_avg, host_count, contender_count } = props.hostUsercard || ''
+
+
+// {username: "coder", points_avg: "166.8571428571428571", rating_avg: "4.7142857142857143", host_count: "1155", contender_count: "1155"}/
+
+// const { username }= props.hostUsercard
+console.log(username)
+// console.log(userDetails)
   return (
     <Card className={classes.root} style={{border: "solid black 1px", width: "25px"}} >
       <CardContent>
       <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Andy Lindsay
+         {username}
         </Typography>
-        <UserRating />
-        <p>Probably be props.totaldebates 69 debates</p>
+        <UserRating rating={rating_avg}/>
+        <p>{host_count + contender_count} debates</p>
         <br></br>
-        <p>7.88 Debate Average</p>
+        <p>{Math.round(points_avg)} Debate Average</p>
       </CardContent>
       <CardActions>
         <Button size="small">Links to social accounts?</Button>

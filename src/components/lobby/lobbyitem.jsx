@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 // import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -83,6 +84,9 @@ export default function LobbyItem({roomDetails}) {
   // };
 
 
+
+
+
   const [openStage, setOpenStage] = React.useState(false);
 
   const handleClickOpenStage = () => {
@@ -126,6 +130,7 @@ export default function LobbyItem({roomDetails}) {
     
   };
 
+
   const handleCloseStage = () => {
     setOpenStage(false);
   };
@@ -147,7 +152,7 @@ export default function LobbyItem({roomDetails}) {
                 keepMounted
                 onClose={handleClose}
               >
-                <UserCard />
+                <UserCard  />
               </Dialog>
             </div>
           }
