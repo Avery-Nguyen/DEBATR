@@ -115,7 +115,7 @@ export default function Stage({ activeRoomState }) {
 
       Video.connect(state.token, {
         name: state.currentRoom,
-        video: { width: 640 }
+        
       }).then(room => {
         setRoom(room);
 
