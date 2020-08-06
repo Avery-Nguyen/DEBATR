@@ -23,6 +23,7 @@ export default function Stage({ activeRoomState }) {
   const [gameState, setGameState] = useState(false)
   const [messages, setMessages] = useState([])
   const [messageText, setMessageText] = useState("")
+  const [mutedUsers, setMutedUsers] = useState([])
 
 
   // GameCommand / mute / unmute listeners
@@ -58,6 +59,7 @@ export default function Stage({ activeRoomState }) {
       state.currentSocket.on("mute", data => {
         // console.log('Room mute request', room)
         if (room) {
+          setMutedUsers([...mutedUsers, data.mute])
           if (state.username === data.mute) {
             room.localParticipant.audioTracks.forEach(publication => {
               // console.log(room.localParticipant.identity,'is muted');
@@ -146,7 +148,7 @@ export default function Stage({ activeRoomState }) {
   const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host) || (p.identity === activeRoomState.contender))).map((participant) => {
     // console.log("this participant is being rendered",participant);
 
-    return (<Participant key={participant.sid} participant={participant} />)
+    return (<Participant key={participant.sid} participant={participant} mutedUsers={mutedUsers}/>)
   });
 
   function disableMedia() {
@@ -238,6 +240,7 @@ export default function Stage({ activeRoomState }) {
                   <Participant
                     key={room.localParticipant.sid}
                     participant={room.localParticipant}
+                    mutedUsers={mutedUsers}
                   />
                 ) : (
                     ''
