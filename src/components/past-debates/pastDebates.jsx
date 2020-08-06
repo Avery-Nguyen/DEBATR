@@ -36,7 +36,7 @@ export default function PastDebate() {
   }, []);
 
   const pastDebate = pastDebates.map((debate) => {
-    console.log(debate)
+    // console.log(debate)
     return(    <Grid item xs={4}>
     <PastDebateItem
     key={debate.id} 

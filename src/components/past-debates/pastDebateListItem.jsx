@@ -112,7 +112,7 @@ export default function PastDebateItem(props) {
   const [dislikes, setDislikes] = useState(props.dislikes)
 
   const addLikes = (typeOfLike, room_id) => {
-    console.log(typeOfLike, room_id)
+    // console.log(typeOfLike, room_id)
     axios.post('/api/likes', {
       room_id,
       typeOfLike
@@ -158,7 +158,7 @@ export default function PastDebateItem(props) {
       });
   }
 
-  console.log(hostUsercard);
+  // console.log(hostUsercard);
 
   // useEffect(() => {
   //   setLikes(likes);

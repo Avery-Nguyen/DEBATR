@@ -68,7 +68,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [createdTopic, setCreatedTopic] = useState('')
   const [categoryID, setCategoryID] = useState(null)
-  console.log("CreateRoom -> categoryID", categoryID)
+  // console.log("CreateRoom -> categoryID", categoryID)
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
@@ -135,7 +135,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   useEffect(() => {
     axios.get('/api/categories')
       .then((data) => {
-      console.log("CreateRoom -> data", data.data.topics)
+      // console.log("CreateRoom -> data", data.data.topics)
       setCategoriesOptions(data.data.topics);
       });
   }, [])

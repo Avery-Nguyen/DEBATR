@@ -43,7 +43,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function NavBar(props) {
   const classes = useStyles();
   const [state, dispatch] = useStore();
-  console.log(state.username);
+  // console.log(state.username);
 
   //sign-up open/close logic
   const [open, setOpen] = useState(false);
