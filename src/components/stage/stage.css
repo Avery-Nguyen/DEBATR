@@ -8,7 +8,7 @@
   width: 100%;
   height: 200px;
   padding: 2%;
-  flex-direction: column-reverse;
+  flex-direction: column;
   /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
   overflow:auto;
 }
@@ -28,4 +28,7 @@
   display: flex;
   flex-direction: row;
   justify-content: left;
+}
+.MuiFormControl-root{
+  width: 100%;
 }

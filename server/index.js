@@ -320,7 +320,10 @@ io.sockets.on("connection", function (socket) {
       message: data.message,
     });
 
-    roomList.sendRoomUpdate();
+    io.to(data.roomName).emit(
+      "currentRoomUpdate",
+      roomList.roomList[data.roomName]
+    );
   });
 });
 

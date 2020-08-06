@@ -19,6 +19,8 @@ export default function Stage({ activeRoomState }) {
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState([])
+  const [messages, setMessages] = useState([])
+  const [messageText, setMessageText] = useState("")
 
 
   // GameCommand / mute / unmute listeners
@@ -92,7 +94,7 @@ export default function Stage({ activeRoomState }) {
       }
     })
 
-  }, [state.currentSocket, state.currentRoom, state.username, room]);
+  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch]);
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -105,15 +107,16 @@ export default function Stage({ activeRoomState }) {
       );
     };
 
-    Video.connect(state.token, {
-      name: state.currentRoom
-    }).then(room => {
-      setRoom(room);
+      Video.connect(state.token, {
+        name: state.currentRoom,
+        video: { width: 640 }
+      }).then(room => {
+        setRoom(room);
 
-      room.on('participantConnected', participantConnected);
-      room.participants.forEach(participantConnected);
-      room.on('participantDisconnected', participantDisconnected);
-    });
+          room.on('participantConnected', participantConnected);
+          room.participants.forEach(participantConnected);
+          room.on('participantDisconnected', participantDisconnected);
+      });
 
 
 
@@ -141,16 +144,6 @@ export default function Stage({ activeRoomState }) {
   });
 
   function disableMedia() {
-    // room.localParticipant.audioTracks.forEach(publication => {
-    //   publication.track.disable();
-    // });
-
-    // room.localParticipant.videoTracks.forEach(publication => {
-    //   publication.track.disable();
-    //   publication.track.stop();
-    //   publication.unpublish();
-    // });
-
     if (room) {
       room.on('disconnected', room => {
         // Detach the local media elements
@@ -159,10 +152,10 @@ export default function Stage({ activeRoomState }) {
           attachedElements.forEach(element => element.remove());
         });
       });
+      room.disconnect();
     }
 
     // To disconnect from a Room
-    room.disconnect();
 
   }
 
@@ -196,6 +189,20 @@ export default function Stage({ activeRoomState }) {
     // clearTimeout(timer)
   }, [active, time]);
 
+  const sendMessage = () => {
+    state.currentSocket.emit('message', {
+      userName: state.username,
+      message: messageText,
+      roomName: state.currentRoom
+    })
+  }
+
+  const messageList = activeRoomState.messages.map(message => {
+    return <span>
+      {message.fromUser} - {message.message}
+    </span>
+  })
+
 
   // console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
@@ -226,8 +233,9 @@ export default function Stage({ activeRoomState }) {
                 <h1 style={{ color: 'white' }}>{gameCommands}</h1>
                 <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
                 <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
-                <br />
-                <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Ready</Button>
+                {/* <br />
+              <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button> */}
+                <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
               </div>
               <div class='participants'>
                 {remoteParticipants}
@@ -237,21 +245,23 @@ export default function Stage({ activeRoomState }) {
                 </div>
               </div>
             </div>
-            <article id="game-log" class="info-box">
-              <span><b>'Welcome to the Chatroom.'</b> Click 'Ready' when you're good to go!</span>
-            </article>
+              <article id="game-log" class="info-box">
+                <span><b>'Welcome to the Chatroom.'</b> Click 'Ready' when you're good to go!</span>
+                {messageList}
+              </article>
               <form>
                 <div class="chat-message-box">
-              <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Send</Button>
+                  <TextField id="outlined-basic" label="Outlined" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={e => (e.key === 'Enter' ? sendMessage() : null)}/>
+                  <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>
               </form>
-          </div>
 
-          <footer style={{ backgroundColor: "rgb(64,81,182)", display: 'flex' }}>
-            <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
-          </footer>
-        </div>
+            </div>
+
+            <footer style={{ backgroundColor: "rgb(64,81,182)", display: 'flex' }}>
+              <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
+            </footer>
+          </div>
       </body>
     </main>
   );
