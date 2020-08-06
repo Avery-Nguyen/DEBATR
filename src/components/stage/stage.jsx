@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 // import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Participant from '../../Participant'
-import {useStore} from '../../Store'
+import TextField from '@material-ui/core/TextField';
+import { useStore } from '../../Store'
 import Video from 'twilio-video';
+import './stage.css';
 
 const startTime = 5.0;
 
@@ -29,20 +31,20 @@ export default function Stage({ activeRoomState }) {
       state.currentSocket.on("gameOver", data => {
 
         state.currentSocket.emit('leaveRoom', {
-          roomName : state.currentRoom,
-          userName : state.username
+          roomName: state.currentRoom,
+          userName: state.username
         })
 
-        dispatch({type: 'SET_TOKEN', payload: null})
-        dispatch({type: 'SET_VISUAL_MODE', payload: "GAME_OVER"})
-        dispatch({type: 'SET_CURRENT_ROOM', payload: null})
+        dispatch({ type: 'SET_TOKEN', payload: null })
+        dispatch({ type: 'SET_VISUAL_MODE', payload: "GAME_OVER" })
+        dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
         disableMedia()
       })
 
       state.currentSocket.on("disconnect", data => {
-        dispatch({type: 'SET_TOKEN', payload: null})
-        dispatch({type: 'SET_VISUAL_MODE', payload: "CONNECTION_ERROR"})
-        dispatch({type: 'SET_CURRENT_ROOM', payload: null})
+        dispatch({ type: 'SET_TOKEN', payload: null })
+        dispatch({ type: 'SET_VISUAL_MODE', payload: "CONNECTION_ERROR" })
+        dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
         disableMedia()
       })
 
@@ -69,7 +71,7 @@ export default function Stage({ activeRoomState }) {
       state.currentSocket.on("unMute", data => {
         // console.log('Room UNmute request', room)
         if (room) {
-          if(state.username === data){
+          if (state.username === data) {
             room.localParticipant.audioTracks.forEach(publication => {
               // console.log(room.localParticipant.identity,' is unmuted');
               publication.track.enable();
@@ -102,17 +104,17 @@ export default function Stage({ activeRoomState }) {
         prevParticipants.filter(p => p !== participant)
       );
     };
-    
-      Video.connect(state.token, {
-        name: state.currentRoom
-      }).then(room => {
-        setRoom(room);
-   
-          room.on('participantConnected', participantConnected);
-          room.participants.forEach(participantConnected);
-          room.on('participantDisconnected', participantDisconnected);
-      });
-    
+
+    Video.connect(state.token, {
+      name: state.currentRoom
+    }).then(room => {
+      setRoom(room);
+
+      room.on('participantConnected', participantConnected);
+      room.participants.forEach(participantConnected);
+      room.on('participantDisconnected', participantDisconnected);
+    });
+
 
 
 
@@ -132,9 +134,9 @@ export default function Stage({ activeRoomState }) {
   }, [state.currentRoom, state.token]);
 
 
-  const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host)  || (p.identity === activeRoomState.contender))).map((participant) => {
+  const remoteParticipants = participants.filter(p => ((p.identity === activeRoomState.host) || (p.identity === activeRoomState.contender))).map((participant) => {
     // console.log("this participant is being rendered",participant);
-    
+
     return (<Participant key={participant.sid} participant={participant} />)
   });
 
@@ -142,7 +144,7 @@ export default function Stage({ activeRoomState }) {
     // room.localParticipant.audioTracks.forEach(publication => {
     //   publication.track.disable();
     // });
-    
+
     // room.localParticipant.videoTracks.forEach(publication => {
     //   publication.track.disable();
     //   publication.track.stop();
@@ -158,7 +160,7 @@ export default function Stage({ activeRoomState }) {
         });
       });
     }
-    
+
     // To disconnect from a Room
     room.disconnect();
 
@@ -166,86 +168,91 @@ export default function Stage({ activeRoomState }) {
 
   const handleLogout = function () {
     state.currentSocket.emit('leaveRoom', {
-      roomName : state.currentRoom,
-      userName : state.username
+      roomName: state.currentRoom,
+      userName: state.username
     })
-    
+
     disableMedia()
 
-    dispatch({type: 'SET_TOKEN', payload: null})
-    dispatch({type: 'SET_VISUAL_MODE', payload: "LOBBY"})
-    dispatch({type: 'SET_CURRENT_ROOM', payload: null})
+    dispatch({ type: 'SET_TOKEN', payload: null })
+    dispatch({ type: 'SET_VISUAL_MODE', payload: "LOBBY" })
+    dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
   }
 
   useEffect(() => {
     let timer = null;
-      if (active && time > 0) {
-        timer = setTimeout(() => {
-          setTime((time - 0.1).toFixed(1))
-        }, 100);
-      } else if (time <= 0) {
-  
-        console.log('calling clearTimeout and setActive false')
-        clearTimeout(timer)
-      
-      }
+    if (active && time > 0) {
+      timer = setTimeout(() => {
+        setTime((time - 0.1).toFixed(1))
+      }, 100);
+    } else if (time <= 0) {
 
-      return () => clearTimeout(timer);
-      // clearTimeout(timer)
-    } , [active, time]);
+      console.log('calling clearTimeout and setActive false')
+      clearTimeout(timer)
+
+    }
+
+    return () => clearTimeout(timer);
+    // clearTimeout(timer)
+  }, [active, time]);
 
 
   // console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
   return (
-    <main> 
-    <body id='stage' style={{height: '100%', zIndex:'1'}}>
-      <div class="w3-content" >
-        <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
-          <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
-        </header>
-        <div class="w3-row-padding w3-grayscale">
-          <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
-            <div class='participants'>
-            {room ? (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-          />
-        ) : (
-            ''
-          )}
-            <div class='userAndStance' style={{display: 'flex', justifyContent:'space-between'}}>
-        <p style={{ color: 'white', justifySelf: 'right' }}>{state.username}</p>
-            <p style={{ color: 'white'}}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
+    <main>
+      <body id='stage' style={{ height: '100%', zIndex: '1' }}>
+        <div class="w3-content" >
+          <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
+            <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
+          </header>
+          <div class="w3-row-padding w3-grayscale">
+            <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
+              <div class='participants'>
+                {room ? (
+                  <Participant
+                    key={room.localParticipant.sid}
+                    participant={room.localParticipant}
+                  />
+                ) : (
+                    ''
+                  )}
+                <div class='userAndStance' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <p style={{ color: 'white', justifySelf: 'right' }}>{state.username}</p>
+                  <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
+                </div>
+              </div>
+              <div id='stage-details' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+                <h1 style={{ color: 'white' }}>{gameCommands}</h1>
+                <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
+                <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
+                <br />
+                <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Ready</Button>
+              </div>
+              <div class='participants'>
+                {remoteParticipants}
+                <div class='userAndStance' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
+                  <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? activeRoomState.contender : activeRoomState.host}</p>
+                </div>
+              </div>
             </div>
-            </div>
-            <div id='stage-details' style={{ display: 'flex', flexDirection:'column', justifyContent: 'space-around' }}>
-              <h1 style={{ color: 'white' }}>{gameCommands}</h1>
-              <h4 style={{ color: 'white' }}>Time Remaining: {time}</h4>
-              <h5 style={{ color: 'white' }}>'BatRs watching': {participants.length - 1}</h5>
-              <br />
-              <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button>
-            </div>
-            <div class='participants'>
-            {remoteParticipants}
-            <div class='userAndStance' style={{display: 'flex', justifyContent:'space-between'}}>
-            <p style={{ color: 'white'}}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
-            <p style={{ color: 'white'}}>{(state.username === activeRoomState.host) ?  activeRoomState.contender : activeRoomState.host }</p>
-            </div>
-            </div>
+            <article id="game-log" class="info-box">
+              <span><b>'Welcome to the Chatroom.'</b> Click 'Ready' when you're good to go!</span>
+            </article>
+              <form>
+                <div class="chat-message-box">
+              <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+               <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Send</Button>
+                </div>
+              </form>
           </div>
+
+          <footer style={{ backgroundColor: "rgb(64,81,182)", display: 'flex' }}>
+            <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
+          </footer>
         </div>
-
-        <div id="game-log" class="info-box">
-          <span><b>'Welcome to the Chatroom!'</b> Debate starts soon.</span>
-
-          </div>
-        <footer style={{ backgroundColor: "rgb(64,81,182)", display:'flex' }}>
-        <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
-        </footer>
-      </div>
-    </body>
+      </body>
     </main>
   );
 }

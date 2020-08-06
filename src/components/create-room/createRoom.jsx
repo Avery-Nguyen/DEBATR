@@ -70,7 +70,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   const submitCreateRoom = (vals) => {
     //put validation of form here
 
-    if (topic && stance) {
+    if (topic) {
       const randRoomName = Math.random().toFixed(5).toString();
       dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
       dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
