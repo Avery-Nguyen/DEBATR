@@ -117,9 +117,56 @@ class Room {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  startGame() {
+  startDemoGame() {
     // The framework of the game! Toggles the turns
+    io.to(this.name).emit(
+      "bothReady"
+    );
+    this.sleep(5000)
+      .then(() => {
+        io.to(this.name).emit(
+          "gameCommand",
+          `${this.contender} (Disagrees) is muted!`
+        );
+        io.to(this.name).emit("mute", {
+          mute: this.contender,
+          intermission: false,
+          timer: debtateTime,
+        });
+      })
+      .then(() => this.sleep(debtateTime * 1000))
+      .then(() => {
+        io.to(this.name).emit("gameCommand", `Intermission`);
+        io.to(this.name).emit("mute", {
+          mute: this.host,
+          intermission: true,
+          timer: intermissionTime,
+        });
+      })
+      .then(() => this.sleep(intermissionTime * 1000))
+      .then(() => {
+        this.postGameToDatabase();
+        io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
+        io.to(this.name).emit('unMute', this.contender)
+        io.to(this.name).emit('mute', {
+          mute: this.host,
+          intermission: false,
+          timer: debtateTime
+        })
+      })
+      .then(() => this.sleep(debtateTime * 1000))
+      .then(() => {
+        io.to(this.name).emit('unMute', this.host)
+        io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
+        // Post the game record to the database.
 
+        // Ends the game for the user - Brings up post-debtate review screen
+        io.to(this.name).emit('gameOver', null)
+      })
+  }
+
+  startRealGame() {
+    // The framework of the game! Toggles the turns
     io.to(this.name).emit(
       "bothReady"
     );
@@ -268,7 +315,7 @@ io.sockets.on("connection", function (socket) {
       roomList.sendRoomUpdate();
 
       // Starts the game method!
-      roomList.roomList[data.roomName].startGame()
+      roomList.roomList[data.roomName].startDemoGame()
     }
 
 
