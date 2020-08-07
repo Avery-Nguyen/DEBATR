@@ -2,7 +2,7 @@
 const getRoomRecords = (client, limit = 10) => {
   // console.log('INSIDE GET ROOM RECORDS')
 
-  return client.query(`SELECT room_logs.*, sum(agreement_ratings.agreement_rating) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
+  return client.query(`SELECT room_logs.*, AVG(agreement_ratings.agreement_rating) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
   FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
   JOIN agreement_ratings on room_logs.id = agreement_ratings.room_log_id
