@@ -8,7 +8,7 @@ const getRoomRecords = (client, limit = 10) => {
   JOIN agreement_ratings on room_logs.id = agreement_ratings.room_log_id
   JOIN users AS Host ON room_logs.host_id = Host.id
   JOIN users AS Contender ON room_logs.contender_id = Contender.id
-  GROUP BY room_logs.id, topics.question, host.username, contender.username 
+  GROUP BY room_logs.id, topics.question, host.username, contender.username, host_avatar, contender_avatar 
   ORDER BY room_logs.date_time DESC
   limit $1;
   `, [limit])
@@ -40,14 +40,39 @@ const getDebateCount = (client) => {
     })
 }
 
+const getTopicCount = (client, limit = 10) => {
+  return client.query(`SELECT question , COUNT(question) AS topic_count
+  FROM topics
+  JOIN room_logs ON room_logs.topic_id = topics.id 
+  GROUP BY question, room_logs.topic_id
+  ORDER BY topic_count desc
+  LIMIT $1;`, [limit])
+  .then((res) => {
+    // console.log(`res from sql ${res}`)
+    return res.rows
+  })
+}
+
+const getCategoryCount = (client) => {
+  return client.query(`select categories.name, COUNT(categories.id) 
+  from room_logs 
+  join topics on topics.id = room_logs.topic_id
+  join categories on categories.id = topics.category_id
+  GROUP BY categories.id;`)
+  .then((res) => {
+    // console.log(`res from sql ${res}`)
+    return res.rows
+  })
+}
+
 const getUserCardByID = (client, id) => {
-  return client.query(`SELECT username, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
+  return client.query(`SELECT username, avatar_url, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
   FROM users
   JOIN ratings ON ratings.to_user_id = users.id
   JOIN room_logs AS host ON users.id = host.host_id
   JOIN room_logs AS contender ON users.id = contender.contender_id
   WHERE users.id = $1
-  group by username;`, [id])
+  group by username, avatar_url;`, [id])
   .then((res) => {
     // console.log(`res from sql ${res}`)
     return res
@@ -55,7 +80,7 @@ const getUserCardByID = (client, id) => {
 }
 
 const getUserCardByName = (client, username) => {
-  console.log(username)
+  // console.log(username)
   return client.query(`SELECT username, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
   FROM users
   JOIN ratings ON ratings.to_user_id = users.id
@@ -199,5 +224,7 @@ module.exports = {
   postLikes,
   getUserCardByID,
   createTopic,
-  getUserCardByName
+  getUserCardByName,
+  getTopicCount,
+  getCategoryCount
 }

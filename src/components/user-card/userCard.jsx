@@ -30,7 +30,7 @@ export default function UserCard(props) {
   const classes = useStyles();
 // console.log(props.hostUsercard, 'props')
 
-let {username, points_avg, rating_avg, host_count, contender_count } = props.hostUsercard || ''
+let {username, points_avg, rating_avg, host_count, contender_count, avatar_url } = props.hostUsercard || ''
 
 
 // {username: "coder", points_avg: "166.8571428571428571", rating_avg: "4.7142857142857143", host_count: "1155", contender_count: "1155"}/
@@ -40,7 +40,7 @@ let {username, points_avg, rating_avg, host_count, contender_count } = props.hos
   return (
     <Card className={classes.root} style={{border: "solid black 1px", width: "25px", display: "flex", flexDirection: "row", position: "relative"}} >
       <CardContent>
-      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+      <Avatar alt="Remy Sharp" src={avatar_url} />
         <Typography className={classes.title} color="textSecondary" gutterBottom>
          {username}
         </Typography>

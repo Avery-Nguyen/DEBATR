@@ -50,6 +50,7 @@ const App = () => {
           if (res.data.success) {
             dispatch({ type: 'SET_USERNAME', payload: res.data.username })
             dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+            dispatch({ type: 'SET_USER_AVATAR_URL', payload: res.data.userAvatarUrl })
           }
           console.log(res, 'res from persistent login check')
           return true
@@ -112,8 +113,16 @@ const App = () => {
 
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
+      <Dashboard />
       <Lobby roomState={roomState} />
-      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 1px black', marginBottom: "20px" }}>Past Debates</h1>
+      <h1 style={{ display: 'flex', 
+      justifyContent: 'center', 
+      border: 'solid 1px rgb(64,81,182)', 
+      marginBottom: "20px", 
+      color:'white', 
+      backgroundColor:'rgb(64,81,182)',
+      borderRadius:'15px',
+      padding:'0px 10px' }}>Debate Results</h1>
       <span></span>
       <PastDebate />
     </main>

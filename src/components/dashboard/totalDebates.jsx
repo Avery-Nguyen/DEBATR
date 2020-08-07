@@ -28,8 +28,6 @@ export default function TotalDebates() {
       axios.get(`/api/totaldebates`)
     ]).then((data) => {
       // console.log(data[0].data, "this is data in orders")
-      // console.log(Object.values(data[0].data));
-      console.log(data[0].data[0].count, "this is data in orders")
       settotaldebates(data[0].data[0].count);
     })
       .catch(error => {
@@ -40,10 +38,11 @@ export default function TotalDebates() {
 
   return (
     <React.Fragment>
-      <Typography component="p" variant="h4">
+      <Typography component="p" variant="h4" align='center'>
         Total Debates
       </Typography>
-      <Typography component="p" variant="h4">
+      <br/>
+      <Typography component="p" variant="h4" align='center'>
        {totaldebates}
       </Typography>
     </React.Fragment>
