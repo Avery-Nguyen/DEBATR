@@ -1,0 +1,17 @@
+.MuiSlider-markActive{
+  background-color: none !important;
+}
+
+.makeStyles-root-145{
+  width: 100%;
+}
+
+.MuiSlider-mark {
+  background-color: rgba(0, 0, 0, 0) !important;
+
+}
+
+.review-slider{
+  display: flex;
+  justify-content: center;
+}

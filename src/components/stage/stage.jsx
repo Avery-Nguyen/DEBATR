@@ -9,14 +9,14 @@ import { useStore } from '../../Store'
 import Video from 'twilio-video';
 import './stage.css';
 
-const startTime = 5.0;
+
 
 export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   // console.log("Debater Stage -> state participants", participants)
-  const [time, setTime] = useState(startTime);
+  const [time, setTime] = useState(0);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState(`Welcome to the Debate. ${activeRoomState.host} goes first.`)
   const [readyState, setReadyState] = useState(false)
@@ -61,23 +61,15 @@ export default function Stage({ activeRoomState }) {
         // console.log('Room mute request', room)
         if (room) {
           let newArr = [...mutedUsers]
-          console.log("Stage -> newArr", newArr)
+          // console.log("Stage -> newArr", newArr)
           
-          newArr.push(data.mute)
+          newArr.push(data)
           setMutedUsers(newArr)
-          if (state.username === data.mute) {
+          if (state.username === data) {
             room.localParticipant.audioTracks.forEach(publication => {
               // console.log(room.localParticipant.identity,'is muted');
               publication.track.disable();
             });
-          }
-
-          // Start Timer
-          if (!data.intermission) {
-            setActive(true)
-            setTime(data.timer);
-          } else {
-            // setTime(data.timer)
           }
         }
 
@@ -101,6 +93,13 @@ export default function Stage({ activeRoomState }) {
           })
         }
       })
+
+      state.currentSocket.on('setTimer', data => {
+           // Start Timer
+            setActive(true)
+            setTime(data);
+          
+      })
     }
 
     return (() => {
@@ -115,7 +114,7 @@ export default function Stage({ activeRoomState }) {
       }
     })
 
-  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch, mutedUsers, disableMedia]);
+  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch, mutedUsers]);
 
   useEffect(() => {
     const participantConnected = participant => {
@@ -197,11 +196,11 @@ export default function Stage({ activeRoomState }) {
     let timer = null;
     if (active && time > 0) {
       timer = setTimeout(() => {
-        setTime((time - 0.1).toFixed(1))
-      }, 100);
+        setTime((time - 1))
+      }, 1000);
     } else if (time <= 0) {
 
-      console.log('calling clearTimeout and setActive false')
+      console.log('calling clearTimeout')
       clearTimeout(timer)
 
     }
@@ -239,17 +238,19 @@ export default function Stage({ activeRoomState }) {
   // console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
   return (
-    <main>
-      <body id='stage' style={{ height: '100%', zIndex: '1', width: '98%' }}>
-        <div class="w3-content" >
-          <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
-            <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
-            <h2 style={{ color: 'white' }}>{gameCommands}</h2>
-            {!readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'green', color: 'white' }} onClick={readyUp}>Ready</Button>}
-                {!gameState && readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'yellow', color: 'black' }}>Waiting for Opponent...</Button>}
-          </header>
+   
+        <div class="w3-content" id='stage' style={{ height: '100%', width: '98%' }}>
+          
+            <h1 class="w3-xlarge topic-header debate-topic">Debate Topic - {activeRoomState.topic}</h1>
+            <h2 style={{ color: 'black' }}>{gameCommands}</h2>
+            <div id="button-div">
+            {!readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'center', backgroundColor:'green', color: 'white', width: '200px' }} onClick={readyUp}>Ready</Button>}
+                {!gameState && readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'yellow', color: 'black', width: '200px' }}>Waiting for Opponent...</Button>}
+            </div>
+       
           <div class="w3-row-padding w3-grayscale">
-            <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
+            {/* BACKGROUND FOR STAGE */}
+            <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
               <div class='participants'>
                 {room ? (
                   <Participant
@@ -262,28 +263,33 @@ export default function Stage({ activeRoomState }) {
                   )}
                 <div class='userAndStance' style={{ display: 'flex', justifyContent: 'center'}}>
                   {/* <p style={{ color: 'white', justifySelf: 'right' }}>{state.username}</p> */}
-                  <p style={{ color: 'white', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
+                  <p style={{ color: 'black', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
                 </div>
               </div>
               <div id='stage-details' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
                 {gameState && readyState && <div class="timer-box">
-                <h4 class="timer" style={{ color: 'white' }}>Time Remaining: </h4>
-                <h1 class="timer" style={{ color: 'white' }}>{time}</h1>
+                <h4 class="timer" style={{ color: 'black' }}>Time Remaining: </h4>
+                <h1 class="timer" style={{ color: 'black' }}>{time}</h1>
                 </div>
                 }
                 
-                {/* <br />
-              <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }}>Good Point!</Button> */}
+                
               </div>
               <div class='participants'>
                 {remoteParticipants}
                 <div class='userAndStance' style={{ display: 'flex', justifyContent: 'center'}}>
-                  <p style={{ color: 'white', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
-                  {/* <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? activeRoomState.contender : activeRoomState.host}</p> */}
+                  <p style={{ color: 'black', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
+
                 </div>
               </div>
             </div>
-              <article id="game-log" class="info-box">
+            <article id="viewers-watching">
+              <h5 style={{ color: 'black' }}>Viewers Watching: {participants.length - 1}</h5>
+              <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
+
+            </article>
+            <section id="full-chatbox">
+              <article id="outlined-basic" class="info-box game-log">
                 <span><b>'Welcome to the Chatroom.'</b> Click 'Ready' when you're good to go!</span>
                 {messageList}
               </article>
@@ -297,21 +303,14 @@ export default function Stage({ activeRoomState }) {
                     } 
                     return null;
                     
-                    // return e.key === 'Enter' ? sendMessage() : null;
+                   
                     }}/>
                   <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>
               </form>
-
+              </section>
             </div>
-
-            <footer style={{ backgroundColor: "rgb(64,81,182)", display: 'flex' }}>
-              <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
-              <h5 style={{ color: 'white' }}>'Viewers Watching': {participants.length - 1}</h5>
-
-            </footer>
           </div>
-      </body>
-    </main>
+   
   );
 }
