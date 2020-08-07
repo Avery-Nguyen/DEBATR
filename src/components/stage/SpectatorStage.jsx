@@ -173,7 +173,7 @@ export default function SpectatorStage({ activeRoomState }) {
 
   return (
     <main>
-      <body id='stage' style={{ height: '100%', zIndex: '1' }}>
+      <body id='stage' style={{ height: '100%', zIndex: '1', width: '98%' }}>
         <div class="w3-content" >
           <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
             <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
