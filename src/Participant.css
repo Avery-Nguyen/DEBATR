@@ -1,0 +1,14 @@
+.muted {
+  float: right;
+  position: relative;
+  /* left: 100px; */
+  width: 100%;
+  text-align: center;
+  top: 300px;
+  font-size: 3em;
+  z-index: 1000;
+  background-color: #b80425;
+  color: #FFFFFF;
+  font-weight: bold;
+  
+}

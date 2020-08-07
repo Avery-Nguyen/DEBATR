@@ -148,11 +148,11 @@ class Room {
         this.postGameToDatabase();
         io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
         io.to(this.name).emit('unMute', this.contender)
-        io.to(this.name).emit('mute', {
-          mute: this.host,
-          intermission: false,
-          timer: debtateTime
-        })
+        // io.to(this.name).emit('mute', {
+        //   mute: this.host,
+        //   intermission: false,
+        //   timer: debtateTime
+        // })
       })
       .then(() => this.sleep(debtateTime * 1000))
       .then(() => {
