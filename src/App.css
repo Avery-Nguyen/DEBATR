@@ -35,10 +35,12 @@ h1 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: rgb(64,81,182);
+  background-color: white;
 }
 
 main {
+  margin-top: 115px;
+  margin-bottom: 10px;
   background: #ffffff;
   /* flex-grow: 1; */
 }
@@ -107,29 +109,7 @@ button:hover {
   justify-content: space-between;
   padding: 0 2em 2em;
 }
-.participant {
-  background: #333e5a;
-  padding: 10px;
-  border-radius: 6px;
-  display: inline-block;
-  margin-right: 10px;
-}
-.participant:last-child {
-  margin-right: 0;
-}
-.participant h3 {
-  text-align: center;
-  padding-bottom: 0.5em;
-  color: #fff;
-}
 
-video {
-  width: 100%;
-  max-width: 600px;
-  display: block;
-  margin: 0 auto;
-  border-radius: 6px;
-}
 
 footer {
   background: rgb(64,81,182);

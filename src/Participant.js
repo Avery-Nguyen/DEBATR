@@ -84,7 +84,7 @@ const Participant = ({ participant, mutedUsers }) => {
     <div className="participant">
       <h3>{participant.identity}</h3>
       {muted && <span class='muted'>MUTED</span>}
-      <video ref={videoRef} autoPlay={true} style={{width: 600, height: 400}} />
+      <video ref={videoRef} autoPlay={true} />
       <audio ref={audioRef} autoPlay={true} />
     </div>
   )
