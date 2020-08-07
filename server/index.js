@@ -148,11 +148,6 @@ class Room {
         this.postGameToDatabase();
         io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
         io.to(this.name).emit('unMute', this.contender)
-        // io.to(this.name).emit('mute', {
-        //   mute: this.host,
-        //   intermission: false,
-        //   timer: debtateTime
-        // })
       })
       .then(() => this.sleep(debtateTime * 1000))
       .then(() => {
@@ -238,7 +233,7 @@ const roomList = new Rooms("roomList");
 roomList.newRoom("testRoom", "Is Alex the Greatest?");
 roomList.newRoom("otherRoom", "Is Avery the greatest?");
 roomList.newRoom("3rdroom", "Are beavers awesome?");
-roomList.newRoom("4tdroom", "Are Trevor and Andrew lovers?");
+roomList.newRoom("4tdroom", "Are Trevor and Andrew nice guys?");
 
 io.sockets.on("connection", function (socket) {
   // Send roomList to each new participant
@@ -305,13 +300,24 @@ io.sockets.on("connection", function (socket) {
       roomList.roomList[data.roomName]["contender_ready"] = true
     }
 
+    // io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
+
+    roomList.roomList[data.roomName]["messages"].push({
+      timeStamp: 20200700456,
+      fromUser: "Server",
+      message: `${data.userName} is ready.`,
+    });
+
+
+
     if (roomList.roomList[data.roomName]["host_ready"] && roomList.roomList[data.roomName]["contender_ready"]) {
       roomList.roomList[data.roomName]["messages"].push({
         timeStamp: 20200700456,
         fromUser: "Server",
-        message: "Both players are ready!",
+        message: "Both players are ready! Game starting soon...",
       });
 
+      
       roomList.sendRoomUpdate();
 
       // Starts the game method!
