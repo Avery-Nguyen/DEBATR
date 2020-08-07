@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 
 export default function UserCard(props) {
   const classes = useStyles();
-console.log(props.hostUsercard, 'props')
+// console.log(props.hostUsercard, 'props')
 
 let {username, points_avg, rating_avg, host_count, contender_count } = props.hostUsercard || ''
 
@@ -36,7 +36,6 @@ let {username, points_avg, rating_avg, host_count, contender_count } = props.hos
 // {username: "coder", points_avg: "166.8571428571428571", rating_avg: "4.7142857142857143", host_count: "1155", contender_count: "1155"}/
 
 // const { username }= props.hostUsercard
-console.log(username)
 // console.log(userDetails)
   return (
     <Card className={classes.root} style={{border: "solid black 1px", width: "25px", display: "flex", flexDirection: "row", position: "relative"}} >
@@ -46,9 +45,9 @@ console.log(username)
          {username}
         </Typography>
         <UserRating rating={rating_avg}/>
-        <p>{host_count + contender_count} debates</p>
+        <p>{host_count + contender_count || 0} debates</p>
         <br></br>
-        <p>{Math.round(points_avg)} Debate Average</p>
+        <p>{Math.round(points_avg || 0)} Debate Average</p>
         <div style={{position: "absolute", 
                     top: "20px",
                     right: "15px",

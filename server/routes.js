@@ -11,8 +11,10 @@ const {
   getLeaderboard,
   getDebateCount,
   postLikes,
-  getUserCard,
-  createTopic
+  getUserCardByID,
+  createTopic,
+  getUserCardByName
+
 } = require('./databaseCalls.js');
 
 //bcrypt stuff
@@ -86,11 +88,27 @@ module.exports = (client) => {
 
   router.post('/usercard', function(req, res) {
     console.log('REQUEST TO /API/usercard')
-    console.log(req.body.host)
+    // console.log(req.body.host)
     // console.log(res, 'res in usercard')
-    getUserCard(client, req.body.host)
+    getUserCardByID(client, req.body.host)
       .then(sqlResponse => {
-        console.log(sqlResponse.rows, 'inusercard')
+        // console.log(sqlResponse.rows, 'inusercard')
+        res.send(sqlResponse.rows)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post('/usercardByName', function(req, res) {
+    console.log('REQUEST TO /API/usercardByName')
+    console.log(req.body.username)
+    // console.log(res, 'res in usercard')
+    getUserCardByName(client, req.body.username)
+      .then(sqlResponse => {
+        // console.log(sqlResponse.rows, 'inusercard')
         res.send(sqlResponse.rows)
       })
       .catch(err => {
@@ -175,7 +193,7 @@ module.exports = (client) => {
     const loginInfo = req.body;
     getUserInfoByEmail(client, loginInfo.email)
       .then(data => {
-        console.log(data, "should be user object")
+        // console.log(data, "should be user object")
         const username = data[0].username;
         const userID = data[0].id;
         const password = data[0].password
@@ -226,7 +244,7 @@ module.exports = (client) => {
     bcrypt.hash(req.body.password, saltRounds).then(function(hash) {
       // Store hash in your password DB.
 
-      console.log('after bcrypot')
+      // console.log('after bcrypot')
       createUser(client, req.body.email, req.body.firstName, req.body.lastName, req.body.username, hash, req.body.avatar_url)
         .then((sqlResponse) => {
 

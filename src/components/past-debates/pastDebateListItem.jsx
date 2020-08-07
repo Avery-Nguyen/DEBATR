@@ -133,7 +133,7 @@ export default function PastDebateItem(props) {
   const [hostUsercard, setHostUsercard] = useState({});
   const [contenderUsercard, setContenderUsercard] = useState([]);
   // console.log('roomState', roomState)
-
+  // console.log(props)
 
   const getHostUsercard = (host) => {
     console.log(host)
@@ -143,7 +143,7 @@ export default function PastDebateItem(props) {
       .then((res) => {
         console.log(res.data[0])
         // console.log(data.data[0], 'sql response')
-        setHostUsercard(prev => ({...prev, ...res.data[0]}));
+        setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
         handleClickOpen();
 
       });
@@ -152,13 +152,13 @@ export default function PastDebateItem(props) {
   const getContenderUsercard = (contender) => {
     axios.get('/api/usercard')
       .then((res) => {
-        setContenderUsercard(prev => ({...prev, ...res.data[0]}))
+        setContenderUsercard(prev => ({ ...prev, ...res.data[0] }))
         handleClickOpen();
 
       });
   }
 
-  console.log(hostUsercard);
+  // console.log(hostUsercard);
 
   // useEffect(() => {
   //   setLikes(likes);
@@ -177,35 +177,35 @@ export default function PastDebateItem(props) {
       maxHeight: "140px"
     }}>
 
-      <div style={{display:'flex', padding:'5px 7px 0px 7px', justifyContent:'space-between'}}>
-          <div>
-            <Avatar title='host' onClick={() => getHostUsercard(props.host)} />
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={handleClose}
-            >
-              <UserCard hostUsercard={hostUsercard}/>
-            </Dialog>
-          </div>
-          <div style={{display:'block'}}>
-       <p> {props.roomQuestion}</p>
-       <p> Agreement Rating: {props.agreement}</p>
-          </div>
+      <div style={{ display: 'flex', padding: '5px 7px 0px 7px', justifyContent: 'space-between' }}>
+        <div>
+          <Avatar title='host' onClick={() => getHostUsercard(props.host)} />
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+          >
+            <UserCard hostUsercard={hostUsercard} />
+          </Dialog>
+        </div>
+        <div style={{ display: 'block' }}>
+          <p> {props.roomQuestion}</p>
+          <p> Agreement Rating: {props.agreement}</p>
+        </div>
 
-          <div>
-            <Avatar onClick={() => getHostUsercard(props.contender)} />
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={handleClose}
-            >
-              <UserCard hostUsercard={hostUsercard} />
-            </Dialog>
-          </div>
-</div>
+        <div>
+          <Avatar onClick={() => getHostUsercard(props.contender)} />
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+          >
+            <UserCard hostUsercard={hostUsercard} />
+          </Dialog>
+        </div>
+      </div>
 
       {/* <div class="inner">
             <p>Live</p>
