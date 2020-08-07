@@ -289,7 +289,7 @@ export default function Stage({ activeRoomState }) {
               </article>
               <form>
                 <div class="chat-message-box">
-                  <TextField id="outlined-basic" label="Outlined" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={(e) => {
+                  <TextField id="outlined-basic" label="Start Chatting" variant="outlined" value={messageText} onChange={event => setMessageText(event.target.value)}  onKeyPress={(e) => {
                     if (e.key === 'Enter'){
                       e.preventDefault();
                       sendMessage()
