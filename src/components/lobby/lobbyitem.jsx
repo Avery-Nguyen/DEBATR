@@ -112,7 +112,6 @@ const getHostUsercard = (username) => {
       dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
       dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
 
-
       state.currentSocket.emit('joinRoom', {
         roomName: roomDetails.name,
         userName: state.username,
@@ -151,6 +150,27 @@ const getHostUsercard = (username) => {
       })
       // setOpenStage(true);
 
+    } else if (state.sessionID) {
+      dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
+      fetch('/video/token', {
+        method: 'POST',
+        body: JSON.stringify({
+          identity: state.sessionID,
+          room: state.currentRoom
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+        .then((fetchData) => {
+          dispatch({ type: 'SET_VISUAL_MODE', payload: "SPECTATOR" });
+          dispatch({ type: 'SET_TOKEN', payload: fetchData.token })
+        })
+
+        state.currentSocket.emit('joinRoomSpectator', {
+          roomName: roomDetails.name,
+          userName: state.sessionID
+        })
     } else {
       dispatch({ type: 'SET_OPEN_SIGN_IN', payload: true })
 

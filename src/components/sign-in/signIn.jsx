@@ -78,9 +78,7 @@ export default function SignIn(props) {
             props.handleCloseSignIn();
           } else {
             dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Incorrect login credentials.' } })
-
           }
-         
           return true
         })
         .catch((error) => {

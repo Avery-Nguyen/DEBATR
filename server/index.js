@@ -32,9 +32,9 @@ app.use(pino);
 let rLString;
 let debtateTime = 3;
 let intermissionTime = 3;
-let round1Time = 5;
-let round2Time = 10;
-let finalround = 20;
+let round1Time = 2;
+let round2Time = 2;
+let finalround = 5;
 // let round1Time = 15;
 // let round2Time = 30;
 // let finalround = 45;
@@ -93,18 +93,7 @@ class Room {
     this.status = "Waiting";
     this.hostPoints = 0;
     this.contenderPoints = 0;
-    this.messages = [
-      {
-        timeStamp: 20200700456,
-        fromUser: "Alex",
-        message: "Lets go!",
-      },
-      {
-        timeStamp: 20200700456,
-        fromUser: "Avery",
-        message: "OK!",
-      },
-    ];
+    this.messages = [];
   }
 
   get numberOfUsers() {
@@ -123,48 +112,6 @@ class Room {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  startDemoGame() {
-    // The framework of the game! Toggles the turns
-    io.to(this.name).emit(
-      "bothReady"
-    );
-    this.sleep(5000)
-      .then(() => {
-        io.to(this.name).emit(
-          "gameCommand",
-          `${this.host} is talking`
-        );
-        io.to(this.name).emit("mute", {
-          mute: this.contender,
-          intermission: false,
-          timer: debtateTime,
-        });
-      })
-      .then(() => this.sleep(debtateTime * 1000))
-      .then(() => {
-        io.to(this.name).emit("gameCommand", `Intermission`);
-        io.to(this.name).emit("mute", {
-          mute: this.host,
-          intermission: true,
-          timer: intermissionTime,
-        });
-      })
-      .then(() => this.sleep(intermissionTime * 1000))
-      .then(() => {
-        this.postGameToDatabase();
-        io.to(this.name).emit('gameCommand', `${this.contender} (Agrees) is talking`)
-        io.to(this.name).emit('unMute', this.contender)
-      })
-      .then(() => this.sleep(debtateTime * 1000))
-      .then(() => {
-        // io.to(this.name).emit('unMute', this.host)
-        io.to(this.name).emit('gameCommand', 'Game over')
-        // Post the game record to the database.
-
-        // Ends the game for the user - Brings up post-debtate review screen
-        io.to(this.name).emit('gameOver', null)
-      })
-  }
 
   startRealGame() {
     // The framework of the game! Toggles the turns
@@ -251,11 +198,16 @@ class Room {
 
 // Roomslist is an instance of the roomS class.
 const roomList = new Rooms("roomList");
-// Two rooms in here for testing purposes.
-roomList.newRoom("testRoom", "Is Alex the Greatest?");
-roomList.newRoom("otherRoom", "Is Avery the greatest?");
-roomList.newRoom("3rdroom", "Are beavers awesome?");
-roomList.newRoom("4tdroom", "Are Trevor and Andrew nice guys?");
+
+// Seed data
+roomList.newRoom("room1", "Vancouver is the worst!");
+roomList.roomList['room1'].contender = "Rishav";
+roomList.newRoom("room2", "jQuery is amazing");
+roomList.roomList['room2'].contender = "Eric";
+roomList.newRoom("room3", "Glen is greater than Bradley");
+roomList.roomList['room3'].host = "Glen";
+roomList.newRoom("room4", "VIM is an easy-to-use text-editor");
+roomList.roomList['room4'].host = "Andy";
 
 io.sockets.on("connection", function (socket) {
   // Send roomList to each new participant

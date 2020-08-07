@@ -48,7 +48,7 @@ router.use(cookieSession({
 
 
 module.exports = (client) => {
-  router.get('/rooms', function(req, res) {
+  router.get('/rooms', function (req, res) {
     console.log('REQUEST TO /API/ROOMS')
     getRoomRecords(client)
       .then(sqlResponse => {
@@ -62,7 +62,7 @@ module.exports = (client) => {
       });
   });
 
-  router.get('/leaderboard', function(req, res) {
+  router.get('/leaderboard', function (req, res) {
     console.log('REQUEST TO /API/leaderboard')
     getLeaderboard(client)
       .then(sqlResponse => {
@@ -75,7 +75,7 @@ module.exports = (client) => {
       });
   });
 
-  router.get('/topiccount', function(req, res) {
+  router.get('/topiccount', function (req, res) {
     console.log('REQUEST TO /API/topiccount')
     getTopicCount(client)
       .then(sqlResponse => {
@@ -88,7 +88,7 @@ module.exports = (client) => {
       });
   });
 
-  router.get('/categorycount', function(req, res) {
+  router.get('/categorycount', function (req, res) {
     console.log('REQUEST TO /API/categorycount')
     getCategoryCount(client)
       .then(sqlResponse => {
@@ -101,7 +101,7 @@ module.exports = (client) => {
       });
   });
 
-  router.get('/totaldebates', function(req, res) {
+  router.get('/totaldebates', function (req, res) {
     // console.log('REQUEST TO /API/totaldebates')
     getDebateCount(client)
       .then(sqlResponse => {
@@ -114,7 +114,7 @@ module.exports = (client) => {
       });
   });
 
-  router.post('/usercard', function(req, res) {
+  router.post('/usercard', function (req, res) {
     console.log('REQUEST TO /API/usercard')
     // console.log(req.body.host)
     // console.log(res, 'res in usercard')
@@ -130,7 +130,7 @@ module.exports = (client) => {
       });
   });
 
-  router.post('/usercardByName', function(req, res) {
+  router.post('/usercardByName', function (req, res) {
     console.log('REQUEST TO /API/usercardByName')
     console.log(req.body.username)
     // console.log(res, 'res in usercard')
@@ -148,7 +148,7 @@ module.exports = (client) => {
 
 
 
-  router.post('/users/ratings', function(req, res) {
+  router.post('/users/ratings', function (req, res) {
     const from_user_id = req.body.from_user_id
     const to_user_id = req.body.to_user_id
     const rating = req.body.rating
@@ -164,10 +164,10 @@ module.exports = (client) => {
     })
   })
 
-  router.post('/likes', function(req, res) {
+  router.post('/likes', function (req, res) {
     const likes = req.body.typeOfLike;
     const room_id = req.body.room_id
-    const data = {likes, room_id}
+    const data = { likes, room_id }
 
     postLikes(
       client,
@@ -175,13 +175,13 @@ module.exports = (client) => {
     ).then(data => {
       // console.log(res, 'in routes')
       res.send(data)
-    
+
     })
   })
 
 
 
-  router.post('/agreement_ratings', function(req, res) {
+  router.post('/agreement_ratings', function (req, res) {
     const room_log_id = req.body.room_log_id
     const user_id = req.body.user_id
     const agreement_rating = req.body.agreement_rating
@@ -195,7 +195,7 @@ module.exports = (client) => {
     })
   })
 
-  router.get('/login/check', function(req,res) {
+  router.get('/login/check', function (req, res) {
     console.log(req.session, 'req body')
     if (req.session.userID) {
       res.json({
@@ -212,14 +212,14 @@ module.exports = (client) => {
     }
   })
 
-  router.get('/logout', function(req, res) {
+  router.get('/logout', function (req, res) {
     req.session.userID = null;
     req.session.username = null;
     req.session.userAvatarURL = null;
     return res.send('success')
   })
 
-  router.post('/login', function(req, res) {
+  router.post('/login', function (req, res) {
     const loginInfo = req.body;
     getUserInfoByEmail(client, loginInfo.email)
       .then(data => {
@@ -234,35 +234,42 @@ module.exports = (client) => {
           // TODO: Add a 'user does not exist error'
           return res.redirect('login/401');
         }
-        
-        return bcrypt.compare(loginInfo.password, password).then(function(result) {
-          
-          if (result){
-          req.session.userID = userID;
-          req.session.username = username;
-          console.log(userAvatarURL);
-          req.session.userAvatarURL = userAvatarURL
-          console.log(req.session, 'req.session in login');
-        //  return res.send(data)
 
-         return res.json({
-            authenticated: true,
-            username,
-            userID,
-            password,
-            userAvatarURL
-          })
-        } else {
-          console.log(error.message, "problem");
-        }
+        return bcrypt.compare(loginInfo.password, password).then(function (result) {
+
+          if (result) {
+            req.session.userID = userID;
+            req.session.username = username;
+            console.log(userAvatarURL);
+            req.session.userAvatarURL = userAvatarURL
+            console.log(req.session, 'req.session in login');
+            //  return res.send(data)
+
+            return res.json({
+              authenticated: true,
+              username,
+              userID,
+              password,
+              userAvatarURL
+            })
+          } else {
+            console.log(error.message, "problem");
+          }
         })
           .catch(error => {
             console.log(error.message, "problem");
           })
-      });
+      })
+      .catch(err => {
+        return res.json(
+          {
+            authenticated: false
+          }
+        )
+      })
   })
 
-  router.post('/register', function(req, res) {
+  router.post('/register', function (req, res) {
     if (req.body.email === "" || req.body.password === "") {
       // TODO: Change this
       return res.redirect('/register/empty');
@@ -276,7 +283,7 @@ module.exports = (client) => {
     //   avatar: '' },
 
     console.log('after checkemail function');
-    bcrypt.hash(req.body.password, saltRounds).then(function(hash) {
+    bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
       // Store hash in your password DB.
 
       // console.log('after bcrypot')
@@ -292,7 +299,7 @@ module.exports = (client) => {
     });
   })
 
-  router.get("/categories", function(req, res) {
+  router.get("/categories", function (req, res) {
     client.query(`SELECT * FROM categories;`)
       .then(data => {
         // console.log(data);
@@ -306,14 +313,14 @@ module.exports = (client) => {
       });
   });
 
-  router.post("/topics", function(req, res) {
+  router.post("/topics", function (req, res) {
     createTopic(client, req.body.question, req.body.category_id)
-    .then((sqlResponse) => {
-      res.send(sqlResponse)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((sqlResponse) => {
+        res.send(sqlResponse)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   });
 
   return router;

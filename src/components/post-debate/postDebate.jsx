@@ -63,7 +63,8 @@ export default function PostDebate({ activeRoomState }) {
     activeRoomState.host,
   ]);
 
-  const submitRatingToDB = () => {
+  const submitRatingToDB = (event) => {
+    event.preventDefault()
     let agreePoints;
     if (state.username === activeRoomState.host) {
       setToUserID(activeRoomState.contender_id);
@@ -87,25 +88,20 @@ export default function PostDebate({ activeRoomState }) {
       agreement_rating: agreePoints,
     });
 
-    console.log(
-      `WILL POST WITH RATING OF ${rating} and sending ${
-        points + 100
-      } to other user`
-    );
-
     axios
       .all([ratingPost, agreementRatingPost])
       .then(
         axios.spread((...responses) => {
-          "Axios req successful";
-          console.log(responses[0]);
-          console.log(responses[1]);
+          
         })
       )
       .catch((errors) => {
         // react on errors.
         console.error(errors);
       });
+
+      dispatch({ type: 'SET_VISUAL_MODE', payload: "LOBBY" });
+
   };
 
   return (

@@ -43,6 +43,15 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+
+    if (!state.sessionID) {
+      const randUser = 'user' + (Math.random()*1000000).toFixed(0)
+      dispatch({ type: 'SET_SESSION_ID', payload: randUser })
+      console.log("App -> randUser", randUser)
+    }
+  })
   
   useEffect(() => {
       axios.get('/api/login/check',  {})
