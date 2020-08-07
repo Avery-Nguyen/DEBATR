@@ -71,7 +71,8 @@ export default function SignIn(props) {
         .then((res) => {
           if (res.data.authenticated) {
             dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: null } })
-
+            
+            dispatch({ type: 'SET_USER_AVATAR_URL', payload: res.data.userAvatarURL })
             dispatch({ type: 'SET_USERNAME', payload: res.data.username })
             dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
             props.handleCloseSignIn();

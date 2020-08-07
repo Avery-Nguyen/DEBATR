@@ -163,15 +163,16 @@ export default function SignUp(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button
-                type="submit"
+            <TextField
+                variant="outlined"
+                required
                 fullWidth
-                variant="contained"
-                color="black"
-                className={classes.submit}
-              >
-                Add Avatar
-              </Button>
+                name="avatar"
+                label="avatar"
+                type="avatar"
+                id="avatar"
+                onChange={event => setAvatar(event.target.value)}
+              />
             </Grid>
           </Grid>
           <Button

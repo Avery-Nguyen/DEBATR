@@ -50,6 +50,7 @@ const App = () => {
           if (res.data.success) {
             dispatch({ type: 'SET_USERNAME', payload: res.data.username })
             dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
+            dispatch({ type: 'SET_USER_AVATAR_URL', payload: res.data.userAvatarUrl })
           }
           console.log(res, 'res from persistent login check')
           return true

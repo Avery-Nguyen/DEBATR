@@ -165,10 +165,10 @@ const getHostUsercard = (username) => {
   if (roomDetails) {
     return (
       <Card className={classes.root} style={{
-        // border: "solid rgb(0,238,40) 3px", 
         backgroundColor: "rgb(241,241,241)",
         borderRadius: "30px",
-        position: "relative"
+        position: "relative",
+        height: "110px"
       }}>
         <CardHeader
           avatar={
@@ -188,42 +188,52 @@ const getHostUsercard = (username) => {
           title={roomDetails.topic}
           subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
         />
-        <div class="inner" style={{
-          marginLeft: "10px",
-          position: "absolute",
-          top: "10px",
-          right: "10px"
-        }}>
-          <p>Live</p>
-        </div>
-        <CardActions disableSpacing>
-          {roomDetails.host && roomDetails.contender && <Button
-            variant="contained"
-            style={{
-              color: "black",
-              backgroundColor: "rgb(252, 232, 76)",
-              borderRadius: "30px"
-            }}
-            onClick={handleClickOpenSpectate}>Spectator Stage
-            </Button>}
-          {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <Button
-            variant="contained"
-            style={{
-              color: "white",
-              backgroundColor: "rgb(64,81,182)",
-              borderRadius: "30px"
-            }}
-            onClick={handleClickOpenStage}>Enter Stage
-            </Button>}
 
-          <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
-            <Stage />
-            <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-          </Dialog>
+          <div style={{
+            marginLeft: "10px",
+            position: "absolute",
+            top: "7px",
+            right: "7px"
+          }}>
+            <Avatar />
+          </div>
 
-        </CardActions>
+          <div class="inner" style={{
+            marginLeft: "10px",
+            position: "absolute",
+            top: "50px",
+            right: "135px"
+          }}>
+            <p style={{fontSize: "14px"}}>Watch</p>
+          </div>
+
+          <CardActions disableSpacing>
+            {roomDetails.host && roomDetails.contender && <Button class="inner"
+              variant="contained"
+              style={{
+                color: "black",
+                backgroundColor: "rgb(252, 232, 76)",
+                borderRadius: "30px"
+              }}
+              onClick={handleClickOpenSpectate}>Spectator Stage
+              </Button>}
+            {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <Button class="inner"
+              variant="contained"
+              style={{
+                color: "white",
+                backgroundColor: "rgb(64,81,182)",
+                borderRadius: "30px"
+              }}
+              onClick={handleClickOpenStage}>Enter Stage
+              </Button>}
+            <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
+              <Stage />
+              <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+            </Dialog>
+          </CardActions>
+
       </Card>
     );
   } else {

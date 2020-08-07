@@ -195,12 +195,14 @@ module.exports = (client) => {
   })
 
   router.get('/login/check', function(req,res) {
+    console.log(req.session, 'req body')
     if (req.session.userID) {
       res.json({
         success: true,
         message: "user has successfully authenticated",
         userID: req.session.userID,
-        username: req.session.username
+        username: req.session.username,
+        userAvatarURL: req.session.userAvatarURL
       })
     } else {
       res.json({
@@ -212,7 +214,7 @@ module.exports = (client) => {
   router.get('/logout', function(req, res) {
     req.session.userID = null;
     req.session.username = null;
-
+    req.session.userAvatarURL = null;
     return res.send('success')
   })
 
@@ -224,6 +226,7 @@ module.exports = (client) => {
         const username = data[0].username;
         const userID = data[0].id;
         const password = data[0].password
+        const userAvatarURL = data[0].avatar_url
 
         if (!userID) {
           console.log('error with userID')
@@ -236,13 +239,17 @@ module.exports = (client) => {
           if (result){
           req.session.userID = userID;
           req.session.username = username;
+          console.log(userAvatarURL);
+          req.session.userAvatarURL = userAvatarURL
+          console.log(req.session, 'req.session in login');
         //  return res.send(data)
 
          return res.json({
             authenticated: true,
             username,
             userID,
-            password
+            password,
+            userAvatarURL
           })
         } else {
           console.log(error.message, "problem");

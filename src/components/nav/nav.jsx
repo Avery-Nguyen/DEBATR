@@ -4,6 +4,7 @@ import CreateRoom from '../create-room/createRoom'
 import SignUp from '../sign-up/signUp.jsx'
 import SignIn from '../sign-in/signIn'
 import Dashboard from '../dashboard/dashboard'
+import NavMenu from './navMenu'
 
 //material-ui imports
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,6 +17,7 @@ import Link from '@material-ui/core/Link';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
+
 // import MenuIcon from '@material-ui/icons/Menu';
 // import DialogActions from '@material-ui/core/DialogActions';
 // import DialogContent from '@material-ui/core/DialogContent';
@@ -148,7 +150,10 @@ export default function NavBar(props) {
               </Dialog>
 
               {state.username ? 
+
             <div style={{display:'flex', alignContent:'center', alignItems: 'baseline'}}>
+
+                {/* Create stage Button - Only visible if not in stage or waiting room (and logged in)*/}
               {state.visualMode !== 'ACTIVE' && state.visualMode !== 'WAITING' && <Button
                 style={{
                   color: "rgb(64,81,182)",
@@ -162,7 +167,8 @@ export default function NavBar(props) {
                 onClick={handleCreateRoomOpen}
               >
                 Create Stage
-          </Button>}
+                </Button>}
+          
               <Dialog
                 open={openCreateRoom}
                 TransitionComponent={Transition}
@@ -173,12 +179,16 @@ export default function NavBar(props) {
                   handleCloseCreateRoom={handleCloseCreateRoom}
                 />
               </Dialog>
-              <Typography variant="h7" className={classes.title} color="black">
-                Logged in as: {state.username}
-              </Typography>
-              <Button color="inherit" onClick={handleLogout}>Logout</Button>
+
+                {/* Menu */}
+              <NavMenu />
+
             </div>
-: 
+
+// TINY ASS COLON! END OF IF STATEMENT FOR LOGGED IN
+            : 
+            // OR IF NOT LOGGED IN
+            
             <div>
               <Button color="inherit" onClick={handleClickOpenSignIn}>Login</Button>
               <Dialog
