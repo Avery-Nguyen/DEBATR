@@ -23,6 +23,10 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import axios from "axios"
 import TextField from '@material-ui/core/TextField';
+import Zoom from '@material-ui/core/Zoom';
+import Paper from "@material-ui/core/Paper";
+import './createRoom.css'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
   topicStance: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  dropdown: {
+    boxShadow: 'none',
+    display: 'flex',
+    flexDirection: 'column'
   },
   paper: {
     display: 'flex',
@@ -93,36 +102,36 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
         stance
       })
       handleCloseCreateRoom();
-      
+
     } else if (createdTopic) {
       console.log(categoryID)
       axios.post('/api/topics', {
         question: createdTopic,
         category_id: parseInt(categoryID)
-      }) 
-      .then((res) => {
-      console.log("submitCreateRoom -> res", res.data[0])
-      // res.data[0]
-        
-        const randRoomName = Math.random().toFixed(5).toString();
-        dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
-        dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
+      })
+        .then((res) => {
+          console.log("submitCreateRoom -> res", res.data[0])
+          // res.data[0]
 
-        
-      // setRoomList([...roomList, testRoom])
-      // console.log('Sending topic and stance and topicID: ', topic, stance, topicID)
-      state.currentSocket.emit('createRoom', {
-        roomName: randRoomName,
-        userName: state.username,
-        userID: state.userID,
-        topicID: res.data[0].id,
-        topic: res.data[0].question,
-        stance
-      })
-      })
+          const randRoomName = Math.random().toFixed(5).toString();
+          dispatch({ type: 'SET_CURRENT_ROOM', payload: randRoomName });
+          dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
+
+
+          // setRoomList([...roomList, testRoom])
+          // console.log('Sending topic and stance and topicID: ', topic, stance, topicID)
+          state.currentSocket.emit('createRoom', {
+            roomName: randRoomName,
+            userName: state.username,
+            userID: state.userID,
+            topicID: res.data[0].id,
+            topic: res.data[0].question,
+            stance
+          })
+        })
       handleCloseCreateRoom();
     }
-    
+
   }
 
   useEffect(() => {
@@ -135,8 +144,8 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   useEffect(() => {
     axios.get('/api/categories')
       .then((data) => {
-      console.log("CreateRoom -> data", data.data.topics)
-      setCategoriesOptions(data.data.topics);
+        console.log("CreateRoom -> data", data.data.topics)
+        setCategoriesOptions(data.data.topics);
       });
   }, [])
 
@@ -144,18 +153,22 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
     return <option value={category.id}>{category.name}</option>
   })
 
-  const topicOptions = options.map(topic =>{
+  const topicOptions = options.map(topic => {
     return <option value={topic.id}>{topic.question}</option>
   })
 
 
-  const handleChangeTopic = function(id) {
+  const handleChangeTopic = function (id) {
     const question = options.find((option) => option.id === parseInt(id))
-    setTopic(question.question)
-    setTopicID(parseInt(id))
+    if (question) {
+      setTopic(question.question)
+      setTopicID(parseInt(id))
+    } else {
+      setTopic('')
+    }
   }
 
- 
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -172,68 +185,116 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
           <circle cx="5" cy="9" r="2" />
           <circle cx="19" cy="9" r="2" />
         </svg>
-        <InputLabel htmlFor="grouped-native-select"
-            variant="outlined"
-            // margin="normal"
-            fullWidth
-            autoFocus
-            required
-          >Categories</InputLabel>
-          <Select native defaultValue="" id="grouped-native-select" onChange={event => setCategoryID(event.target.value)}>
-           <option aria-label="None" value="" />
-            {/* loops through categories */}
-            {categoryOptions}
-            
-          </Select>
-        <TextField
-            // onChange={event => setEmail(event.target.value)}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Create a Topic"
-            name="createTopic"
-            onChange={event => setCreatedTopic(event.target.value)}
-          />
+
+
+        {/* Topics Dropdown */}
+
+        <Zoom in={!createdTopic}>
+          <Paper elevation={4} className={classes.dropdown}>
+
+            <InputLabel htmlFor="grouped-native-select"
+              variant="outlined"
+              // margin="normal"
+              label="Choose a topic"
+              fullWidth
+              autoFocus
+              required
+            >{topic ? "" : "Choose a topic"}</InputLabel>
+            <Select native defaultValue="" id="grouped-native-select" onChange={(event) => {
+              // debugger;
+              return handleChangeTopic(event.target.value)
+            }}>
+
+              {/* TODO: Add topic_ids when we render with map! */}
+              <option aria-label="None" value="" />
+              {topicOptions}
+            </Select>
+          </Paper>
+        </Zoom>
+
+
+        {!topic && !createdTopic && 
+         <div class="middleOR">
+         <span>OR</span>
+       </div>}
+
+        {/* Create topic */}
+
+        <Zoom in={!topic}>
+          <Paper elevation={4} className={classes.dropdown}>
+
+           
+            <TextField
+              // onChange={event => setEmail(event.target.value)}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Create your own..."
+              name="createTopic"
+              onChange={event => setCreatedTopic(event.target.value)}
+            />
+          </Paper>
+        </Zoom>
+
         <FormControl className={classes.formControl} style={{
           marginTop: '15px',
         }}>
-        
-          <InputLabel htmlFor="grouped-native-select"
-            variant="outlined"
-            // margin="normal"
-            fullWidth
-            autoFocus
-            required
-          >Choose a Topic</InputLabel>
-          <Select native defaultValue="" id="grouped-native-select" onChange={(event, a,b,c) => {
-            // debugger;
-            return handleChangeTopic(event.target.value)}}>
-           
-           {/* TODO: Add topic_ids when we render with map! */}
-           <option aria-label="None" value="" />
-            {topicOptions}
-          </Select>
+
+          {/* Categories Dropdown */}
+          <Zoom in={createdTopic}>
+            <Paper elevation={4} className={classes.dropdown}>
+              <InputLabel
+                htmlFor="grouped-native-select"
+                variant="outlined"
+                // margin="normal"
+                fullWidth
+                autoFocus
+                required
+              >
+                Category
+            </InputLabel>
+
+              <Select native defaultValue="" id="grouped-native-select" onChange={event => setCategoryID(event.target.value)}>
+                <option aria-label="None" value="" />
+                {/* loops through categories */}
+                {categoryOptions}
+
+              </Select>
+            </Paper>
+          </Zoom>
+
+
+
+
         </FormControl>
-        <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
-          <InputLabel htmlFor="grouped-select">Stance</InputLabel>
-          <Select defaultValue={true} id="grouped-select" onChange={event => setStance(event.target.value)}>
-            <MenuItem value={true}>For</MenuItem>
-            <MenuItem value={false}>Against</MenuItem>
-          </Select>
-        </FormControl>
-        <Button
-          onClick={submitCreateRoom}
-          variant="contained"
-          style={{
-            color: "white",
-            backgroundColor: "rgb(64,81,182)",
-            marginTop: '25px',
-            borderRadius: "30px",
-          }}
-        >Create Stage
+
+        <Zoom in={topic || createdTopic}>
+          <Paper elevation={4} className={classes.dropdown}>
+
+            <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
+              <InputLabel htmlFor="grouped-select">Stance</InputLabel>
+              <Select defaultValue={true} id="grouped-select" onChange={event => setStance(event.target.value)}>
+                <MenuItem value={true}>For</MenuItem>
+                <MenuItem value={false}>Against</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              onClick={submitCreateRoom}
+              variant="contained"
+              style={{
+                color: "white",
+                backgroundColor: "rgb(64,81,182)",
+                marginTop: '25px',
+                borderRadius: "30px",
+              }}
+            >Create Stage
       </Button>
+          </Paper>
+        </Zoom>
+
+
       </div>
       <Box mt={2}>
       </Box>

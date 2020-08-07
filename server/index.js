@@ -204,7 +204,7 @@ roomList.newRoom("room1", "Vancouver is the worst!");
 roomList.roomList['room1'].contender = "Rishav";
 roomList.newRoom("room2", "jQuery is amazing");
 roomList.roomList['room2'].contender = "Eric";
-roomList.newRoom("room3", "Glen is greater than Bradley");
+roomList.newRoom("room3", "Glen is cooler than Bradley");
 roomList.roomList['room3'].host = "Glen";
 roomList.newRoom("room4", "VIM is an easy-to-use text-editor");
 roomList.roomList['room4'].host = "Andy";

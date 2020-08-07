@@ -78,15 +78,6 @@ export default function LobbyItem({ roomDetails }) {
     setOpen(false);
   };
 
-  // Expandable arrow
-  // const handleExpandClick = () => {
-  //   setExpanded(!expanded);
-  // };
-
-// console.log(roomDetails, 'room details in lobby item')
-// console.log(roomDetails.host || 'helloe')
-// console.log(roomDetails.contender);
-
 
 const [hostUsercard, setHostUsercard] = useState({});
 
