@@ -1,6 +1,6 @@
-# Twilio Video chat with React Hooks
+# DEBATR
 
-This is an example video chat application built with [Twilio Video](https://www.twilio.com/docs/video) and React, using Hooks.
+A final project by Avery Nguygen, Andrew Delmar, Trevor Thomas and Alex Hladun.
 
 Learn how to build this entire application in the blog post [Build a Twilio Video Chat with React Hooks](https://www.twilio.com/blog/video-chat-react-hooks).
 
