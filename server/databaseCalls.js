@@ -75,10 +75,11 @@ const postResultsToDatabase = (client, data) => {
   // Query to get host_id and contender id?
   return client.query(`
   INSERT INTO room_logs (topic_id, host_id, contender_id) 
-  VALUES ($1, $2, $3);
+  VALUES ($1, $2, $3)
+  RETURNING *;
   `, [data.topic_id, data.host_id, data.contender_id])
     .then(res => {
-      // console.log('Response from SQL', res);
+      console.log('Response from SQL', res);
       return res.rows;
     });
 }

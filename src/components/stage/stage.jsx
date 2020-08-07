@@ -18,7 +18,7 @@ export default function Stage({ activeRoomState }) {
   // console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(startTime);
   const [active, setActive] = useState(false)
-  const [gameCommands, setGameCommands] = useState("Welcome to the Debate")
+  const [gameCommands, setGameCommands] = useState(`Welcome to the Debate. ${activeRoomState.host} goes first.`)
   const [readyState, setReadyState] = useState(false)
   const [gameState, setGameState] = useState(false)
   const [messages, setMessages] = useState([])
@@ -231,7 +231,7 @@ export default function Stage({ activeRoomState }) {
 
   const messageList = activeRoomState.messages.map(message => {
     return <span>
-      {message.fromUser} - {message.message}
+      <strong>{message.fromUser}</strong>: {message.message}
     </span>
   })
 
@@ -245,6 +245,8 @@ export default function Stage({ activeRoomState }) {
           <header class="w3-panel w3-center w3-opacity" style={{ backgroundColor: "rgb(64,81,182)" }}>
             <h1 class="w3-xlarge">Debate Topic - {activeRoomState.topic}</h1>
             <h2 style={{ color: 'white' }}>{gameCommands}</h2>
+            {!readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'green', color: 'white' }} onClick={readyUp}>Ready</Button>}
+                {!gameState && readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'yellow', color: 'black' }}>Waiting for Opponent...</Button>}
           </header>
           <div class="w3-row-padding w3-grayscale">
             <div class="w3-half" style={{ backgroundColor: "rgb(64,81,182)", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
@@ -258,14 +260,12 @@ export default function Stage({ activeRoomState }) {
                 ) : (
                     ''
                   )}
-                <div class='userAndStance' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <p style={{ color: 'white', justifySelf: 'right' }}>{state.username}</p>
-                  <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
+                <div class='userAndStance' style={{ display: 'flex', justifyContent: 'center'}}>
+                  {/* <p style={{ color: 'white', justifySelf: 'right' }}>{state.username}</p> */}
+                  <p style={{ color: 'white', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Agree" : "Disagree"}</p>
                 </div>
               </div>
               <div id='stage-details' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                {!readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'green', color: 'white' }} onClick={readyUp}>Ready</Button>}
-                {!gameState && readyState && <Button color="black" style={{ border: '2px solid black', justifySelf: 'left', backgroundColor:'yellow', color: 'black' }}>Waiting for Opponent...</Button>}
                 {gameState && readyState && <div class="timer-box">
                 <h4 class="timer" style={{ color: 'white' }}>Time Remaining: </h4>
                 <h1 class="timer" style={{ color: 'white' }}>{time}</h1>
@@ -277,9 +277,9 @@ export default function Stage({ activeRoomState }) {
               </div>
               <div class='participants'>
                 {remoteParticipants}
-                <div class='userAndStance' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
-                  <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? activeRoomState.contender : activeRoomState.host}</p>
+                <div class='userAndStance' style={{ display: 'flex', justifyContent: 'center'}}>
+                  <p style={{ color: 'white', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
+                  {/* <p style={{ color: 'white' }}>{(state.username === activeRoomState.host) ? activeRoomState.contender : activeRoomState.host}</p> */}
                 </div>
               </div>
             </div>

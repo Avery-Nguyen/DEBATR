@@ -55,8 +55,9 @@ export default function SignIn(props) {
 
     if (email === '') {
       dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Email cannot be blank' } })
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Email address is invalid' } })
+    // Hidden to log in as a@a 
+      // } else if (!/\S+@\S+\.\S+/.test(email)) {
+    //   dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Email address is invalid' } })
     } else if (password === '') {
       dispatch({ type: 'SET_LOGIN_ERROR', payload: { error: 'Password cannot be blank' } })
     } else {
