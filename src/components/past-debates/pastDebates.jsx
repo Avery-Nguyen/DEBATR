@@ -46,7 +46,9 @@ export default function PastDebate() {
     dislikes={debate.dislikes}
     room_id={debate.id}
     host={debate.host_id}
-    contender={debate.contender_id}  
+    contender={debate.contender_id}
+    hostAvatar={debate.host_avatar}
+    contenderAvatar={debate.contender_avatar}    
     />
   </Grid>
     )

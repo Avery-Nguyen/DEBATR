@@ -30,10 +30,12 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: 'block',
+    backgroundColor: 'rgb(64,81,182)'
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
+    backgroundColor: 'rgb(64,81,182) !important' // keep right padding when drawer closed
   },
   toolbarIcon: {
     display: 'flex',
@@ -103,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 240,
+    height: 540,
   },
 }));
 
@@ -112,31 +114,41 @@ export default function Dashboard() {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
-    <div className={classes.root}>
-      <h1 justifySelf="center">Debatr Stats</h1>
+    <div className={classes.root} style={{ paddingTop: '0px' }}>
+      <h1 style={{
+        justifyContent: 'center',
+        border: 'solid 1px rgb(64,81,182)',
+        color: 'white',
+        backgroundColor: 'rgb(64,81,182)',
+        padding: '0px 10px'
+      }}>Debate Results</h1>
       <CssBaseline />
-      <main className={classes.content}>
+      <main className={classes.content} style={{
+        display: 'block',
+        maxHeight: 'fit-content',
+        border: '25px solid rgb(64,81,182)',
+        alignItems: 'center'
+      }}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="lg"  className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            {/* <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12} md={8} lg={19}>
               <Paper className={fixedHeightPaper}>
                 <Chart />
               </Paper>
-            </Grid> */}
-            {/* Recent Deposits */}
+            </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <TotalDebates />
               </Paper>
             </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <LeaderBoard />
-              </Paper>
-            </Grid>
+            <div>
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  <LeaderBoard />
+                </Paper>
+              </Grid>
+            </div>
           </Grid>
         </Container>
       </main>

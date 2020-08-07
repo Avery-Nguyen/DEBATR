@@ -158,15 +158,7 @@ export default function PastDebateItem(props) {
       });
   }
 
-  // console.log(hostUsercard);
-
-  // useEffect(() => {
-  //   setLikes(likes);
-  //   setDislikes(dislikes);
-  //   // console.log(likes)
-  //   // console.log(dislikes)
-  // }, [likes, dislikes]);
-
+console.log(props)
 
   return (
     <Card className={classes.root} style={{
@@ -179,7 +171,7 @@ export default function PastDebateItem(props) {
 
       <div style={{ display: 'flex', padding: '5px 7px 0px 7px', justifyContent: 'space-between' }}>
         <div>
-          <Avatar title='host' onClick={() => getHostUsercard(props.host)} />
+          <Avatar title='host' src={props.hostAvatar} onClick={() => getHostUsercard(props.host)} />
           <Dialog
             open={open}
             TransitionComponent={Transition}
@@ -195,7 +187,7 @@ export default function PastDebateItem(props) {
         </div>
 
         <div>
-          <Avatar onClick={() => getHostUsercard(props.contender)} />
+          <Avatar  src={props.contenderAvatar} onClick={() => getHostUsercard(props.contender)} />
           <Dialog
             open={open}
             TransitionComponent={Transition}

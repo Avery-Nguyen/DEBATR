@@ -112,6 +112,7 @@ const App = () => {
 
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
+      <Dashboard />
       <Lobby roomState={roomState} />
       <h1 style={{ display: 'flex', 
       justifyContent: 'center', 

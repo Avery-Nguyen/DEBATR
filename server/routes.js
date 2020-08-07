@@ -13,8 +13,9 @@ const {
   postLikes,
   getUserCardByID,
   createTopic,
-  getUserCardByName
-
+  getUserCardByName,
+  getTopicCount,
+  getCategoryCount
 } = require('./databaseCalls.js');
 
 //bcrypt stuff
@@ -63,6 +64,32 @@ module.exports = (client) => {
   router.get('/leaderboard', function(req, res) {
     console.log('REQUEST TO /API/leaderboard')
     getLeaderboard(client)
+      .then(sqlResponse => {
+        res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get('/topiccount', function(req, res) {
+    console.log('REQUEST TO /API/topiccount')
+    getTopicCount(client)
+      .then(sqlResponse => {
+        res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get('/categorycount', function(req, res) {
+    console.log('REQUEST TO /API/categorycount')
+    getCategoryCount(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
       })

@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 export default function LeaderBoard() {
 
   const [leaderBoard, setleaderBoard] = useState([]);
+  const [topicCount, setTopicCount] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -44,54 +45,63 @@ export default function LeaderBoard() {
       })
   }, []);
 
-  const leaders = leaderBoard.map((leader) => {
-    // console.log(leader);
-    return (
-      <div>
-        <TableRow key={leaders} style={{display:'flex', justifyContent:'space-between'}}>
-        <TableCell>{leader.username}</TableCell>
-        <TableCell align="right">{leader.sum}</TableCell>
-        </TableRow>
-      </div>
-    )
-  })
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`/api/topiccount`)
+    ]).then((data) => {
+      // console.log(data, "this is data in for topic count")
+      setTopicCount(prev => [...prev, ...data[0].data]);
+    })
+      .catch(error => {
+        console.log(error.message, "problem");
+      })
+  }, []);
+
 
   const classes = useStyles();
   return (
-    <React.Fragment>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+    <React.Fragment style={{ maxWidth: 'fit-content' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
         <div style={{ display: 'block' }}>
-          <h1>Leaderboard </h1>
+          <h1 align="center"  border='solid 8px rgb(64,81,182)'>Leaderboard </h1>
           <br></br>
           <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell>Username</TableCell>
-                <TableCell align="right">Total Agreement Points</TableCell>
+                <TableCell>Total Agreement Points</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
+              {leaderBoard.map((leader) => (
+                <TableRow key={leader.id}>
+                  <TableCell align="center">{leader.username}</TableCell>
+                  <TableCell align="center">{leader.sum}</TableCell>
 
-              
-                {leaders}
-    
-
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>
 
         <div style={{ display: 'block' }}>
-          <h1>Most Popular Topics</h1>
+          <h1 align="center">Most Popular Topics</h1>
           <br></br>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>Payment Method</TableCell>
-                <TableCell align="right">Sale Amount</TableCell>
+                <TableCell align="center">Topic</TableCell>
+                <TableCell align="center">Count</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <h1> Hello there</h1>
+              {topicCount.map((topic) => (
+                <TableRow key={topic.id}>
+                  <TableCell align="center">{topic.question}</TableCell>
+                  <TableCell align="center">{topic.topic_count}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>
