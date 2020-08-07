@@ -83,9 +83,26 @@ export default function LobbyItem({ roomDetails }) {
   //   setExpanded(!expanded);
   // };
 
+console.log(roomDetails, 'room details in lobby item')
+console.log(roomDetails.host || 'helloe')
+console.log(roomDetails.contender);
 
 
+const [hostUsercard, setHostUsercard] = useState({});
 
+const getHostUsercard = (username) => {
+  console.log(username)
+  axios.post('/api/usercardByName', {
+    username
+  })
+    .then((res) => {
+      console.log(res)
+      // console.log(data.data[0], 'sql response')
+      setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
+      handleClickOpen();
+
+    });
+}
 
   const [openStage, setOpenStage] = React.useState(false);
 
@@ -141,7 +158,6 @@ export default function LobbyItem({ roomDetails }) {
 
   };
 
-
   const handleCloseStage = () => {
     setOpenStage(false);
   };
@@ -157,14 +173,14 @@ export default function LobbyItem({ roomDetails }) {
         <CardHeader
           avatar={
             <div>
-              <Avatar onClick={handleClickOpen} />
+              <Avatar onClick={() => getHostUsercard(roomDetails.host)} />
               <Dialog
                 open={open}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
               >
-                <UserCard  />
+                <UserCard hostUsercard={hostUsercard}  />
               </Dialog>
             </div>
           }

@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
+import './Participant.css'
 // import { useStore } from './Store'
 
-const Participant = ({ participant }) => {
+const Participant = ({ participant, mutedUsers }) => {
   // const [state, dispatch] = useStore();
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
+  const [muted, setMuted] = useState(false)
+
+  useEffect(() => {
+    console.log('muted users', mutedUsers)
+    console.log('identity', participant.identity)
+    
+    if (mutedUsers && mutedUsers.includes(participant.identity)) {
+      setMuted(true)
+    }
+    if (mutedUsers && !mutedUsers.includes(participant.identity)) {
+      setMuted(false)
+    }
+  }, [participant.identity, mutedUsers])
 
   const videoRef = useRef();
   const audioRef = useRef();
+
+
 
   const trackpubsToTracks = (trackMap) =>
     Array.from(trackMap.values())
@@ -64,10 +80,11 @@ const Participant = ({ participant }) => {
     }
   }, [audioTracks]);
 
-    return (
+  return (
     <div className="participant">
       <h3>{participant.identity}</h3>
-      <video ref={videoRef} autoPlay={true} width="600" height="400"/>
+      {muted && <span class='muted'>MUTED</span>}
+      <video ref={videoRef} autoPlay={true} style={{width: 600, height: 400}} />
       <audio ref={audioRef} autoPlay={true} />
     </div>
   )

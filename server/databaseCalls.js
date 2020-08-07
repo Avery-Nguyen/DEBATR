@@ -1,6 +1,6 @@
 
 const getRoomRecords = (client, limit = 10) => {
-  console.log('INSIDE GET ROOM RECORDS')
+  // console.log('INSIDE GET ROOM RECORDS')
 
   return client.query(`SELECT room_logs.*, sum(agreement_ratings.agreement_rating) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
   FROM room_logs
@@ -13,7 +13,7 @@ const getRoomRecords = (client, limit = 10) => {
   limit $1;
   `, [limit])
     .then((res) => {
-      console.log(`res from sql ${res}`)
+      // console.log(`res from sql ${res}`)
       return res.rows
     })
 }
@@ -27,7 +27,7 @@ const getLeaderboard = (client, limit = 10) => {
   LIMIT $1;
   `, [limit])
     .then((res) => {
-      console.log(`res from sql ${res}`)
+      // console.log(`res from sql ${res}`)
       return res.rows
     })
 }
@@ -35,19 +35,34 @@ const getLeaderboard = (client, limit = 10) => {
 const getDebateCount = (client) => {
   return client.query(`select count(*) from room_logs;`)
     .then((res) => {
-      console.log(`res from sql ${res}`)
+      // console.log(`res from sql ${res}`)
       return res.rows
     })
 }
 
-const getUserCard = (client, id) => {
+const getUserCardByID = (client, id) => {
   return client.query(`SELECT username, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
   FROM users
   JOIN ratings ON ratings.to_user_id = users.id
   JOIN room_logs AS host ON users.id = host.host_id
   JOIN room_logs AS contender ON users.id = contender.contender_id
   WHERE users.id = $1
-  group by username;;`, [id])
+  group by username;`, [id])
+  .then((res) => {
+    // console.log(`res from sql ${res}`)
+    return res
+  })
+}
+
+const getUserCardByName = (client, username) => {
+  console.log(username)
+  return client.query(`SELECT username, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
+  FROM users
+  JOIN ratings ON ratings.to_user_id = users.id
+  JOIN room_logs AS host ON users.id = host.host_id
+  JOIN room_logs AS contender ON users.id = contender.contender_id
+  WHERE users.username = $1
+  group by username;`, [username])
   .then((res) => {
     console.log(`res from sql ${res}`)
     return res
@@ -70,8 +85,8 @@ const postResultsToDatabase = (client, data) => {
 
 const postLikes = (client, data) => {
   // Get topic ID from room state?
-  console.log(data, 'data in postLikes');
-  console.log(data.likes)
+  // console.log(data, 'data in postLikes');
+  // console.log(data.likes)
 
   if (data.likes === 'likes') {
     return client.query(`
@@ -150,7 +165,7 @@ const checkEmailTaken = (client, email) => {
 
 }
 const createUser = (client, email, first_name, last_name, username, password, avatar_url) => {
-  console.log(client, email, first_name, last_name, username, password, avatar_url);
+  // console.log(client, email, first_name, last_name, username, password, avatar_url);
   return client.query(`
   INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
   VALUES ($1, $2, $3, $4, $5, $6)
@@ -181,6 +196,7 @@ module.exports = {
   getLeaderboard,
   getDebateCount,
   postLikes,
-  getUserCard,
-  createTopic
+  getUserCardByID,
+  createTopic,
+  getUserCardByName
 }

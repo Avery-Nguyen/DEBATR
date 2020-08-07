@@ -43,6 +43,7 @@ const App = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  
   useEffect(() => {
       axios.get('/api/login/check',  {})
         .then((res) => {
