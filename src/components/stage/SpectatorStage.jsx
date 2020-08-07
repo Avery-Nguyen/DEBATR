@@ -212,7 +212,7 @@ export default function SpectatorStage({ activeRoomState }) {
 
           </div>
           <div id="game-log" class="info-box">
-          <span><b>'Welcome to the Chatroom!'</b> Debate starts soon.</span>
+          <span><b>Welcome to the Chatroom!</b> Debate starts soon.</span>
 
           </div>
 
