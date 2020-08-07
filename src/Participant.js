@@ -11,8 +11,12 @@ const Participant = ({ participant, mutedUsers }) => {
   useEffect(() => {
     console.log('muted users', mutedUsers)
     console.log('identity', participant.identity)
+    
     if (mutedUsers && mutedUsers.includes(participant.identity)) {
       setMuted(true)
+    }
+    if (mutedUsers && !mutedUsers.includes(participant.identity)) {
+      setMuted(false)
     }
   }, [participant.identity, mutedUsers])
 
@@ -80,7 +84,7 @@ const Participant = ({ participant, mutedUsers }) => {
     <div className="participant">
       <h3>{participant.identity}</h3>
       {muted && <span class='muted'>MUTED</span>}
-      <video ref={videoRef} autoPlay={true} width="600" height="400" />
+      <video ref={videoRef} autoPlay={true} style={{width: 600, height: 400}} />
       <audio ref={audioRef} autoPlay={true} />
     </div>
   )

@@ -24,6 +24,7 @@ export default function Stage({ activeRoomState }) {
   const [messages, setMessages] = useState([])
   const [messageText, setMessageText] = useState("")
   const [mutedUsers, setMutedUsers] = useState([])
+  console.log("Stage -> mutedUsers", mutedUsers)
 
 
   // GameCommand / mute / unmute listeners
@@ -59,7 +60,11 @@ export default function Stage({ activeRoomState }) {
       state.currentSocket.on("mute", data => {
         // console.log('Room mute request', room)
         if (room) {
-          setMutedUsers([...mutedUsers, data.mute])
+          let newArr = [...mutedUsers]
+          console.log("Stage -> newArr", newArr)
+          
+          newArr.push(data.mute)
+          setMutedUsers(newArr)
           if (state.username === data.mute) {
             room.localParticipant.audioTracks.forEach(publication => {
               // console.log(room.localParticipant.identity,'is muted');
@@ -78,14 +83,22 @@ export default function Stage({ activeRoomState }) {
 
       })
       state.currentSocket.on("unMute", data => {
-        // console.log('Room UNmute request', room)
+        console.log('Room UNmute request', data)
         if (room) {
-          if (state.username === data) {
-            room.localParticipant.audioTracks.forEach(publication => {
-              // console.log(room.localParticipant.identity,' is unmuted');
-              publication.track.enable();
-            });
-          }
+          setMutedUsers(prev => {
+            const newArr = [...prev]
+            // console.log('mutedUsers', newArr.filter(user => user !== data))
+  
+            const newMutedUsers = newArr.filter(user => user !== data)
+            if (state.username === data) {
+              room.localParticipant.audioTracks.forEach(publication => {
+                console.log(room.localParticipant.identity,' is unmuted');
+                publication.track.enable();
+              });
+            }
+
+            return newMutedUsers
+          })
         }
       })
     }
@@ -102,7 +115,7 @@ export default function Stage({ activeRoomState }) {
       }
     })
 
-  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch]);
+  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch, mutedUsers, disableMedia]);
 
   useEffect(() => {
     const participantConnected = participant => {
