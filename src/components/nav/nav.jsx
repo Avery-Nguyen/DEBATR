@@ -138,6 +138,7 @@ export default function NavBar(props) {
             </Link>
             <Typography variant="h6" className={classes.title}>
             </Typography>
+            
             <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
               <Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
                 <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
@@ -145,6 +146,7 @@ export default function NavBar(props) {
                 </IconButton>
                 <Dashboard />
               </Dialog>
+
               {state.username ? 
             <div style={{display:'flex', alignContent:'center', alignItems: 'baseline'}}>
               {state.visualMode !== 'ACTIVE' && state.visualMode !== 'WAITING' && <Button
@@ -178,9 +180,6 @@ export default function NavBar(props) {
             </div>
 : 
             <div>
-
-
-
               <Button color="inherit" onClick={handleClickOpenSignIn}>Login</Button>
               <Dialog
                 open={state.openSignIn}

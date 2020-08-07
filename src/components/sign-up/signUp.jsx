@@ -89,7 +89,7 @@ export default function SignUp(props) {
   }
 
   return (
-    <Container class='signup' component="main" maxWidth="xs" style={{ width: '400px' }}>
+    <Container class='signup' component="main" maxWidth="xs" style={{ margin: '-50px 0px', padding: '0px 50px', height: '700px', width: '400px' }}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

@@ -112,7 +112,7 @@ const App = () => {
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
       <Lobby roomState={roomState} />
-      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 3px black', marginBottom: "20px" }}>Past Debates</h1>
+      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 1px black', marginBottom: "20px" }}>Past Debates</h1>
       <span></span>
       <PastDebate />
     </main>
@@ -132,7 +132,6 @@ const App = () => {
       {state.visualMode === "GAME_OVER" && <PostDebate activeRoomState={activeRoomState} />}
       {state.visualMode === "CONNECTION_ERROR" && <Disconnect />}
       {state.visualMode === "SPECTATOR" && state.token && <SpectatorStage activeRoomState={activeRoomState}/>}
-      
       <footer style={{ fontSize: "10px" }}>
         <p>
           Made with{' '}
