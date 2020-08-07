@@ -2,11 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 // import { useStore } from './Store'
 
 const Participant = ({ participant }) => {
+
+    // console.log("Participant -> participant", participant.audioTracks)
+
   // const [state, dispatch] = useStore();
   const [videoTracks, setVideoTracks] = useState([]);
+  console.log("Participant -> videoTracks", videoTracks)
   const [audioTracks, setAudioTracks] = useState([]);
+  if(audioTracks[0]){
+
+    console.log("Participant -> audioTracks", audioTracks[0].isEnabled)
+  }
+  // const [show, setShow] = useState(false)
 
   const videoRef = useRef();
+  console.log("Participant -> videoRef", videoRef)
   const audioRef = useRef();
 
   const trackpubsToTracks = (trackMap) =>
@@ -49,6 +59,7 @@ const Participant = ({ participant }) => {
     if (videoTrack) {
       videoTrack.attach(videoRef.current);
       return () => {
+        // setShow(true)
         videoTrack.detach();
       };
     }
@@ -64,10 +75,15 @@ const Participant = ({ participant }) => {
     }
   }, [audioTracks]);
 
+
+
     return (
     <div className="participant">
       <h3>{participant.identity}</h3>
-      {videoRef.current ? <h4>Wating for Debater</h4> : <video ref={videoRef} autoPlay={true} width="600" height="400"/>}
+      {/* {show ? <video ref={videoRef} autoPlay={true} style={{width: 600, height: 400}}/> : <h4 style={{width: 600, height: 400}}>Wating for Debater</h4>} */}
+      
+      <video ref={videoRef} autoPlay={true} style={{width: 600, height: 400}}/>
+    
       <audio ref={audioRef} autoPlay={true} />
     </div>
   )
