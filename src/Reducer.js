@@ -35,6 +35,11 @@ const Reducer = (state, action) => {
         ...state,
         visualMode: action.payload
       };
+    case 'SET_LOGIN_ERROR':
+      return {
+        ...state,
+        loginErrors: action.payload
+      };
     case 'SET_OPEN_SIGN_IN':
       return {
         ...state,

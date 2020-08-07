@@ -1,3 +1,7 @@
 .signup {
   width: 300%;
 }
+
+.error {
+  color: red;
+}
