@@ -1,13 +1,14 @@
 #stage {
-  z-index: 3;
-  position: absolute;
+  /* z-index: 3; */
+  /* position: absolute; */
   /* padding: 0em 4em; */
   margin-top: 100px;
   margin-left: 10px;
   margin-right: 10px;
+  background-color: white;
 }
 
-#game-log{
+.game-log{
   width: 100%;
   height: 200px;
   padding: 2%;
@@ -21,18 +22,17 @@
   display: flex; 
   
   margin-bottom: 0px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
+  /* margin-bottom: 10px; */
 
   vertical-align: middle;
-  border-style: solid;
-  border-width: 1px 1px 0px 1px;
-  border-color: black;
 }
 
 .chat-message-box{
   display: flex;
   flex-direction: row;
   justify-content: left;
+  padding: .5rem;
 }
 .MuiFormControl-root{
   width: 100%;
@@ -59,4 +59,37 @@ header{
 h2 {
   margin-bottom: 0px;
   padding-bottom: 1em;
+}
+
+.participant{
+  padding: 0px;
+}
+
+#full-chatbox{
+  border: 1px solid black;
+  margin-bottom: .5rem;
+
+}
+
+form > div {
+  width: 100%;
+  margin-bottom: 0em;
+}
+
+
+.debate-topic{
+  margin-top: 1.5rem;
+}
+#button-div{
+  display: flex;
+  justify-content: center;
+
+}
+
+#viewers-watching{
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  padding: .4rem;
+
 }

@@ -30,8 +30,14 @@ app.use(pino);
 
 // Alex's SOCKET code
 let rLString;
-let debtateTime = 5;
+let debtateTime = 3;
 let intermissionTime = 3;
+let round1Time = 5;
+let round2Time = 10;
+let finalround = 20;
+// let round1Time = 15;
+// let round2Time = 30;
+// let finalround = 45;
 // This class holds an array of all the rooms
 class Rooms {
   constructor() {
@@ -126,7 +132,7 @@ class Room {
       .then(() => {
         io.to(this.name).emit(
           "gameCommand",
-          `${this.contender} (Disagrees) is muted!`
+          `${this.host} is talking`
         );
         io.to(this.name).emit("mute", {
           mute: this.contender,
@@ -146,18 +152,13 @@ class Room {
       .then(() => this.sleep(intermissionTime * 1000))
       .then(() => {
         this.postGameToDatabase();
-        io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
+        io.to(this.name).emit('gameCommand', `${this.contender} (Agrees) is talking`)
         io.to(this.name).emit('unMute', this.contender)
-        // io.to(this.name).emit('mute', {
-        //   mute: this.host,
-        //   intermission: false,
-        //   timer: debtateTime
-        // })
       })
       .then(() => this.sleep(debtateTime * 1000))
       .then(() => {
-        io.to(this.name).emit('unMute', this.host)
-        io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
+        // io.to(this.name).emit('unMute', this.host)
+        io.to(this.name).emit('gameCommand', 'Game over')
         // Post the game record to the database.
 
         // Ends the game for the user - Brings up post-debtate review screen
@@ -170,42 +171,58 @@ class Room {
     io.to(this.name).emit(
       "bothReady"
     );
-    this.sleep(5000)
+    this.sleep(100)
       .then(() => {
         io.to(this.name).emit(
           "gameCommand",
-          `${this.contender} (Disagrees) is muted!`
+          `Round 1 - ${this.host} is talking`
         );
-        io.to(this.name).emit("mute", {
-          mute: this.contender,
-          intermission: false,
-          timer: debtateTime,
-        });
+        io.to(this.name).emit("setTimer", round1Time)
+        io.to(this.name).emit("mute", this.contender)
+        
       })
-      .then(() => this.sleep(debtateTime * 1000))
+      .then(() => this.sleep(round1Time * 1000))
       .then(() => {
-        io.to(this.name).emit("gameCommand", `Intermission`);
-        io.to(this.name).emit("mute", {
-          mute: this.host,
-          intermission: true,
-          timer: intermissionTime,
-        });
+        this.postGameToDatabase();
+        io.to(this.name).emit('gameCommand', `Round 1 - ${this.contender} is talking`)
+        io.to(this.name).emit("setTimer", round1Time)
+        io.to(this.name).emit("mute", this.host)
+        io.to(this.name).emit('unMute', this.contender)
+      })
+      .then(() => this.sleep(round1Time * 1000))
+      .then(() => {
+        io.to(this.name).emit("gameCommand", `Round 1 Intermission`);
+        io.to(this.name).emit("setTimer", intermissionTime)
+        io.to(this.name).emit("mute", this.contender)
       })
       .then(() => this.sleep(intermissionTime * 1000))
       .then(() => {
-        this.postGameToDatabase();
-        io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
-        io.to(this.name).emit('unMute', this.contender)
-        io.to(this.name).emit('mute', {
-          mute: this.host,
-          intermission: false,
-          timer: debtateTime
+        io.to(this.name).emit(
+          "gameCommand",
+          `Round 2 - ${this.host} is talking`
+          );
+          
+          io.to(this.name).emit("setTimer", round2Time)
+          io.to(this.name).emit('unMute', this.host)
         })
+        .then(() => this.sleep(round2Time * 1000))
+        .then(() => {
+          this.postGameToDatabase();
+          io.to(this.name).emit('gameCommand', `Round 2 - ${this.contender} (Agrees) is talking`)
+        io.to(this.name).emit("setTimer", round2Time)
+        io.to(this.name).emit("mute", this.host)
+        io.to(this.name).emit('unMute', this.contender)
       })
-      .then(() => this.sleep(debtateTime * 1000))
+      .then(() => this.sleep(round2Time * 1000))
       .then(() => {
+        io.to(this.name).emit("gameCommand", `Final Round - Open Debate!`);
         io.to(this.name).emit('unMute', this.host)
-        io.to(this.name).emit('gameCommand', 'Game over - nobody is muted')
+        io.to(this.name).emit("setTimer", finalround)
+      })
+      .then(() => this.sleep(finalround * 1000))
+      .then(() => {
+        // io.to(this.name).emit('unMute', this.host)
+        io.to(this.name).emit('gameCommand', 'Game over')
         // Post the game record to the database.
 
         // Ends the game for the user - Brings up post-debtate review screen
@@ -220,15 +237,15 @@ class Room {
       host_id: this.host_id,
       contender_id: this.contender_id,
     }).then((res) => {
-      console.log("Response from SQL server after posting: ", res);
+      // console.log("Response from SQL server after posting: ", res);
       this.game_id = res[0].id
       io.to(this.name).emit(
         "currentRoomUpdate",
         roomList.roomList[this.name]
       );
-      roomList.roomList[this.name].sendRoomUpdate()
-
-    });
+      roomList.sendRoomUpdate()
+    })
+    .catch(err => console.log(err))
   }
 }
 
@@ -238,7 +255,7 @@ const roomList = new Rooms("roomList");
 roomList.newRoom("testRoom", "Is Alex the Greatest?");
 roomList.newRoom("otherRoom", "Is Avery the greatest?");
 roomList.newRoom("3rdroom", "Are beavers awesome?");
-roomList.newRoom("4tdroom", "Are Trevor and Andrew lovers?");
+roomList.newRoom("4tdroom", "Are Trevor and Andrew nice guys?");
 
 io.sockets.on("connection", function (socket) {
   // Send roomList to each new participant
@@ -305,17 +322,28 @@ io.sockets.on("connection", function (socket) {
       roomList.roomList[data.roomName]["contender_ready"] = true
     }
 
+    // io.to(this.name).emit('gameCommand', `${this.host} (Agrees) is muted!`)
+
+    roomList.roomList[data.roomName]["messages"].push({
+      timeStamp: 20200700456,
+      fromUser: "Server",
+      message: `${data.userName} is ready.`,
+    });
+
+
+
     if (roomList.roomList[data.roomName]["host_ready"] && roomList.roomList[data.roomName]["contender_ready"]) {
       roomList.roomList[data.roomName]["messages"].push({
         timeStamp: 20200700456,
         fromUser: "Server",
-        message: "Both players are ready!",
+        message: "Both players are ready! Game starting soon...",
       });
 
+      
       roomList.sendRoomUpdate();
 
       // Starts the game method!
-      roomList.roomList[data.roomName].startDemoGame()
+      roomList.roomList[data.roomName].startRealGame()
     }
 
 

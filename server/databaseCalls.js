@@ -75,7 +75,8 @@ const postResultsToDatabase = (client, data) => {
   // Query to get host_id and contender id?
   return client.query(`
   INSERT INTO room_logs (topic_id, host_id, contender_id) 
-  VALUES ($1, $2, $3);
+  VALUES ($1, $2, $3)
+  RETURNING *;
   `, [data.topic_id, data.host_id, data.contender_id])
     .then(res => {
       // console.log('Response from SQL', res);
@@ -119,7 +120,7 @@ const postLikes = (client, data) => {
 const postUserRating = (client, data) => {
   return client.query(`
   INSERT INTO ratings (from_user_id, to_user_id, rating, points) 
-  VALUES ($1, $2, $3);
+  VALUES ($1, $2, $3, $4);
   `, [data.from_user_id, data.to_user_id, data.rating, data.points])
     .then(res => {
       // console.log('Response from SQL', res);
