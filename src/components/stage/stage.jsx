@@ -54,6 +54,10 @@ export default function Stage({ activeRoomState }) {
         dispatch({ type: 'SET_TOKEN', payload: null })
         dispatch({ type: 'SET_VISUAL_MODE', payload: "CONNECTION_ERROR" })
         dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
+        state.currentSocket.emit('leaveRoom', {
+          roomName: state.currentRoom,
+          userName: state.username
+        })
         disableMedia()
       })
 
