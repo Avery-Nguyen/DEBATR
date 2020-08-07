@@ -64,7 +64,7 @@ export default function SignUp(props) {
       setError('Email address is invalid')
     } else if (password === '') {
       setError('Password cannot be blank')
-    } else if (password.length) {
+    } else if (password.length <= 8) {
       setError('Password must be at least 8 characters long')
     } else {
       axios.post('/api/register', {
@@ -163,15 +163,16 @@ export default function SignUp(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button
-                type="submit"
+            <TextField
+                variant="outlined"
+                required
                 fullWidth
-                variant="contained"
-                color="black"
-                className={classes.submit}
-              >
-                Add Avatar
-              </Button>
+                name="avatar"
+                label="avatar"
+                type="avatar"
+                id="avatar"
+                onChange={event => setAvatar(event.target.value)}
+              />
             </Grid>
           </Grid>
           <Button

@@ -45,6 +45,11 @@ const Reducer = (state, action) => {
         ...state,
         openSignIn: action.payload
       };
+    case 'SET_USER_AVATAR_URL':
+      return {
+        ...state,
+        userAvatarUrl: action.payload
+      };
     default:
       return state;
   }
