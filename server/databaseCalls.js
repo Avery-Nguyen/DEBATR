@@ -1,21 +1,23 @@
 
 const getRoomRecords = (client, limit = 10) => {
   // console.log('INSIDE GET ROOM RECORDS')
+  console.log('insideRoomRecords')
 
-  return client.query(`SELECT room_logs.*, AVG(agreement_ratings.agreement_rating) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
+  return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
   FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
   JOIN agreement_ratings on room_logs.id = agreement_ratings.room_log_id
   JOIN users AS Host ON room_logs.host_id = Host.id
   JOIN users AS Contender ON room_logs.contender_id = Contender.id
-  GROUP BY room_logs.id, topics.question, host.username, contender.username, host_avatar, contender_avatar 
+  GROUP BY room_logs.id, topics.question, host.username, contender.username
   ORDER BY room_logs.date_time DESC
   limit $1;
   `, [limit])
     .then((res) => {
-      // console.log(`res from sql ${res}`)
+      console.log(`res from sql ${res}`)
       return res.rows
     })
+    .catch(err => console.log(err))
 }
 
 const getLeaderboard = (client, limit = 10) => {

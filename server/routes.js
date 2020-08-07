@@ -52,6 +52,7 @@ module.exports = (client) => {
     console.log('REQUEST TO /API/ROOMS')
     getRoomRecords(client)
       .then(sqlResponse => {
+        console.log('SQL Response in to /API/Rooms', sqlResponse)
         res.send(sqlResponse)
       })
       .catch(err => {
