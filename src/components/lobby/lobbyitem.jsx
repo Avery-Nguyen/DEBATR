@@ -83,15 +83,15 @@ export default function LobbyItem({ roomDetails }) {
   //   setExpanded(!expanded);
   // };
 
-console.log(roomDetails, 'room details in lobby item')
-console.log(roomDetails.host || 'helloe')
-console.log(roomDetails.contender);
+// console.log(roomDetails, 'room details in lobby item')
+// console.log(roomDetails.host || 'helloe')
+// console.log(roomDetails.contender);
 
 
 const [hostUsercard, setHostUsercard] = useState({});
 
 const getHostUsercard = (username) => {
-  console.log(username)
+  // console.log(username)
   axios.post('/api/usercardByName', {
     username
   })

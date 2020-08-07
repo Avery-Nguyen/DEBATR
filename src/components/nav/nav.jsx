@@ -43,7 +43,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function NavBar(props) {
   const classes = useStyles();
   const [state, dispatch] = useStore();
-  console.log(state.username);
+  // console.log(state.username);
 
   //sign-up open/close logic
   const [open, setOpen] = useState(false);
@@ -103,7 +103,7 @@ export default function NavBar(props) {
 
     axios.get('/api/logout', {})
       .then((res) => {
-        console.log('response from logout', res)
+        // console.log('response from logout', res)
         if (res.data === 'success') {
           dispatch({ type: 'SET_USERNAME', payload: null })
           dispatch({ type: 'SET_USER_ID', payload: null })

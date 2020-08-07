@@ -113,7 +113,14 @@ const App = () => {
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
       <Lobby roomState={roomState} />
-      <h1 style={{ display: 'flex', justifyContent: 'center', border: 'solid 1px black', marginBottom: "20px" }}>Past Debates</h1>
+      <h1 style={{ display: 'flex', 
+      justifyContent: 'center', 
+      border: 'solid 1px rgb(64,81,182)', 
+      marginBottom: "20px", 
+      color:'white', 
+      backgroundColor:'rgb(64,81,182)',
+      borderRadius:'15px',
+      padding:'0px 10px' }}>Debate Results</h1>
       <span></span>
       <PastDebate />
     </main>
