@@ -9,8 +9,8 @@ const Participant = ({ participant, mutedUsers }) => {
   const [muted, setMuted] = useState(false)
 
   useEffect(() => {
-    console.log('muted users', mutedUsers)
-    console.log('identity', participant.identity)
+    // console.log('muted users', mutedUsers)
+    // console.log('identity', participant.identity)
     
     if (mutedUsers && mutedUsers.includes(participant.identity)) {
       setMuted(true)

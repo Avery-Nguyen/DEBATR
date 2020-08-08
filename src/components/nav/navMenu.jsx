@@ -6,25 +6,25 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import { useStore } from '../../Store'
 import axios from 'axios';
 
 
 import Avatar from '@material-ui/core/Avatar';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  paper: {
-    marginRight: theme.spacing(2),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: 'flex',
+//   },
+//   paper: {
+//     marginRight: theme.spacing(2),
+//   },
+// }));
 
 export default function NavMenu() {
   const [state, dispatch] = useStore();
-  const classes = useStyles();
+  // const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -65,7 +65,7 @@ export default function NavMenu() {
 
     axios.get('/api/logout', {})
       .then((res) => {
-        console.log('response from logout', res)
+        // console.log('response from logout', res)
         if (res.data === 'success') {
           dispatch({ type: 'SET_USERNAME', payload: null })
           dispatch({ type: 'SET_USER_ID', payload: null })
@@ -89,7 +89,7 @@ export default function NavMenu() {
 
     prevOpen.current = open;
   }, [open]);
-console.log(state)
+// console.log(state)
   return (
     <div>
         <Button

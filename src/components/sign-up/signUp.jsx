@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useStore } from '../../Store'
 
@@ -45,7 +45,7 @@ export default function SignUp(props) {
   const [lastName, setlastName] = useState('')
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
-  const [state, dispatch] = useStore();
+  const [dispatch] = useStore();
   const [error, setError] = useState('')
 
 
@@ -76,13 +76,13 @@ export default function SignUp(props) {
         avatar
       })
         .then((res) => {
-          console.log(res, 'res from sign-up request')
-          console.log(res.data[0].username, 'res from sign-up request')
+          // console.log(res, 'res from sign-up request')
+          // console.log(res.data[0].username, 'res from sign-up request')
           dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
           props.handleClose();
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           console.error(error, "error from axios request")
         })
     }

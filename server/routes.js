@@ -131,7 +131,7 @@ module.exports = (client) => {
   });
 
   router.get('/leaderboard', function (req, res) {
-    console.log('REQUEST TO /API/leaderboard')
+    // console.log('REQUEST TO /API/leaderboard')
     getLeaderboard(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
@@ -144,7 +144,7 @@ module.exports = (client) => {
   });
 
   router.get('/topiccount', function (req, res) {
-    console.log('REQUEST TO /API/topiccount')
+    // console.log('REQUEST TO /API/topiccount')
     getTopicCount(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
@@ -157,7 +157,7 @@ module.exports = (client) => {
   });
 
   router.get('/categorycount', function (req, res) {
-    console.log('REQUEST TO /API/categorycount')
+    // console.log('REQUEST TO /API/categorycount')
     getCategoryCount(client)
       .then(sqlResponse => {
         res.send(sqlResponse)
@@ -183,7 +183,7 @@ module.exports = (client) => {
   });
 
   router.post('/usercard', function (req, res) {
-    console.log('REQUEST TO /API/usercard')
+    // console.log('REQUEST TO /API/usercard')
     // console.log(req.body.host)
     // console.log(res, 'res in usercard')
     getUserCardByID(client, req.body.host)
@@ -199,8 +199,8 @@ module.exports = (client) => {
   });
 
   router.post('/usercardByName', function (req, res) {
-    console.log('REQUEST TO /API/usercardByName')
-    console.log(req.body.username)
+    // console.log('REQUEST TO /API/usercardByName')
+    // console.log(req.body.username)
     // console.log(res, 'res in usercard')
     getUserCardByName(client, req.body.username)
       .then(sqlResponse => {
@@ -264,7 +264,7 @@ module.exports = (client) => {
   })
 
   router.get('/login/check', function (req, res) {
-    console.log(req.session, 'req body')
+    // console.log(req.session, 'req body')
     if (req.session.userID) {
       res.json({
         success: true,
@@ -309,9 +309,9 @@ module.exports = (client) => {
           if (result) {
             req.session.userID = userID;
             req.session.username = username;
-            console.log(userAvatarURL);
+            // console.log(userAvatarURL);
             req.session.userAvatarURL = userAvatarURL
-            console.log(req.session, 'req.session in login');
+            // console.log(req.session, 'req.session in login');
             //  return res.send(data)
 
             return res.json({
@@ -351,7 +351,7 @@ module.exports = (client) => {
     //   password: 'password',
     //   avatar: '' },
 
-    console.log('after checkemail function');
+    // console.log('after checkemail function');
     bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
       // Store hash in your password DB.
 

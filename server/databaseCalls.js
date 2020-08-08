@@ -91,7 +91,7 @@ const getUserCardByName = (client, username) => {
   WHERE users.username = $1
   group by username;`, [username])
   .then((res) => {
-    console.log(`res from sql ${res}`)
+    // console.log(`res from sql ${res}`)
     return res
   })
 }
