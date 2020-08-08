@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
   dropdown: {
     boxShadow: 'none',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: '80%'
   },
   paper: {
     display: 'flex',
@@ -238,13 +239,12 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
           </Paper>
         </Zoom>
 
-        <FormControl className={classes.formControl} style={{
+          {/* Categories Dropdown */}
+          <Zoom in={createdTopic} unmountOnExit={true}>
+            <Paper elevation={4} className={classes.dropdown}>
+            <FormControl className={classes.formControl} style={{
           marginTop: '15px',
         }}>
-
-          {/* Categories Dropdown */}
-          <Zoom in={createdTopic}>
-            <Paper elevation={4} className={classes.dropdown}>
               <InputLabel
                 htmlFor="grouped-native-select"
                 variant="outlined"
@@ -252,28 +252,22 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
                 fullWidth
                 autoFocus
                 required
-              >
-                Category
+              >Category
             </InputLabel>
-
-              <Select native defaultValue="" id="grouped-native-select" onChange={event => setCategoryID(event.target.value)}>
+              <Select native defaultValue="" placeholder="Category" id="grouped-native-select" onChange={event => setCategoryID(event.target.value)}>
                 <option aria-label="None" value="" />
                 {/* loops through categories */}
                 {categoryOptions}
-
               </Select>
+
+              </FormControl>
             </Paper>
           </Zoom>
 
 
-
-
-        </FormControl>
-
         <Zoom in={topic || createdTopic}>
           <Paper elevation={4} className={classes.dropdown}>
-
-            <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', }}>
+            <FormControl required className={classes.formControl} style={{ width: "100px", marginTop: '15px', alignSelf: "center" }}>
               <InputLabel htmlFor="grouped-select">Stance</InputLabel>
               <Select defaultValue={true} id="grouped-select" onChange={event => setStance(event.target.value)}>
                 <MenuItem value={true}>For</MenuItem>
