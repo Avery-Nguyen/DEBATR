@@ -14,6 +14,8 @@ const io = require('socket.io')(http);
 const {
   postResultsToDatabase
 } = require('./databaseCalls.js');
+const clientId = process.env.GITHUB_CLIENT_ID;
+const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -391,7 +393,6 @@ app.use(
 );
 
 
-app.use("/api", apiRoutes(db));
 app.use("/api", topicRoutes(db));
 
 const sendTokenResponse = (token, res) => {
@@ -403,11 +404,8 @@ const sendTokenResponse = (token, res) => {
   );
 };
 
-app.get("/api/greeting", (req, res) => {
-  const name = req.query.name || "World";
-  res.setHeader("Content-Type", "application/json");
-  res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
+
+
 
 app.get("/video/token", (req, res) => {
   const identity = req.query.identity;
@@ -422,6 +420,6 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
-http.listen(3001, () =>
+http.listen(3001, () => {
   console.log("Express server is running on localhost:3001")
-);
+});

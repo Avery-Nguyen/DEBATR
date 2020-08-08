@@ -15,8 +15,11 @@ const {
   createTopic,
   getUserCardByName,
   getTopicCount,
-  getCategoryCount
+  getCategoryCount,
+  createGithubUser
 } = require('./databaseCalls.js');
+const axios = require('axios');
+let githubToken = null;
 
 //bcrypt stuff
 const bcrypt = require('bcrypt');
@@ -24,6 +27,10 @@ const saltRounds = 10;
 
 //cookies session (encrypted, client-side)
 const cookieSession = require('cookie-session')
+const clientId = process.env.GITHUB_CLIENT_ID;
+const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+
 router.use(cookieSession({
   name: 'session',
   keys: [
@@ -48,11 +55,72 @@ router.use(cookieSession({
 
 
 module.exports = (client) => {
+
+  router.get('/login/github', function (req, res) {
+    res.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user`)
+  })
+
+  router.get('/oauth-callback/', function (req, res) {
+    const body = {
+      client_id: clientId,
+      client_secret: clientSecret,
+      code: req.query.code
+    };
+
+    const opts = { headers: { accept: 'application/json' } };
+    axios.post(`https://github.com/login/oauth/access_token`, body, opts)
+      .then(res => {
+        return res.data['access_token']
+      })
+      .then(_token => {
+        githubToken = _token;
+        axios({
+          method: 'get',
+          url: `https://api.github.com/user`,
+          headers: {
+            Authorization: 'token ' + githubToken
+          }
+        }).then((response) => {
+          console.log('Github user response data', response.data)
+          const gitEmail = `${response.data.login}@github.com`
+          checkEmailTaken(client, gitEmail)
+          .then(sqlres => {
+            console.log('RESPONSE FROM CHECK EMAIL TAKEN')
+            console.log(sqlres)
+            if (sqlres) {
+              getUserInfoByEmail(client, gitEmail)
+              .then(sqlRes => {
+                console.log('SQL res if account already created', sqlRes)
+                req.session.username = sqlRes[0].username
+                req.session.userID = sqlRes[0].id
+                req.session.userAvatarURL = sqlRes[0].avatar_url
+                
+                return res.redirect('http://localhost:3000/')
+              })
+            } else {
+              createGithubUser(client, gitEmail, response.data.name, 'last', response.data.login, response.data.avatar_url)
+              .then((sqlResponse) => {
+                console.log("github create sqlResponse", sqlResponse)
+                req.session.username = response.data.login;
+                req.session.userID = sqlResponse.id;
+                req.session.userAvatarURL = sqlResponse.avatar_url
+                return res.redirect('http://localhost:3000/')
+              })
+            }
+          })
+        })
+        .catch(err => res.status(500).json({ message: err.message }));
+      })
+      .catch(err => res.status(500).json({ message: err.message }));
+
+
+  })
+
   router.get('/rooms', function (req, res) {
-    console.log('REQUEST TO /API/ROOMS')
+    // console.log('REQUEST TO /API/ROOMS')
     getRoomRecords(client)
       .then(sqlResponse => {
-        console.log('SQL Response in to /API/Rooms', sqlResponse)
+        // console.log('SQL Response in to /API/Rooms', sqlResponse)
         res.send(sqlResponse)
       })
       .catch(err => {
@@ -211,6 +279,7 @@ module.exports = (client) => {
       })
     }
   })
+
 
   router.get('/logout', function (req, res) {
     req.session.userID = null;

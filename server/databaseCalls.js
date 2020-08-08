@@ -1,7 +1,7 @@
 
 const getRoomRecords = (client, limit = 10) => {
   // console.log('INSIDE GET ROOM RECORDS')
-  console.log('insideRoomRecords')
+  // console.log('insideRoomRecords')
 
   return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
   FROM room_logs
@@ -14,7 +14,7 @@ const getRoomRecords = (client, limit = 10) => {
   limit $1;
   `, [limit])
     .then((res) => {
-      console.log(`res from sql ${res}`)
+      // console.log(`res from sql ${res}`)
       return res.rows
     })
     .catch(err => console.log(err))
@@ -183,7 +183,7 @@ const checkEmailTaken = (client, email) => {
   WHERE email = $1
   `, [email])
     .then(res => {
-      if (res.rows) {
+      if (res.rows === []) {
         console.log(res.rows, 'this is res.rows')
         return true
       } else {
@@ -203,6 +203,19 @@ const createUser = (client, email, first_name, last_name, username, password, av
       return res.rows
     })
 }
+const createGithubUser = (client, email, first_name, last_name, username, avatar_url) => {
+  // NOT GETTING EMAIL BACK FROM GITHUB
+  return client.query(`
+  INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
+  VALUES ($1, $2, $3, $4, $5, $6)
+  RETURNING *;
+  `, ['git', 'hub', email, username, 'pass', avatar_url])
+    .then(res => {
+      return res.rows[0]
+    })
+}
+
+
 const createTopic = (client, question, categoryID) => {
   return client.query(`
   INSERT INTO topics (question, category_id) VALUES ($1, $2)
@@ -228,5 +241,6 @@ module.exports = {
   createTopic,
   getUserCardByName,
   getTopicCount,
-  getCategoryCount
+  getCategoryCount,
+  createGithubUser
 }

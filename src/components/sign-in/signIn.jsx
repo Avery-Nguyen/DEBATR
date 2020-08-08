@@ -110,6 +110,12 @@ export default function SignIn(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+
+        <a href="http://localhost:3001/api/login/github" id="github-button" class="btn btn-block btn-social btn-github">
+          <i class="fa fa-github"></i> Sign in with Github
+        </a>
+
+
         <form className={classes.form} onSubmit={submitLogin} noValidate>
           <TextField
             // onChange={event => setEmail(event.target.value)}
