@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import Typography from '@material-ui/core/Typography';
+// import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 
 import Button from '@material-ui/core/Button';
@@ -62,12 +62,12 @@ export default function SpectatorStage({ activeRoomState }) {
           let newArr = [...mutedUsers]
           newArr.push(data)
           setMutedUsers(newArr)
-          console.log("SpectatorStage -> mutedUsers", mutedUsers)
+          // console.log("SpectatorStage -> mutedUsers", mutedUsers)
         }
       })
 
       state.currentSocket.on("unMute", data => {
-        console.log('Room UNmute request', data)
+        // console.log('Room UNmute request', data)
         if (room) {
           setMutedUsers(prev => {
             const newArr = [...prev]
@@ -76,7 +76,7 @@ export default function SpectatorStage({ activeRoomState }) {
             const newMutedUsers = newArr.filter(user => user !== data)
             if (state.username === data) {
               room.localParticipant.audioTracks.forEach(publication => {
-                console.log(room.localParticipant.identity, ' is unmuted');
+                // console.log(room.localParticipant.identity, ' is unmuted');
                 publication.track.enable();
               });
             }
@@ -157,10 +157,10 @@ export default function SpectatorStage({ activeRoomState }) {
   });
 
   let participant1;
-  let participant2;
+  // let participant2;
   if (remoteParticipants.length > 1) {
     participant1 = remoteParticipants[0].identity
-    participant2 = remoteParticipants[1].identity
+    // participant2 = remoteParticipants[1].identity
   }
 
   // console.log("from sepectator stage ---> rendered components", remoteParticipants);
@@ -200,7 +200,7 @@ export default function SpectatorStage({ activeRoomState }) {
       }, 1000);
     } else if (time <= 0) {
 
-      console.log('calling clearTimeout')
+      // console.log('calling clearTimeout')
       clearTimeout(timer)
 
     }

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Disconnect() {
-  const [state, dispatch] = useStore();
+  const [dispatch] = useStore();
   const classes = useStyles();
 
   const returnToLobby= () => {

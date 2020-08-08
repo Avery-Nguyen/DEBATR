@@ -1,39 +1,39 @@
  
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import ReactDOM from 'react-dom';
+// import Button from '@material-ui/core/Button';
+// import Dialog from '@material-ui/core/Dialog';
+// import Slide from '@material-ui/core/Slide';
+// import ReactDOM from 'react-dom';
 import Stage from './components/stage/stage';
 import SpectatorStage from './components/stage/SpectatorStage';
 // import Rating from './components/partials/rating'
 // import DiscreteSlider from './components/partials/slider'
 // import UserCard from './components/user-card/userCard'
-import Dashboard from './components/dashboard/dashboard'
+// import Dashboard from './components/dashboard/dashboard'
 import Lobby from './components/lobby/lobby'
 import NavBar from './components/nav/nav'
 import PostDebate from './components/post-debate/postDebate'
 import './components/partials/slider.css'
 // import SocketContext from './SocketContext'
 import socketIOClient from "socket.io-client";
-import SignUp from './components/sign-up/signUp';
-import CreateRoom from './components/create-room/createRoom';
+// import SignUp from './components/sign-up/signUp';
+// import CreateRoom from './components/create-room/createRoom';
 import { useStore } from './Store'
 import Disconnect from './components/disconnect/Disconnect';
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 const App = () => {
   const [state, dispatch] = useStore();
   const [roomState, setRoomState] = useState({})
   const [activeRoomState, setActiveRoomState] = useState({})
-  const [open, setOpen] = React.useState(false);
+  const [setOpen] = React.useState(false);
 
 
   const handleClickOpen = () => {
@@ -49,7 +49,7 @@ const App = () => {
     if (!state.sessionID) {
       const randUser = 'user' + (Math.random()*1000000).toFixed(0)
       dispatch({ type: 'SET_SESSION_ID', payload: randUser })
-      console.log("App -> randUser", randUser)
+      // console.log("App -> randUser", randUser)
     }
   })
   
@@ -61,7 +61,7 @@ const App = () => {
             dispatch({ type: 'SET_USER_ID', payload: res.data.userID })
             dispatch({ type: 'SET_USER_AVATAR_URL', payload: res.data.userAvatarUrl })
           }
-          console.log(res, 'res from persistent login check')
+          // console.log(res, 'res from persistent login check')
           return true
         })
         .catch((error) => {

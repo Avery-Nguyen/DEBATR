@@ -1,7 +1,7 @@
 
 const getRoomRecords = (client, limit = 10) => {
   // console.log('INSIDE GET ROOM RECORDS')
-  console.log('insideRoomRecords')
+  // console.log('insideRoomRecords')
 
   return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
   FROM room_logs
@@ -14,7 +14,7 @@ const getRoomRecords = (client, limit = 10) => {
   limit $1;
   `, [limit])
     .then((res) => {
-      console.log(`res from sql ${res}`)
+      // console.log(`res from sql ${res}`)
       return res.rows
     })
     .catch(err => console.log(err))
@@ -91,7 +91,7 @@ const getUserCardByName = (client, username) => {
   WHERE users.username = $1
   group by username;`, [username])
   .then((res) => {
-    console.log(`res from sql ${res}`)
+    // console.log(`res from sql ${res}`)
     return res
   })
 }
@@ -184,7 +184,7 @@ const checkEmailTaken = (client, email) => {
   `, [email])
     .then(res => {
       if (res.rows) {
-        console.log(res.rows, 'this is res.rows')
+        // console.log(res.rows, 'this is res.rows')
         return true
       } else {
         return false

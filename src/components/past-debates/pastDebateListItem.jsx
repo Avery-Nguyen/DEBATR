@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+// import CardHeader from '@material-ui/core/CardHeader';
+// import CardMedia from '@material-ui/core/CardMedia';
+// import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
+// import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Button from '@material-ui/core/Button';
+// import Typography from '@material-ui/core/Typography';
+// import { red } from '@material-ui/core/colors';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+// import ShareIcon from '@material-ui/icons/Share';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import MoreVertIcon from '@material-ui/icons/MoreVert';
+// import Button from '@material-ui/core/Button';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
+// import CloseIcon from '@material-ui/icons/Close';
 import './pastDebates.css'
 import axios from 'axios';
 
 
 // import getRoomRecords from '../../server/databaseCalls'
-import Stage from '../stage/stage'
+// import Stage from '../stage/stage'
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -100,19 +100,19 @@ export default function PastDebateItem(props) {
   };
 
   //stage state logic - will need to change after
-  const [openStage, setOpenStage] = useState(false);
-  const handleClickOpenStage = () => {
-    setOpenStage(true);
-  };
-  const handleCloseStage = () => {
-    setOpenStage(false);
-  };
+  // const [openStage, setOpenStage] = useState(false);
+  // const handleClickOpenStage = () => {
+  //   setOpenStage(true);
+  // };
+  // const handleCloseStage = () => {
+  //   setOpenStage(false);
+  // };
 
   const [likes, setLikes] = useState(props.likes)
   const [dislikes, setDislikes] = useState(props.dislikes)
 
   const addLikes = (typeOfLike, room_id) => {
-    console.log(typeOfLike, room_id)
+    // console.log(typeOfLike, room_id)
     axios.post('/api/likes', {
       room_id,
       typeOfLike
@@ -121,9 +121,9 @@ export default function PastDebateItem(props) {
         setLikes(res.data[0].likes);
         setDislikes(res.data[0].dislikes);
 
-        console.log(likes, 'before');
-        console.log(res.data[0].likes, 'res likes ')
-        console.log(likes, 'after')
+        // console.log(likes, 'before');
+        // console.log(res.data[0].likes, 'res likes ')
+        // console.log(likes, 'after')
       })
       .catch((error) => {
         console.error(error, "error from axios request")
@@ -131,17 +131,17 @@ export default function PastDebateItem(props) {
   }
 
   const [hostUsercard, setHostUsercard] = useState({});
-  const [contenderUsercard, setContenderUsercard] = useState([]);
+  // const [ setContenderUsercard] = useState([]);
   // console.log('roomState', roomState)
   // console.log(props)
 
   const getHostUsercard = (host) => {
-    console.log(host)
+    // console.log(host)
     axios.post('/api/usercard', {
       host
     })
       .then((res) => {
-        console.log(res.data[0])
+        // console.log(res.data[0])
         // console.log(data.data[0], 'sql response')
         setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
         handleClickOpen();
@@ -149,16 +149,16 @@ export default function PastDebateItem(props) {
       });
   }
 
-  const getContenderUsercard = (contender) => {
-    axios.get('/api/usercard')
-      .then((res) => {
-        setContenderUsercard(prev => ({ ...prev, ...res.data[0] }))
-        handleClickOpen();
+  // const getContenderUsercard = (contender) => {
+  //   axios.get('/api/usercard')
+  //     .then((res) => {
+  //       setContenderUsercard(prev => ({ ...prev, ...res.data[0] }))
+  //       handleClickOpen();
 
-      });
-  }
+  //     });
+  // }
 
-console.log(props)
+// console.log(props)
 
   return (
     <Card className={classes.root} style={{
@@ -220,10 +220,10 @@ console.log(props)
 
 
 
-{/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
-<Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
-  <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
-    <CloseIcon />
-  </IconButton>
-  <Dashboard />
-</Dialog> */}
+// {/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
+// <Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
+//   <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
+//     <CloseIcon />
+//   </IconButton>
+//   <Dashboard />
+// </Dialog> */}

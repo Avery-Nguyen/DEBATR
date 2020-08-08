@@ -18,7 +18,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
       );
     };
 
-    console.log('RoomName before video.connect', roomName)
+    // console.log('RoomName before video.connect', roomName)
     Video.connect(token, {
       name: roomName
     }).then(room => {
@@ -57,7 +57,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
         if (room) {
           if (username === data.mute) {
             room.localParticipant.audioTracks.forEach(publication => {
-              console.log(room.localParticipant.identity,'is muted');
+              // console.log(room.localParticipant.identity,'is muted');
               publication.track.disable();
             });
           }
@@ -77,7 +77,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
         if (room) {
           if(username === data){
             room.localParticipant.audioTracks.forEach(publication => {
-              console.log(room.localParticipant.identity,' is unmuted');
+              // console.log(room.localParticipant.identity,' is unmuted');
               publication.track.enable();
             });
           }
@@ -103,7 +103,7 @@ const Room = ({ roomName, token, handleLogout, currentSocket, username, roomStat
         // console.log('time below 0')
         // // setTurn(prevTurn => prevTurn + 1)
         // setActive(false);
-        console.log('calling clearTimeout and setActive false')
+        // console.log('calling clearTimeout and setActive false')
         clearTimeout(timer)
         // setActive(false);
         // setTime(startTime);

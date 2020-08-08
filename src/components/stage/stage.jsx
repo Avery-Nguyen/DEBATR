@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Participant from '../../Participant'
 import TextField from '@material-ui/core/TextField';
@@ -18,7 +18,7 @@ export default function Stage({ activeRoomState }) {
   const [gameState, setGameState] = useState(false)
   const [messageText, setMessageText] = useState("")
   const [mutedUsers, setMutedUsers] = useState([])
-  console.log("Stage -> mutedUsers", mutedUsers)
+  // console.log("Stage -> mutedUsers", mutedUsers)
 
   // GameCommand / mute / unmute listeners
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Stage({ activeRoomState }) {
 
       })
       state.currentSocket.on("unMute", data => {
-        console.log('Room UNmute request', data)
+        // console.log('Room UNmute request', data)
         if (room) {
           setMutedUsers(prev => {
             const newArr = [...prev]
@@ -78,7 +78,7 @@ export default function Stage({ activeRoomState }) {
             const newMutedUsers = newArr.filter(user => user !== data)
             if (state.username === data) {
               room.localParticipant.audioTracks.forEach(publication => {
-                console.log(room.localParticipant.identity,' is unmuted');
+                // console.log(room.localParticipant.identity,' is unmuted');
                 publication.track.enable();
               });
             }
@@ -188,7 +188,7 @@ export default function Stage({ activeRoomState }) {
       }, 1000);
     } else if (time <= 0) {
 
-      console.log('calling clearTimeout')
+      // console.log('calling clearTimeout')
       clearTimeout(timer)
 
     }
@@ -266,7 +266,7 @@ export default function Stage({ activeRoomState }) {
             </div>
             <article id="viewers-watching">
               <h5 style={{ color: 'black' }}>Viewers Watching: {participants.length - 1}</h5>
-              <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white', border: '1 px solid black' }} onClick={handleLogout}>Rage Quit?</Button>
+              <Button color="black" style={{ border: '1 px solid black', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
             </article>
             <section id="full-chatbox">
               <article id="outlined-basic" class="info-box game-log">

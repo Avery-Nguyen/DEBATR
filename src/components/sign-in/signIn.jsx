@@ -6,7 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import MuiAlert from '@material-ui/lab/Alert';
+// import MuiAlert from '@material-ui/lab/Alert';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+// function Alert(props) {
+//   return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 
 export default function SignIn(props) {
@@ -166,7 +166,7 @@ export default function SignIn(props) {
 
 
 //Remember me logic
-{/* <FormControlLabel
-control={<Checkbox value="remember" color="primary" />}
-label="Remember me" */}
-{/* /> */ }
+// {/* <FormControlLabel
+// control={<Checkbox value="remember" color="primary" />}
+// label="Remember me" */}
+// {/* /> */ }
