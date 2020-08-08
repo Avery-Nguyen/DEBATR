@@ -184,7 +184,7 @@ const checkEmailTaken = (client, email) => {
   `, [email])
     .then(res => {
       console.log(res.rows, 'this is res.rows')
-      if (res.rows[0]) {
+      if (res.rows && res.rows[0]) {
         return true
       } else {
         return false
