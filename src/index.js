@@ -13,10 +13,6 @@ ReactDOM.render(
   <Store>
     <Switch>
     <Route exact path='/' component={App}/>
-    <Route path='/login/github' component={() => { 
-     window.location.href = 'https://github.com/login/oauth/authorize?client_id=ad0e34b6f513926763b6'; 
-     return null;
-}}/>
     </Switch>
   </Store>
   </BrowserRouter>

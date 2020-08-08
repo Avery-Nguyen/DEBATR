@@ -183,8 +183,8 @@ const checkEmailTaken = (client, email) => {
   WHERE email = $1
   `, [email])
     .then(res => {
-      if (res.rows === []) {
-        console.log(res.rows, 'this is res.rows')
+      console.log(res.rows, 'this is res.rows')
+      if (res.rows[0]) {
         return true
       } else {
         return false
