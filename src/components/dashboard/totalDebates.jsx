@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+// function preventDefault(event) {
+//   event.preventDefault();
+// }
 
-const useStyles = makeStyles({
-  depositContext: {
-    flex: 1,
-  },
-});
+// const useStyles = makeStyles({
+//   depositContext: {
+//     flex: 1,
+//   },
+// });
 
 
 
 
 export default function TotalDebates() {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [totaldebates, settotaldebates] = useState();
 
   useEffect(() => {

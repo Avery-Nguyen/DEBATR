@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 // import clsx from 'clsx';
@@ -87,7 +87,7 @@ const getHostUsercard = (username) => {
     username
   })
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       // console.log(data.data[0], 'sql response')
       setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
       handleClickOpen();
@@ -254,10 +254,10 @@ const getHostUsercard = (username) => {
 
 
 
-{/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
-<Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
-  <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
-    <CloseIcon />
-  </IconButton>
-  <Dashboard />
-</Dialog> */}
+// {/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
+// <Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
+//   <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
+//     <CloseIcon />
+//   </IconButton>
+//   <Dashboard />
+// </Dialog> */}

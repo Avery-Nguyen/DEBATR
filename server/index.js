@@ -56,7 +56,7 @@ class Rooms {
 
   delRoom(name) {
     // this.roomList[name] = null;
-    console.log('Deleting room ', name)
+    // console.log('Deleting room ', name)
     // console.log('org roomList: ', this.roomList)
     delete this.roomList[name]
     // console.log('new roomList: ', this.roomList)
@@ -225,15 +225,15 @@ io.sockets.on("connection", function (socket) {
       roomList.delRoom(roomList.socketDirectory[socket.id])
     }
     roomList.sendRoomUpdate();
-    console.log('this sockets id', socket.id)
-    console.log('all sockets', Object.keys(io.sockets.sockets))
-    console.log("socket disconnected");
+    // console.log('this sockets id', socket.id)
+    // console.log('all sockets', Object.keys(io.sockets.sockets))
+    // console.log("socket disconnected");
   });
 
   socket.on("createRoom", function (data) {
-    console.log(
-      `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
-    );
+    // console.log(
+    //   `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
+    // );
 
     // Socket Joins the 'socket'room'
     socket.leave('lobby');
@@ -252,7 +252,7 @@ io.sockets.on("connection", function (socket) {
 
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate();
-    console.log(`Current roomList is ${roomList.allRooms}`);
+    // console.log(`Current roomList is ${roomList.allRooms}`);
 
     io.to(data.roomName).emit(
       "currentRoomUpdate",
@@ -314,9 +314,9 @@ io.sockets.on("connection", function (socket) {
   })
 
   socket.on("joinRoom", function (data) {
-    console.log(
-      `Request to join ${data.roomName} from ${data.userName} received.`
-    );
+    // console.log(
+    //   `Request to join ${data.roomName} from ${data.userName} received.`
+    // );
     // Add to room list
     if (roomList.roomList[data.roomName]["host"]) {
       roomList.roomList[data.roomName]["contender"] = data.userName;
@@ -351,9 +351,9 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("leaveRoom", function (data) {
-    console.log(
-      `Request to leave ${data.roomName} from ${data.userName} received.`
-    );
+    // console.log(
+    //   `Request to leave ${data.roomName} from ${data.userName} received.`
+    // );
 
     roomList.delRoom(data.roomName)
     socket.leave(data.roomName);
@@ -366,7 +366,7 @@ io.sockets.on("connection", function (socket) {
 
 
   socket.on("message", function (data) {
-    console.log(`Message received from ${data.userName} - ${data.message}`);
+    // console.log(`Message received from ${data.userName} - ${data.message}`);
     roomList.roomList[data.roomName]["messages"].push({
       timeStamp: 20200700456,
       fromUser: data.userName,
