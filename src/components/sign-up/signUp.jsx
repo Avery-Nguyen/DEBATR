@@ -76,13 +76,17 @@ export default function SignUp(props) {
         avatar
       })
         .then((res) => {
-          // console.log(res, 'res from sign-up request')
-          // console.log(res.data[0].username, 'res from sign-up request')
-          dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
-          props.handleClose();
+          console.log(res.data, 'res from sign-up request')
+          if (res.data[0]) {
+            dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
+            dispatch({ type: 'SET_USER_ID', payload: res.data[0].id})
+            props.handleClose();
+          } else {
+            setError('Error: Duplicate email or password')
+          }
         })
         .catch((error) => {
-          // console.log(error)
+          
           console.error(error, "error from axios request")
         })
     }

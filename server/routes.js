@@ -301,7 +301,8 @@ module.exports = (client) => {
         if (!userID) {
           console.log('error with userID')
           // TODO: Add a 'user does not exist error'
-          return res.redirect('login/401');
+          return res.json(
+            {authenticated: false})
         }
 
         return bcrypt.compare(loginInfo.password, password).then(function (result) {
@@ -322,11 +323,13 @@ module.exports = (client) => {
               userAvatarURL
             })
           } else {
-            console.log(error.message, "problem");
+            return res.json(
+              {authenticated: false})
           }
         })
           .catch(error => {
-            console.log(error.message, "problem");
+            return res.json(
+              {authenticated: false})
           })
       })
       .catch(err => {

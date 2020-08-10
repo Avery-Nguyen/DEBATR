@@ -202,6 +202,7 @@ const createUser = (client, email, first_name, last_name, username, password, av
     .then(res => {
       return res.rows
     })
+    .catch(err => err)
 }
 const createGithubUser = (client, email, first_name, last_name, username, avatar_url) => {
   // NOT GETTING EMAIL BACK FROM GITHUB
