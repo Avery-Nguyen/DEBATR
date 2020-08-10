@@ -90,6 +90,8 @@ const getHostUsercard = (username) => {
     });
 }
 
+console.log(state.userAvatarUrl)
+
   const [openStage, setOpenStage] = React.useState(false);
 
   const handleClickOpenStage = () => {
@@ -179,7 +181,7 @@ const getHostUsercard = (username) => {
         <CardHeader
           avatar={
             <div>
-             {roomDetails.host && <Avatar onClick={() => getHostUsercard(roomDetails.host)}/> }
+             {roomDetails.host && <Avatar src={state.userAvatarUrl} onClick={() => getHostUsercard(roomDetails.host)}/> }
               <Dialog
                 open={open}
                 TransitionComponent={Transition}
@@ -201,7 +203,7 @@ const getHostUsercard = (username) => {
             top: "7px",
             right: "7px"
           }}>
-           {roomDetails.contender && <Avatar onClick={() => getHostUsercard(roomDetails.contender)}/> }
+           {roomDetails.contender && <Avatar src={state.userAvatarUrl} onClick={() => getHostUsercard(roomDetails.contender)}/> }
           </div>
 
           <div class="inner" style={{

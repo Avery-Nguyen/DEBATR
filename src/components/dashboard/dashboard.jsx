@@ -8,6 +8,8 @@ import Paper from '@material-ui/core/Paper';
 import Chart from './Chart';
 import TotalDebates from './totalDebates';
 import LeaderBoard from './leaderBoard';
+import { useStore } from '../../Store';
+import UserStats from  './userStats'
 
 //Likely won't need these but could make for a very interactive stats page
 // import Link from '@material-ui/core/Link';
@@ -30,7 +32,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'block',
+    display: 'flex',
     backgroundColor: 'rgb(64,81,182)'
   },
   toolbar: {
@@ -112,8 +114,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const [state, dispatch] = useStore();
 
   return (
+
+    
     <div className={classes.root} style={{ paddingTop: '0px' }}>
       <h1 style={{
         justifyContent: 'center',
@@ -122,15 +127,18 @@ export default function Dashboard() {
         backgroundColor: 'rgb(64,81,182)',
         padding: '0px 10px'
       }}>Debate Results</h1>
+     
       <CssBaseline />
       <main className={classes.content} style={{
         display: 'block',
         maxHeight: 'fit-content',
         border: '25px solid rgb(64,81,182)',
-        alignItems: 'center'
+        alignItems: 'center',
       }}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg"  className={classes.container}>
+        { state.username ? 
+      <UserStats /> : <div> </div>}
+        <Container maxWidth="lg"  className={classes.container} style={{display:'flex'}}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={19}>
               <Paper className={fixedHeightPaper}>
@@ -143,7 +151,7 @@ export default function Dashboard() {
               </Paper>
             </Grid>
             <div>
-              <Grid item xs={12}>
+              <Grid item xs={22}>
                 <Paper className={classes.paper}>
                   <LeaderBoard />
                 </Paper>
