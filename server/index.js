@@ -165,14 +165,14 @@ class Room {
       .then(() => this.sleep(round2Time * 1000))
       .then(() => {
         io.to(this.name).emit("gameCommand", `Final Round - Open Debate!`);
-        io.to(this.name).emit('unMute', this.host)
+        // io.to(this.name).emit('unMute', this.host)
         io.to(this.name).emit("setTimer", finalround)
       })
       .then(() => this.sleep(finalround * 1000))
       .then(() => {
-        // io.to(this.name).emit('unMute', this.host)
+
         io.to(this.name).emit('gameCommand', 'Game over')
-        // Post the game record to the database.
+
 
         // Ends the game for the user - Brings up post-debtate review screen
         io.to(this.name).emit('gameOver', null)
@@ -293,7 +293,6 @@ io.sockets.on("connection", function (socket) {
         message: "Both players are ready! Game starting soon...",
       });
 
-      
       roomList.sendRoomUpdate();
 
       // Starts the game method!

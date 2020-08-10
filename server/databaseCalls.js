@@ -3,13 +3,13 @@ const getRoomRecords = (client, limit = 10) => {
   // console.log('INSIDE GET ROOM RECORDS')
   // console.log('insideRoomRecords')
 
-  return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name 
+  return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name, host.avatar_url AS host_avatar, contender.avatar_url AS contender_avatar
   FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
   JOIN agreement_ratings on room_logs.id = agreement_ratings.room_log_id
   JOIN users AS Host ON room_logs.host_id = Host.id
   JOIN users AS Contender ON room_logs.contender_id = Contender.id
-  GROUP BY room_logs.id, topics.question, host.username, contender.username
+  GROUP BY room_logs.id, topics.question, host.username, contender.username, host.avatar_url, contender.avatar_url
   ORDER BY room_logs.date_time DESC
   limit $1;
   `, [limit])

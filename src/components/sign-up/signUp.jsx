@@ -45,7 +45,7 @@ export default function SignUp(props) {
   const [lastName, setlastName] = useState('')
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
-  const [dispatch] = useStore();
+  const [state, dispatch] = useStore();
   const [error, setError] = useState('')
 
 
@@ -64,8 +64,8 @@ export default function SignUp(props) {
       setError('Email address is invalid')
     } else if (password === '') {
       setError('Password cannot be blank')
-    } else if (password.length < 8) {
-      setError('Password must be at least 8 characters long')
+    // } else if (password.length < 8) {
+    //   setError('Password must be at least 8 characters long')
     } else {
       axios.post('/api/register', {
         email,
