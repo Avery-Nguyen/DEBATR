@@ -64,12 +64,8 @@ export default function LobbyItem({ roomDetails }) {
   // console.log(roomDetails);
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
-
-
   const [open, setOpen] = React.useState(false);
   const [state, dispatch] = useStore();
-
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -77,7 +73,6 @@ export default function LobbyItem({ roomDetails }) {
   const handleClose = () => {
     setOpen(false);
   };
-
 
 const [hostUsercard, setHostUsercard] = useState({});
 
@@ -184,7 +179,7 @@ const getHostUsercard = (username) => {
         <CardHeader
           avatar={
             <div>
-              <Avatar onClick={() => getHostUsercard(roomDetails.host)} />
+             {roomDetails.host && <Avatar onClick={() => getHostUsercard(roomDetails.host)}/> }
               <Dialog
                 open={open}
                 TransitionComponent={Transition}
@@ -206,7 +201,7 @@ const getHostUsercard = (username) => {
             top: "7px",
             right: "7px"
           }}>
-            <Avatar />
+           {roomDetails.contender && <Avatar onClick={() => getHostUsercard(roomDetails.contender)}/> }
           </div>
 
           <div class="inner" style={{
@@ -215,11 +210,24 @@ const getHostUsercard = (username) => {
             top: "50px",
             right: "135px"
           }}>
-            <p style={{fontSize: "14px"}}>Watch</p>
+             {roomDetails.host && roomDetails.contender && <p class="inner"
+              variant="contained"
+              style={{
+                backgroundColor: "rgb(252, 232, 76)",
+              }}
+              onClick={handleClickOpenSpectate}>Spectate
+              </p>}
+            {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <p class="inner"
+              variant="contained"
+              style={{
+                backgroundColor: "rgb(7,238,38)",
+              }}
+              onClick={handleClickOpenStage}>Enter
+              </p>}
           </div>
 
           <CardActions disableSpacing>
-            {roomDetails.host && roomDetails.contender && <Button class="inner"
+            {/* {roomDetails.host && roomDetails.contender && <Button class="inner"
               variant="contained"
               style={{
                 color: "black",
@@ -237,7 +245,7 @@ const getHostUsercard = (username) => {
                 fontSize: "14px"
               }}
               onClick={handleClickOpenStage}>Enter Stage
-              </Button>}
+              </Button>} */}
             <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
               <Stage />
               <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">

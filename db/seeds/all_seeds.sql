@@ -19,7 +19,7 @@ INSERT INTO categories (name) VALUES ('Others');
 
 INSERT INTO topics (question, category_id) VALUES ('Hockey is the Best Sport', 2);
 INSERT INTO topics (question, category_id) VALUES ('Frank''s Hot Sauce is the best', 1);
-INSERT INTO topics (question, category_id) VALUES ('Kanye West will be the best President', 3);
+INSERT INTO topics (question, category_id) VALUES ('Kanye for President', 3);
 INSERT INTO topics (question, category_id) VALUES ('Crocs are the Best', 4);
 
 

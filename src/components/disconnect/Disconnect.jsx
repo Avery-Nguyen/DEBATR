@@ -4,12 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {useStore} from '../../Store'
+import { useStore } from '../../Store'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
-    zIndex: '3'
+    zIndex: '3',
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
   },
   bullet: {
     display: 'inline-block',
@@ -22,20 +26,20 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
+  // root: {
+  //   width: '100%',
+  //   '& > * + *': {
+  //     marginTop: theme.spacing(2),
+  //   },
+  // },
 }));
 
 export default function Disconnect() {
-  const [state, dispatch] = useStore();
+  const [ state, dispatch ] = useStore();
   const classes = useStyles();
 
   const returnToLobby= () => {
-    dispatch({type: "SET_VISUAL_MODE", payload: "LOBBY"})
+    dispatch({ type: 'SET_VISUAL_MODE', payload: "LOBBY" })
   }
 
 

@@ -23,7 +23,7 @@ import Slide from '@material-ui/core/Slide';
 // import DialogContent from '@material-ui/core/DialogContent';
 // import DialogContentText from '@material-ui/core/DialogContentText';
 // import DialogTitle from '@material-ui/core/DialogTitle';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -87,38 +87,38 @@ export default function NavBar(props) {
     setCreateRoom(false);
   };
 
-  const handleLogout = () => {
-    if(state.visualMode !== 'LOBBY' && state.visualMode !== 'SPECTATOR' ) {
-      dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
-      dispatch({ type: 'SET_TOKEN', payload: null })
-      state.currentSocket.emit('leaveRoom', {
-        roomName : state.currentRoom,
-        userName : state.username
-      })
-    } else if (state.visualMode !== 'LOBBY' && state.visualMode === 'SPECTATOR') {
-      dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
-      state.currentSocket.emit('leaveRoomSpectator', {
-        roomName : state.currentRoom,
-        userName : state.username
-      })
-    }
+  // const handleLogout = () => {
+  //   if(state.visualMode !== 'LOBBY' && state.visualMode !== 'SPECTATOR' ) {
+  //     dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
+  //     dispatch({ type: 'SET_TOKEN', payload: null })
+  //     state.currentSocket.emit('leaveRoom', {
+  //       roomName : state.currentRoom,
+  //       userName : state.username
+  //     })
+  //   } else if (state.visualMode !== 'LOBBY' && state.visualMode === 'SPECTATOR') {
+  //     dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
+  //     state.currentSocket.emit('leaveRoomSpectator', {
+  //       roomName : state.currentRoom,
+  //       userName : state.username
+  //     })
+  //   }
 
-    axios.get('/api/logout', {})
-      .then((res) => {
-        // console.log('response from logout', res)
-        if (res.data === 'success') {
-          dispatch({ type: 'SET_USERNAME', payload: null })
-          dispatch({ type: 'SET_USER_ID', payload: null })
-        }
+  //   axios.get('/api/logout', {})
+  //     .then((res) => {
+  //       // console.log('response from logout', res)
+  //       if (res.data === 'success') {
+  //         dispatch({ type: 'SET_USERNAME', payload: null })
+  //         dispatch({ type: 'SET_USER_ID', payload: null })
+  //       }
 
-        // This is cheap but it works
-        window.location.reload();
-        return true
-      })
-      .catch((error) => {
-        console.error(error, "error from axios request")
-      })
-  }
+  //       // This is cheap but it works
+  //       window.location.reload();
+  //       return true
+  //     })
+  //     .catch((error) => {
+  //       console.error(error, "error from axios request")
+  //     })
+  // }
 
     return (
       <div className={classes.root}>

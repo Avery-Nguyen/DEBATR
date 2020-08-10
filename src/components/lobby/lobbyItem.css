@@ -24,12 +24,14 @@
   
   .inner {
     background-color:transparent;
-    width:50px;
+    /* width:50px; */
     height:50px;
     border-radius:50px;
     box-shadow: 0 0 8px rgb(9,248,5), inset 0 0 8px rgb(9,248,5);
     -webkit-animation: pulse 2s linear 1s infinite;
   }
+
+
   .inner p {
     display:block;
     text-align: center;
@@ -37,6 +39,8 @@
     font-family:sans-serif;
     font-weight:100;
     font-size:18px;
-    color: rgb(9,248,5);
-    text-shadow: 0 0 4px rgb(9,248,5);
+    /* color: rgb(7,238,38); */
+    /* text-shadow: 0 0 4px rgb(7,238,38); */
+    cursor: pointer;
+    color: black;
   }

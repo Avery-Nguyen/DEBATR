@@ -1,6 +1,6 @@
 import React from 'react';
 import Rating from '@material-ui/lab/Rating';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 
@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 //rounds up, might want to have (actual rating) beside the stars
 
 export default function UserRating(props) {
-  const [value, setValue] = React.useState(2);
+  // const [value, setValue] = React.useState(2);
   let rating = props.rating || 1;
 // console.log(Number.rating.toFixed(2))
   return (
