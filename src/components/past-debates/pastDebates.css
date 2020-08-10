@@ -10,7 +10,9 @@
   align-items: center;
 }
 
-
+.roomQuestion {
+  text-align: center
+}
 
 /* @-webkit-keyframes pulse {
   0% { box-shadow:0 0 8px rgb(255,107,107), inset 0 0 8px rgb(255,107,107); }

@@ -165,8 +165,8 @@ export default function PastDebateItem(props) {
       // border: "solid rgb(255,107,107) 3px",
       backgroundColor: "rgb(241,241,241)",
       borderRadius: "30px",
-      minWidth: "315px",
-      maxHeight: "140px"
+      width: "315px",
+      height: "110px"
     }}>
 
       <div style={{ display: 'flex', padding: '5px 7px 0px 7px', justifyContent: 'space-between' }}>
@@ -182,8 +182,8 @@ export default function PastDebateItem(props) {
           </Dialog>
         </div>
         <div style={{ display: 'block' }}>
-          <p> {props.roomQuestion}</p>
-          <p> Agreement Rating: {props.agreement}</p>
+          <p className={'roomQuestion'}> {props.roomQuestion}</p>
+          
         </div>
 
         <div>
@@ -202,14 +202,15 @@ export default function PastDebateItem(props) {
       {/* <div class="inner">
             <p>Live</p>
         </div> */}
-      <CardActions disableSpacing style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <IconButton aria-label="add to favorites">
+      <CardActions disableSpacing style={{ display: 'flex', justifyContent: 'space-between'}}>
+        <IconButton >
           <ThumbUpIcon onClick={
             () => addLikes('likes', props.room_id)
           } />
           <p>{likes}</p>
         </IconButton>
-        <IconButton aria-label="share">
+        <p> Agreement Rating: {props.agreement}</p>
+        <IconButton >
           <ThumbDownIcon onClick={() => addLikes('dislikes', props.room_id)} />
           <p>{dislikes}</p>
         </IconButton>
