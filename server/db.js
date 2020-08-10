@@ -1,5 +1,3 @@
-
-
 const pg = require('pg');
 //or native libpq bindings
 //var pg = require('pg').native

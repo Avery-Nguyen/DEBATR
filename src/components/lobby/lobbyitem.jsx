@@ -233,7 +233,8 @@ const getHostUsercard = (username) => {
               style={{
                 color: "white",
                 backgroundColor: "rgb(64,81,182)",
-                borderRadius: "30px"
+                borderRadius: "30px",
+                fontSize: "14px"
               }}
               onClick={handleClickOpenStage}>Enter Stage
               </Button>}
