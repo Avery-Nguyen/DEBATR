@@ -90,7 +90,7 @@ const getHostUsercard = (username) => {
     });
 }
 
-console.log(state.userAvatarUrl)
+// console.log(state.userAvatarUrl)
 
   const [openStage, setOpenStage] = React.useState(false);
 

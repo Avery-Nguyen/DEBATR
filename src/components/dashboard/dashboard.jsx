@@ -138,7 +138,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         { state.username ? 
       <UserStats /> : <div> </div>}
-        <Container maxWidth="lg"  className={classes.container} style={{display:'flex'}}>
+        <Container maxWidth="lg"  className={classes.container} style={{display:'block'}}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={19}>
               <Paper className={fixedHeightPaper}>

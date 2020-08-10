@@ -42,6 +42,18 @@ const getDebateCount = (client) => {
     })
 }
 
+const getUserDebateCount = (client, username) => {
+  console.log(username)
+  return client.query(`select count(contender.*)
+  FROM users
+  JOIN room_logs as contender ON contender.host_id = users.id
+  WHERE users.username = $1;`, [username])
+  .then((res) => {
+    console.log(res.rows)
+    return res.rows
+  })
+}
+
 const getTopicCount = (client, limit = 10) => {
   return client.query(`SELECT question , COUNT(question) AS topic_count
   FROM topics
@@ -243,5 +255,6 @@ module.exports = {
   getUserCardByName,
   getTopicCount,
   getCategoryCount,
-  createGithubUser
+  createGithubUser,
+  getUserDebateCount
 }

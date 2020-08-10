@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useStore } from '../../Store'
 // import Link from '@material-ui/core/Link';
 // import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -30,15 +31,21 @@ import TableRow from '@material-ui/core/TableRow';
 
 export default function UserStats() {
 
-  const [leaderBoard, setleaderBoard] = useState([]);
-  const [topicCount, setTopicCount] = useState([]);
+  const [state, dispatch] = useStore();
+  const [debateCount, setsetDebateCount] = useState([]);
+  // const [topicCount, setTopicCount] = useState([]);
 
   useEffect(() => {
+   let username = state.username
+   console.log(username)
     Promise.all([
-      axios.get(`/api/leaderboard`)
-    ]).then((data) => {
+      axios.post(`/api/userdebatecount`),
+        {username}
+    
+    ]).then((res) => {
+      console.log(res)
       // console.log(data, "this is data in orders")
-      setleaderBoard(prev => [...prev, ...data[0].data]);
+      // setsetDebateCount(prev => [...prev, ...data[0].data]);
     })
       .catch(error => {
         console.log(error.message, "problem");
@@ -46,62 +53,77 @@ export default function UserStats() {
   }, []);
 
 
-  useEffect(() => {
-    Promise.all([
-      axios.get(`/api/topiccount`)
-    ]).then((data) => {
-      // console.log(data, "this is data in for topic count")
-      setTopicCount(prev => [...prev, ...data[0].data]);
-    })
-      .catch(error => {
-        console.log(error.message, "problem");
-      })
-  }, []);
+  // useEffect(() => {
+  //   Promise.all([
+  //     axios.get(`/api/topiccount`)
+  //   ]).then((data) => {
+  //     // console.log(data, "this is data in for topic count")
+  //     setTopicCount(prev => [...prev, ...data[0].data]);
+  //   })
+  //     .catch(error => {
+  //       console.log(error.message, "problem");
+  //     })
+  // }, []);
 
 
   // const classes = useStyles();
   return (
     <React.Fragment style={{ maxWidth: 'fit-content' }}>
+       <h1 align="center"  border='solid 8px rgb(64,81,182)'>{state.username}'s Stats </h1>
       <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
+     
         <div style={{ display: 'block' }}>
-          <h1 align="center"  border='solid 8px rgb(64,81,182)'>Leaderboard </h1>
+          
           <br></br>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>Username</TableCell>
-                <TableCell>Total Agreement Points</TableCell>
+                <TableCell>Total Debates</TableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
-              {leaderBoard.map((leader) => (
-                <TableRow key={leader.id}>
-                  <TableCell align="center">{leader.username}</TableCell>
-                  <TableCell align="center">{leader.sum}</TableCell>
-
-                </TableRow>
-              ))}
+              {/*total debates in here */}
             </TableBody>
           </Table>
         </div>
 
         <div style={{ display: 'block' }}>
-          <h1 align="center">Most Popular Topics</h1>
           <br></br>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Topic</TableCell>
-                <TableCell align="center">Count</TableCell>
+                <TableCell align="center">Categories Breakdown</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {topicCount.map((topic) => (
-                <TableRow key={topic.id}>
-                  <TableCell align="center">{topic.question}</TableCell>
-                  <TableCell align="center">{topic.topic_count}</TableCell>
-                </TableRow>
-              ))}
+              {/* user topic breakdown */}
+            </TableBody>
+          </Table>
+        </div>
+        <div style={{ display: 'block' }}>
+          <br></br>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Topics Breakdown</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* user topic breakdown */}
+            </TableBody>
+          </Table>
+        </div>
+        <div style={{ display: 'block' }}>
+          <br></br>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Total Points</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* user topic breakdown */}
             </TableBody>
           </Table>
         </div>
