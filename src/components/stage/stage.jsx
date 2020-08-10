@@ -234,7 +234,7 @@ export default function Stage({ activeRoomState }) {
        
           <div class="w3-row-padding w3-grayscale">
             {/* BACKGROUND FOR STAGE */}
-            <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'space-around' }}>
+            <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'center' }}>
               <div class='participants'>
                 {room ? (
                   <Participant

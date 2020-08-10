@@ -234,7 +234,7 @@ export default function SpectatorStage({ activeRoomState }) {
       <h2 style={{ color: 'black' }}>{gameCommands}</h2>
 
       <div class="w3-row-padding w3-grayscale">
-        <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'space-around' }}>
+        <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'center' }}>
           <div class='participants'>
             {/* LOCAL PARTICIPANT - DON'T RENDER */}
             {room ? (
