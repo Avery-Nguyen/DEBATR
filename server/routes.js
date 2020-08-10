@@ -131,11 +131,11 @@ module.exports = (client) => {
 
   router.post('/usercardByName', function(req, res) {
     console.log('REQUEST TO /API/usercardByName')
-    console.log(req.body.username)
+    console.log(req.body.username, 'username')
     // console.log(res, 'res in usercard')
     getUserCardByName(client, req.body.username)
       .then(sqlResponse => {
-        // console.log(sqlResponse.rows, 'inusercard')
+        console.log(sqlResponse.rows, 'inusercard')
         res.send(sqlResponse.rows)
       })
       .catch(err => {

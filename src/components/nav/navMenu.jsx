@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -7,8 +7,11 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
-import { useStore } from '../../Store'
+import { useStore } from '../../Store';
 import axios from 'axios';
+import Slide from '@material-ui/core/Slide';
+import Dialog from '@material-ui/core/Dialog';
+import UserCard from '../user-card/userCard.jsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
@@ -22,14 +25,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function NavMenu() {
   const [state, dispatch] = useStore();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [openUsercard, setOpenUsercard] = React.useState(false);
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
   const handleClose = (event) => {
@@ -48,18 +59,18 @@ export default function NavMenu() {
   }
 
   const handleLogout = () => {
-    if(state.visualMode !== 'LOBBY' && state.visualMode !== 'SPECTATOR' ) {
+    if (state.visualMode !== 'LOBBY' && state.visualMode !== 'SPECTATOR') {
       dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
       dispatch({ type: 'SET_TOKEN', payload: null })
       state.currentSocket.emit('leaveRoom', {
-        roomName : state.currentRoom,
-        userName : state.username
+        roomName: state.currentRoom,
+        userName: state.username
       })
     } else if (state.visualMode !== 'LOBBY' && state.visualMode === 'SPECTATOR') {
       dispatch({ type: 'SET_VISUAL_MODE', payload: 'LOBBY' })
       state.currentSocket.emit('leaveRoomSpectator', {
-        roomName : state.currentRoom,
-        userName : state.username
+        roomName: state.currentRoom,
+        userName: state.username
       })
     }
 
@@ -80,6 +91,31 @@ export default function NavMenu() {
       })
   }
 
+  const [usercard, setUsercard] = useState({});
+  // console.log('roomState', roomState)
+  // console.log(props)
+
+  const handleClickOpenUsercard = () => {
+    setOpenUsercard(true);
+  };
+  const handleCloseUsercard = () => {
+    setOpenUsercard(false);
+  };
+
+  const getUsercard = (username) => {
+    axios.post('/api/usercardByName', {
+      username
+    })
+      .then((res) => {
+        console.log(res)
+        // console.log(data.data[0], 'sql response')
+        setUsercard(prev => ({ ...prev, ...res.data[0] }));
+        handleClickOpenUsercard();
+
+      });
+  }
+
+
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -89,41 +125,50 @@ export default function NavMenu() {
 
     prevOpen.current = open;
   }, [open]);
-console.log(state)
+  console.log(state)
   return (
     <div>
-        <Button
-          ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-          style={{
-            color: 'white'
-          }}
-        >
+      <Button
+        ref={anchorRef}
+        aria-controls={open ? 'menu-list-grow' : undefined}
+        aria-haspopup="true"
+        onClick={handleToggle}
+        style={{
+          color: 'white'
+        }}
+      >
 
-          {state.userAvatarUrl && <Avatar alt={state.username} src="https://robohash.org/facilisquiaquo.jpg?size=50x50&set=set1"/>}
-          {!state.userAvatarUrl && <Avatar alt={state.userAvatarUrl} />}
+        {state.userAvatarUrl && <Avatar alt={state.username} src="https://robohash.org/facilisquiaquo.jpg?size=50x50&set=set1" />}
+        {!state.userAvatarUrl && <Avatar alt={state.userAvatarUrl} />}
 
-        </Button>
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>{state.username}</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
+      </Button>
+      <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                  {/* //put logic here */}
+                  <MenuItem onClick={() => getUsercard(state.username)}>{state.username}</MenuItem>
+                  <Dialog
+                    open={openUsercard}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleCloseUsercard}
+                  >
+                    <UserCard hostUsercard={usercard} />
+                  </Dialog>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </div>
   );
 }

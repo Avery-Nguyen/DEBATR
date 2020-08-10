@@ -50,15 +50,18 @@ export default function Chart() {
 
   const categories = categoryCount.map((category) => {
     console.log(category);
-    let final = {}
-    final = { name: category.name, value: category.count }
-    console.log(final)
+    let final = []
+
+    let each = { name: category.name, value: category.count }
+
+    final.push(each)
+    console.log(final[0])
     return final
   })
-  console.log(categoryCount)
+  console.log(categories)
 
   const data01 = [
-    { categories },
+    { name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
     { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },
   ];
 
@@ -70,7 +73,7 @@ export default function Chart() {
       </Typography>
         <br />
         <PieChart align='center' width={200} height={200} position='absolute' zIndex='3'>
-          <Pie data={data01} dataKey="value" cx={130} cy={100} outerRadius={50} fill="#8884d8" label />
+          <Pie data={categories} dataKey="value" cx={130} cy={100} outerRadius={50} fill="#8884d8" label />
           {/* <Pie data={data02} dataKey="value" cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label /> */}
         </PieChart>
       </div>

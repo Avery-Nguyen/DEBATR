@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+// import CardHeader from '@material-ui/core/CardHeader';
+// import CardMedia from '@material-ui/core/CardMedia';
+// import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Button from '@material-ui/core/Button';
+// import Typography from '@material-ui/core/Typography';
+// import { red } from '@material-ui/core/colors';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+// import ShareIcon from '@material-ui/icons/Share';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import MoreVertIcon from '@material-ui/icons/MoreVert';
+// import Button from '@material-ui/core/Button';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import UserCard from '../user-card/userCard.jsx'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
+// import CloseIcon from '@material-ui/icons/Close';
 import './pastDebates.css'
 import axios from 'axios';
 
@@ -112,7 +112,7 @@ export default function PastDebateItem(props) {
   const [dislikes, setDislikes] = useState(props.dislikes)
 
   const addLikes = (typeOfLike, room_id) => {
-    console.log(typeOfLike, room_id)
+    // console.log(typeOfLike, room_id)
     axios.post('/api/likes', {
       room_id,
       typeOfLike
@@ -121,9 +121,9 @@ export default function PastDebateItem(props) {
         setLikes(res.data[0].likes);
         setDislikes(res.data[0].dislikes);
 
-        console.log(likes, 'before');
-        console.log(res.data[0].likes, 'res likes ')
-        console.log(likes, 'after')
+        // console.log(likes, 'before');
+        // console.log(res.data[0].likes, 'res likes ')
+        // console.log(likes, 'after')
       })
       .catch((error) => {
         console.error(error, "error from axios request")
@@ -158,7 +158,7 @@ export default function PastDebateItem(props) {
       });
   }
 
-console.log(props)
+// console.log(props)
 
   return (
     <Card className={classes.root} style={{
