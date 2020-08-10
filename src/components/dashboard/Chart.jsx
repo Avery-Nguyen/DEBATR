@@ -11,7 +11,7 @@ const defaultLabelStyle = {
 };
 
 export default function Chart() {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const [categoryCount, setCategoryCount] = useState([]);
 
