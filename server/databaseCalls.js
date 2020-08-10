@@ -82,7 +82,7 @@ const getUserCardByID = (client, id) => {
 }
 
 const getUserCardByName = (client, username) => {
-  // console.log(username)
+  console.log(username)
   return client.query(`SELECT username, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
   FROM users
   JOIN ratings ON ratings.to_user_id = users.id

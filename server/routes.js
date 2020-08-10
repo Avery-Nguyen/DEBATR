@@ -204,7 +204,7 @@ module.exports = (client) => {
     // console.log(res, 'res in usercard')
     getUserCardByName(client, req.body.username)
       .then(sqlResponse => {
-        // console.log(sqlResponse.rows, 'inusercard')
+        console.log(sqlResponse.rows, 'inusercard')
         res.send(sqlResponse.rows)
       })
       .catch(err => {
