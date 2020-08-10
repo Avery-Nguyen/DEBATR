@@ -210,11 +210,24 @@ const getHostUsercard = (username) => {
             top: "50px",
             right: "135px"
           }}>
-            <p style={{fontSize: "14px"}}>Watch</p>
+             {roomDetails.host && roomDetails.contender && <p class="inner"
+              variant="contained"
+              style={{
+                backgroundColor: "rgb(252, 232, 76)",
+              }}
+              onClick={handleClickOpenSpectate}>Spectate
+              </p>}
+            {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <p class="inner"
+              variant="contained"
+              style={{
+                backgroundColor: "rgb(7,238,38)",
+              }}
+              onClick={handleClickOpenStage}>Enter
+              </p>}
           </div>
 
           <CardActions disableSpacing>
-            {roomDetails.host && roomDetails.contender && <Button class="inner"
+            {/* {roomDetails.host && roomDetails.contender && <Button class="inner"
               variant="contained"
               style={{
                 color: "black",
@@ -231,7 +244,7 @@ const getHostUsercard = (username) => {
                 borderRadius: "30px"
               }}
               onClick={handleClickOpenStage}>Enter Stage
-              </Button>}
+              </Button>} */}
             <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
               <Stage />
               <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">

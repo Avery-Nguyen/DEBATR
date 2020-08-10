@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {useStore} from '../../Store'
+import { useStore } from '../../Store'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Disconnect() {
-  const [dispatch] = useStore();
+  const [ state, dispatch ] = useStore();
   const classes = useStyles();
 
   const returnToLobby= () => {
-    dispatch({type: "SET_VISUAL_MODE", payload: "LOBBY"})
+    dispatch({ type: 'SET_VISUAL_MODE', payload: "LOBBY" })
   }
 
 
