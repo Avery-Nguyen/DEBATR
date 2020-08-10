@@ -1,3 +1,7 @@
 .error{
   color: red;
 }
+
+.MuiContainer-root{
+  height: 600px;
+}

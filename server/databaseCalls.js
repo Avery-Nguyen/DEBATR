@@ -1,14 +1,15 @@
 
 const getRoomRecords = (client, limit = 10) => {
   // console.log('INSIDE GET ROOM RECORDS')
+  // console.log('insideRoomRecords')
 
-  return client.query(`SELECT room_logs.*, SUM(agreement_ratings.agreement_rating) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name, host.avatar_url as host_avatar, contender.avatar_url as contender_avatar 
+  return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name, host.avatar_url AS host_avatar, contender.avatar_url AS contender_avatar
   FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
   JOIN agreement_ratings on room_logs.id = agreement_ratings.room_log_id
   JOIN users AS Host ON room_logs.host_id = Host.id
   JOIN users AS Contender ON room_logs.contender_id = Contender.id
-  GROUP BY room_logs.id, topics.question, host.username, contender.username, host_avatar, contender_avatar 
+  GROUP BY room_logs.id, topics.question, host.username, contender.username, host.avatar_url, contender.avatar_url
   ORDER BY room_logs.date_time DESC
   limit $1;
   `, [limit])
@@ -16,6 +17,7 @@ const getRoomRecords = (client, limit = 10) => {
       // console.log(`res from sql ${res}`)
       return res.rows
     })
+    .catch(err => console.log(err))
 }
 
 const getLeaderboard = (client, limit = 10) => {
@@ -89,7 +91,7 @@ const getUserCardByName = (client, username) => {
   WHERE users.username = $1
   group by username;`, [username])
   .then((res) => {
-    console.log(`res from sql ${res}`)
+    // console.log(`res from sql ${res}`)
     return res
   })
 }
@@ -181,8 +183,8 @@ const checkEmailTaken = (client, email) => {
   WHERE email = $1
   `, [email])
     .then(res => {
-      if (res.rows) {
-        console.log(res.rows, 'this is res.rows')
+      console.log(res.rows, 'this is res.rows')
+      if (res.rows && res.rows[0]) {
         return true
       } else {
         return false
@@ -200,7 +202,21 @@ const createUser = (client, email, first_name, last_name, username, password, av
     .then(res => {
       return res.rows
     })
+    .catch(err => err)
 }
+const createGithubUser = (client, email, first_name, last_name, username, avatar_url) => {
+  // NOT GETTING EMAIL BACK FROM GITHUB
+  return client.query(`
+  INSERT INTO users (first_name, last_name, email, username, password, avatar_url)
+  VALUES ($1, $2, $3, $4, $5, $6)
+  RETURNING *;
+  `, ['git', 'hub', email, username, 'pass', avatar_url])
+    .then(res => {
+      return res.rows[0]
+    })
+}
+
+
 const createTopic = (client, question, categoryID) => {
   return client.query(`
   INSERT INTO topics (question, category_id) VALUES ($1, $2)
@@ -226,5 +242,6 @@ module.exports = {
   createTopic,
   getUserCardByName,
   getTopicCount,
-  getCategoryCount
+  getCategoryCount,
+  createGithubUser
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 // import clsx from 'clsx';
@@ -78,15 +78,6 @@ export default function LobbyItem({ roomDetails }) {
     setOpen(false);
   };
 
-  // Expandable arrow
-  // const handleExpandClick = () => {
-  //   setExpanded(!expanded);
-  // };
-
-// console.log(roomDetails, 'room details in lobby item')
-// console.log(roomDetails.host || 'helloe')
-// console.log(roomDetails.contender);
-
 
 const [hostUsercard, setHostUsercard] = useState({});
 
@@ -96,7 +87,7 @@ const getHostUsercard = (username) => {
     username
   })
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       // console.log(data.data[0], 'sql response')
       setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
       handleClickOpen();
@@ -111,7 +102,6 @@ const getHostUsercard = (username) => {
     if (state.username) {
       dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
       dispatch({ type: 'SET_VISUAL_MODE', payload: "WAITING" });
-
 
       state.currentSocket.emit('joinRoom', {
         roomName: roomDetails.name,
@@ -151,6 +141,27 @@ const getHostUsercard = (username) => {
       })
       // setOpenStage(true);
 
+    } else if (state.sessionID) {
+      dispatch({ type: 'SET_CURRENT_ROOM', payload: roomDetails.name })
+      fetch('/video/token', {
+        method: 'POST',
+        body: JSON.stringify({
+          identity: state.sessionID,
+          room: state.currentRoom
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+        .then((fetchData) => {
+          dispatch({ type: 'SET_VISUAL_MODE', payload: "SPECTATOR" });
+          dispatch({ type: 'SET_TOKEN', payload: fetchData.token })
+        })
+
+        state.currentSocket.emit('joinRoomSpectator', {
+          roomName: roomDetails.name,
+          userName: state.sessionID
+        })
     } else {
       dispatch({ type: 'SET_OPEN_SIGN_IN', payload: true })
 
@@ -243,10 +254,10 @@ const getHostUsercard = (username) => {
 
 
 
-{/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
-<Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
-  <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
-    <CloseIcon />
-  </IconButton>
-  <Dashboard />
-</Dialog> */}
+// {/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
+// <Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
+//   <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
+//     <CloseIcon />
+//   </IconButton>
+//   <Dashboard />
+// </Dialog> */}

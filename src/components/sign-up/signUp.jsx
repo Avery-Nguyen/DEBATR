@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useStore } from '../../Store'
 
@@ -64,8 +64,8 @@ export default function SignUp(props) {
       setError('Email address is invalid')
     } else if (password === '') {
       setError('Password cannot be blank')
-    } else if (password.length < 8) {
-      setError('Password must be at least 8 characters long')
+    // } else if (password.length < 8) {
+    //   setError('Password must be at least 8 characters long')
     } else {
       axios.post('/api/register', {
         email,
@@ -76,13 +76,17 @@ export default function SignUp(props) {
         avatar
       })
         .then((res) => {
-          console.log(res, 'res from sign-up request')
-          console.log(res.data[0].username, 'res from sign-up request')
-          dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
-          props.handleClose();
+          console.log(res.data, 'res from sign-up request')
+          if (res.data[0]) {
+            dispatch({ type: 'SET_USERNAME', payload: res.data[0].username })
+            dispatch({ type: 'SET_USER_ID', payload: res.data[0].id})
+            props.handleClose();
+          } else {
+            setError('Error: Duplicate email or password')
+          }
         })
         .catch((error) => {
-          console.log(error)
+          
           console.error(error, "error from axios request")
         })
     }

@@ -6,8 +6,13 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+<<<<<<< HEAD
 import { makeStyles } from '@material-ui/core/styles';
 import { useStore } from '../../Store';
+=======
+// import { makeStyles } from '@material-ui/core/styles';
+import { useStore } from '../../Store'
+>>>>>>> dd3531961242efbdf521677c602ead28f47adf78
 import axios from 'axios';
 import Slide from '@material-ui/core/Slide';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,14 +21,14 @@ import UserCard from '../user-card/userCard.jsx';
 
 import Avatar from '@material-ui/core/Avatar';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  paper: {
-    marginRight: theme.spacing(2),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: 'flex',
+//   },
+//   paper: {
+//     marginRight: theme.spacing(2),
+//   },
+// }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,7 +36,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function NavMenu() {
   const [state, dispatch] = useStore();
-  const classes = useStyles();
+  // const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openUsercard, setOpenUsercard] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -76,7 +81,7 @@ export default function NavMenu() {
 
     axios.get('/api/logout', {})
       .then((res) => {
-        console.log('response from logout', res)
+        // console.log('response from logout', res)
         if (res.data === 'success') {
           dispatch({ type: 'SET_USERNAME', payload: null })
           dispatch({ type: 'SET_USER_ID', payload: null })

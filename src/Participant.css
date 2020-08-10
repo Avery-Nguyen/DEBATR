@@ -1,8 +1,8 @@
 .muted {
   float: right;
-  position: relative;
+  position: absolute;
   /* left: 100px; */
-  width: 98%;
+  width: 100%;
   text-align: center;
   top: 300px;
   font-size: 3em;
@@ -16,6 +16,7 @@
 
 .participant {
   background-color: none;
+  position: relative;
   color: black;
   margin: 0px;
   padding: 10px;
@@ -35,7 +36,7 @@
   background-color: rgb(64,81,182);
   min-width: 600px;
   max-width: 600px;
-  min-height: 600px;
+  /* min-height: 600px; */
   max-height: 600px;
 }
 

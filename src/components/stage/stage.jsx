@@ -1,31 +1,24 @@
 import React, { useState, useEffect } from 'react';
-// import CssBaseline from '@material-ui/core/CssBaseline';
-// import Typography from '@material-ui/core/Typography';
-// import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Participant from '../../Participant'
 import TextField from '@material-ui/core/TextField';
 import { useStore } from '../../Store'
 import Video from 'twilio-video';
 import './stage.css';
-
-
+import ScrollableFeed from 'react-scrollable-feed'
 
 export default function Stage({ activeRoomState }) {
   const [state, dispatch] = useStore();
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  // console.log("Debater Stage -> state participants", participants)
   const [time, setTime] = useState(0);
   const [active, setActive] = useState(false)
   const [gameCommands, setGameCommands] = useState(`Welcome to the Debate. ${activeRoomState.host} goes first.`)
   const [readyState, setReadyState] = useState(false)
   const [gameState, setGameState] = useState(false)
-  const [messages, setMessages] = useState([])
   const [messageText, setMessageText] = useState("")
   const [mutedUsers, setMutedUsers] = useState([])
-  console.log("Stage -> mutedUsers", mutedUsers)
-
+  // console.log("Stage -> mutedUsers", mutedUsers)
 
   // GameCommand / mute / unmute listeners
   useEffect(() => {
@@ -38,7 +31,6 @@ export default function Stage({ activeRoomState }) {
       })
 
       state.currentSocket.on("gameOver", data => {
-
         state.currentSocket.emit('leaveRoom', {
           roomName: state.currentRoom,
           userName: state.username
@@ -54,14 +46,16 @@ export default function Stage({ activeRoomState }) {
         dispatch({ type: 'SET_TOKEN', payload: null })
         dispatch({ type: 'SET_VISUAL_MODE', payload: "CONNECTION_ERROR" })
         dispatch({ type: 'SET_CURRENT_ROOM', payload: null })
+        state.currentSocket.emit('leaveRoom', {
+          roomName: state.currentRoom,
+          userName: state.username
+        })
         disableMedia()
       })
 
       state.currentSocket.on("mute", data => {
-        // console.log('Room mute request', room)
         if (room) {
           let newArr = [...mutedUsers]
-          // console.log("Stage -> newArr", newArr)
           
           newArr.push(data)
           setMutedUsers(newArr)
@@ -75,7 +69,7 @@ export default function Stage({ activeRoomState }) {
 
       })
       state.currentSocket.on("unMute", data => {
-        console.log('Room UNmute request', data)
+        // console.log('Room UNmute request', data)
         if (room) {
           setMutedUsers(prev => {
             const newArr = [...prev]
@@ -84,7 +78,7 @@ export default function Stage({ activeRoomState }) {
             const newMutedUsers = newArr.filter(user => user !== data)
             if (state.username === data) {
               room.localParticipant.audioTracks.forEach(publication => {
-                console.log(room.localParticipant.identity,' is unmuted');
+                // console.log(room.localParticipant.identity,' is unmuted');
                 publication.track.enable();
               });
             }
@@ -98,7 +92,6 @@ export default function Stage({ activeRoomState }) {
            // Start Timer
             setActive(true)
             setTime(data);
-          
       })
     }
 
@@ -139,8 +132,6 @@ export default function Stage({ activeRoomState }) {
       });
 
 
-
-
     return () => {
       setRoom(currentRoom => {
         if (currentRoom && currentRoom.localParticipant.state === 'connected') {
@@ -174,9 +165,6 @@ export default function Stage({ activeRoomState }) {
       });
       room.disconnect();
     }
-
-    // To disconnect from a Room
-
   }
 
   const handleLogout = function () {
@@ -200,13 +188,12 @@ export default function Stage({ activeRoomState }) {
       }, 1000);
     } else if (time <= 0) {
 
-      console.log('calling clearTimeout')
+      // console.log('calling clearTimeout')
       clearTimeout(timer)
 
     }
 
     return () => clearTimeout(timer);
-    // clearTimeout(timer)
   }, [active, time]);
 
   const sendMessage = () => {
@@ -229,13 +216,10 @@ export default function Stage({ activeRoomState }) {
   }
 
   const messageList = activeRoomState.messages.map(message => {
-    return <span>
+    return <div>
       <strong>{message.fromUser}</strong>: {message.message}
-    </span>
+    </div>
   })
-
-
-  // console.log('Remote Participants from Debater Stage: ', remoteParticipants);
 
   return (
    
@@ -250,7 +234,7 @@ export default function Stage({ activeRoomState }) {
        
           <div class="w3-row-padding w3-grayscale">
             {/* BACKGROUND FOR STAGE */}
-            <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'space-between' }}>
+            <div class="w3-half" style={{ backgroundColor: "white", width: "100%", display: 'flex', justifyContent: 'center' }}>
               <div class='participants'>
                 {room ? (
                   <Participant
@@ -272,26 +256,25 @@ export default function Stage({ activeRoomState }) {
                 <h1 class="timer" style={{ color: 'black' }}>{time}</h1>
                 </div>
                 }
-                
-                
               </div>
               <div class='participants'>
                 {remoteParticipants}
                 <div class='userAndStance' style={{ display: 'flex', justifyContent: 'center'}}>
                   <p style={{ color: 'black', fontSize: '3rem' }}>{(state.username === activeRoomState.host) ? "Disagree" : "Agree"}</p>
-
                 </div>
               </div>
             </div>
             <article id="viewers-watching">
               <h5 style={{ color: 'black' }}>Viewers Watching: {participants.length - 1}</h5>
-              <Button color="black" style={{ border: '2px solid white', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
-
+              <Button color="black" style={{ border: '1 px solid black', justifySelf: 'left', backgroundColor: 'red', color: 'white' }} onClick={handleLogout}>Rage Quit?</Button>
             </article>
             <section id="full-chatbox">
               <article id="outlined-basic" class="info-box game-log">
+                <ScrollableFeed forceScroll="true">
                 <span><b>'Welcome to the Chatroom.'</b> Click 'Ready' when you're good to go!</span>
                 {messageList}
+                {/* <div ref={messagesEndRef} /> */}
+              </ScrollableFeed>
               </article>
               <form>
                 <div class="chat-message-box">
@@ -302,8 +285,6 @@ export default function Stage({ activeRoomState }) {
                       return setMessageText('')
                     } 
                     return null;
-                    
-                   
                     }}/>
                   <Button color="black" style={{ border: '2px solid black', justifySelf: 'bottom', backgroundColor: 'white' }} onClick={sendMessage}>Send</Button>
                 </div>

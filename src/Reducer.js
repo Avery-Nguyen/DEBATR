@@ -50,6 +50,11 @@ const Reducer = (state, action) => {
         ...state,
         userAvatarUrl: action.payload
       };
+      case 'SET_SESSION_ID':
+      return {
+        ...state,
+        sessionID: action.payload
+      };
     default:
       return state;
   }

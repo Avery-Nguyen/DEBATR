@@ -2,3 +2,18 @@
   display: flex;
   justify-content: space-between;
 }
+
+
+.MuiContainer-root {
+    width: 444px !important;
+    height: 450PX;
+}
+
+.middleOR{
+  padding: 2rem;
+  text-align: center;
+}
+
+.MuiInputBase-input{
+  width: 350px;
+}

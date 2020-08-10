@@ -14,6 +14,8 @@ const io = require('socket.io')(http);
 const {
   postResultsToDatabase
 } = require('./databaseCalls.js');
+const clientId = process.env.GITHUB_CLIENT_ID;
+const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -32,9 +34,9 @@ app.use(pino);
 let rLString;
 let debtateTime = 3;
 let intermissionTime = 3;
-let round1Time = 5;
-let round2Time = 10;
-let finalround = 20;
+let round1Time = 2;
+let round2Time = 2;
+let finalround = 5;
 // let round1Time = 15;
 // let round2Time = 30;
 // let finalround = 45;
@@ -54,7 +56,7 @@ class Rooms {
 
   delRoom(name) {
     // this.roomList[name] = null;
-    console.log('Deleting room ', name)
+    // console.log('Deleting room ', name)
     // console.log('org roomList: ', this.roomList)
     delete this.roomList[name]
     // console.log('new roomList: ', this.roomList)
@@ -93,18 +95,7 @@ class Room {
     this.status = "Waiting";
     this.hostPoints = 0;
     this.contenderPoints = 0;
-    this.messages = [
-      {
-        timeStamp: 20200700456,
-        fromUser: "Alex",
-        message: "Lets go!",
-      },
-      {
-        timeStamp: 20200700456,
-        fromUser: "Avery",
-        message: "OK!",
-      },
-    ];
+    this.messages = [];
   }
 
   get numberOfUsers() {
@@ -123,48 +114,6 @@ class Room {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  startDemoGame() {
-    // The framework of the game! Toggles the turns
-    io.to(this.name).emit(
-      "bothReady"
-    );
-    this.sleep(5000)
-      .then(() => {
-        io.to(this.name).emit(
-          "gameCommand",
-          `${this.host} is talking`
-        );
-        io.to(this.name).emit("mute", {
-          mute: this.contender,
-          intermission: false,
-          timer: debtateTime,
-        });
-      })
-      .then(() => this.sleep(debtateTime * 1000))
-      .then(() => {
-        io.to(this.name).emit("gameCommand", `Intermission`);
-        io.to(this.name).emit("mute", {
-          mute: this.host,
-          intermission: true,
-          timer: intermissionTime,
-        });
-      })
-      .then(() => this.sleep(intermissionTime * 1000))
-      .then(() => {
-        this.postGameToDatabase();
-        io.to(this.name).emit('gameCommand', `${this.contender} (Agrees) is talking`)
-        io.to(this.name).emit('unMute', this.contender)
-      })
-      .then(() => this.sleep(debtateTime * 1000))
-      .then(() => {
-        // io.to(this.name).emit('unMute', this.host)
-        io.to(this.name).emit('gameCommand', 'Game over')
-        // Post the game record to the database.
-
-        // Ends the game for the user - Brings up post-debtate review screen
-        io.to(this.name).emit('gameOver', null)
-      })
-  }
 
   startRealGame() {
     // The framework of the game! Toggles the turns
@@ -216,14 +165,14 @@ class Room {
       .then(() => this.sleep(round2Time * 1000))
       .then(() => {
         io.to(this.name).emit("gameCommand", `Final Round - Open Debate!`);
-        io.to(this.name).emit('unMute', this.host)
+        // io.to(this.name).emit('unMute', this.host)
         io.to(this.name).emit("setTimer", finalround)
       })
       .then(() => this.sleep(finalround * 1000))
       .then(() => {
-        // io.to(this.name).emit('unMute', this.host)
+
         io.to(this.name).emit('gameCommand', 'Game over')
-        // Post the game record to the database.
+
 
         // Ends the game for the user - Brings up post-debtate review screen
         io.to(this.name).emit('gameOver', null)
@@ -251,11 +200,16 @@ class Room {
 
 // Roomslist is an instance of the roomS class.
 const roomList = new Rooms("roomList");
-// Two rooms in here for testing purposes.
-roomList.newRoom("testRoom", "Is Alex the Greatest?");
-roomList.newRoom("otherRoom", "Is Avery the greatest?");
-roomList.newRoom("3rdroom", "Are beavers awesome?");
-roomList.newRoom("4tdroom", "Are Trevor and Andrew nice guys?");
+
+// Seed data
+roomList.newRoom("room1", "Vancouver is the worst!");
+roomList.roomList['room1'].contender = "Rishav";
+roomList.newRoom("room2", "jQuery is amazing");
+roomList.roomList['room2'].contender = "Eric";
+roomList.newRoom("room3", "Glen is cooler than Bradley");
+roomList.roomList['room3'].host = "Glen";
+roomList.newRoom("room4", "VIM is an easy-to-use text-editor");
+roomList.roomList['room4'].host = "Andy";
 
 io.sockets.on("connection", function (socket) {
   // Send roomList to each new participant
@@ -271,15 +225,15 @@ io.sockets.on("connection", function (socket) {
       roomList.delRoom(roomList.socketDirectory[socket.id])
     }
     roomList.sendRoomUpdate();
-    console.log('this sockets id', socket.id)
-    console.log('all sockets', Object.keys(io.sockets.sockets))
-    console.log("socket disconnected");
+    // console.log('this sockets id', socket.id)
+    // console.log('all sockets', Object.keys(io.sockets.sockets))
+    // console.log("socket disconnected");
   });
 
   socket.on("createRoom", function (data) {
-    console.log(
-      `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
-    );
+    // console.log(
+    //   `Request to Create ${data.roomName} by ${data.userName} topic ${data.topic} topicID: ${data.topicID} received.`
+    // );
 
     // Socket Joins the 'socket'room'
     socket.leave('lobby');
@@ -298,7 +252,7 @@ io.sockets.on("connection", function (socket) {
 
     // Send an updated room list to everyone in the lobby.
     roomList.sendRoomUpdate();
-    console.log(`Current roomList is ${roomList.allRooms}`);
+    // console.log(`Current roomList is ${roomList.allRooms}`);
 
     io.to(data.roomName).emit(
       "currentRoomUpdate",
@@ -339,7 +293,6 @@ io.sockets.on("connection", function (socket) {
         message: "Both players are ready! Game starting soon...",
       });
 
-      
       roomList.sendRoomUpdate();
 
       // Starts the game method!
@@ -360,9 +313,9 @@ io.sockets.on("connection", function (socket) {
   })
 
   socket.on("joinRoom", function (data) {
-    console.log(
-      `Request to join ${data.roomName} from ${data.userName} received.`
-    );
+    // console.log(
+    //   `Request to join ${data.roomName} from ${data.userName} received.`
+    // );
     // Add to room list
     if (roomList.roomList[data.roomName]["host"]) {
       roomList.roomList[data.roomName]["contender"] = data.userName;
@@ -397,9 +350,9 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("leaveRoom", function (data) {
-    console.log(
-      `Request to leave ${data.roomName} from ${data.userName} received.`
-    );
+    // console.log(
+    //   `Request to leave ${data.roomName} from ${data.userName} received.`
+    // );
 
     roomList.delRoom(data.roomName)
     socket.leave(data.roomName);
@@ -412,7 +365,7 @@ io.sockets.on("connection", function (socket) {
 
 
   socket.on("message", function (data) {
-    console.log(`Message received from ${data.userName} - ${data.message}`);
+    // console.log(`Message received from ${data.userName} - ${data.message}`);
     roomList.roomList[data.roomName]["messages"].push({
       timeStamp: 20200700456,
       fromUser: data.userName,
@@ -439,7 +392,6 @@ app.use(
 );
 
 
-app.use("/api", apiRoutes(db));
 app.use("/api", topicRoutes(db));
 
 const sendTokenResponse = (token, res) => {
@@ -451,11 +403,8 @@ const sendTokenResponse = (token, res) => {
   );
 };
 
-app.get("/api/greeting", (req, res) => {
-  const name = req.query.name || "World";
-  res.setHeader("Content-Type", "application/json");
-  res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
+
+
 
 app.get("/video/token", (req, res) => {
   const identity = req.query.identity;
@@ -470,6 +419,6 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
-http.listen(3001, () =>
+http.listen(3001, () => {
   console.log("Express server is running on localhost:3001")
-);
+});

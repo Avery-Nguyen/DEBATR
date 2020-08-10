@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 // import CardHeader from '@material-ui/core/CardHeader';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
+// import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 // import Typography from '@material-ui/core/Typography';
@@ -27,7 +27,7 @@ import axios from 'axios';
 
 
 // import getRoomRecords from '../../server/databaseCalls'
-import Stage from '../stage/stage'
+// import Stage from '../stage/stage'
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -100,13 +100,13 @@ export default function PastDebateItem(props) {
   };
 
   //stage state logic - will need to change after
-  const [openStage, setOpenStage] = useState(false);
-  const handleClickOpenStage = () => {
-    setOpenStage(true);
-  };
-  const handleCloseStage = () => {
-    setOpenStage(false);
-  };
+  // const [openStage, setOpenStage] = useState(false);
+  // const handleClickOpenStage = () => {
+  //   setOpenStage(true);
+  // };
+  // const handleCloseStage = () => {
+  //   setOpenStage(false);
+  // };
 
   const [likes, setLikes] = useState(props.likes)
   const [dislikes, setDislikes] = useState(props.dislikes)
@@ -131,17 +131,17 @@ export default function PastDebateItem(props) {
   }
 
   const [hostUsercard, setHostUsercard] = useState({});
-  const [contenderUsercard, setContenderUsercard] = useState([]);
+  // const [ setContenderUsercard] = useState([]);
   // console.log('roomState', roomState)
   // console.log(props)
 
   const getHostUsercard = (host) => {
-    console.log(host)
+    // console.log(host)
     axios.post('/api/usercard', {
       host
     })
       .then((res) => {
-        console.log(res.data[0])
+        // console.log(res.data[0])
         // console.log(data.data[0], 'sql response')
         setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
         handleClickOpen();
@@ -149,14 +149,14 @@ export default function PastDebateItem(props) {
       });
   }
 
-  const getContenderUsercard = (contender) => {
-    axios.get('/api/usercard')
-      .then((res) => {
-        setContenderUsercard(prev => ({ ...prev, ...res.data[0] }))
-        handleClickOpen();
+  // const getContenderUsercard = (contender) => {
+  //   axios.get('/api/usercard')
+  //     .then((res) => {
+  //       setContenderUsercard(prev => ({ ...prev, ...res.data[0] }))
+  //       handleClickOpen();
 
-      });
-  }
+  //     });
+  // }
 
 // console.log(props)
 
@@ -220,10 +220,10 @@ export default function PastDebateItem(props) {
 
 
 
-{/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
-<Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
-  <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
-    <CloseIcon />
-  </IconButton>
-  <Dashboard />
-</Dialog> */}
+// {/* <Button color="inherit" onClick={handleStatsOpen}>Statistics</Button>
+// <Dialog fullScreen open={openStats} onClose={handleCloseStats} TransitionComponent={Transition}>
+//   <IconButton edge="start" color="inherit" onClick={handleCloseStats} aria-label="close">
+//     <CloseIcon />
+//   </IconButton>
+//   <Dashboard />
+// </Dialog> */}
