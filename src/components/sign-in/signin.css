@@ -5,3 +5,23 @@
 .MuiContainer-root{
   height: 600px;
 }
+
+.makeStyles-paper-8 {
+  display: flex;
+  margin-top: -50px !important;
+  align-items: center;
+  flex-direction: column;
+  /* height: 50px !important; */
+}
+
+.MuiContainer-root {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  height: 420px;
+  margin-top: 65px;
+  padding-right: 16px;
+}

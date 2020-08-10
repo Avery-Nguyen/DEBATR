@@ -126,8 +126,9 @@ export default function Dashboard() {
       <main className={classes.content} style={{
         display: 'block',
         maxHeight: 'fit-content',
-        border: '25px solid rgb(64,81,182)',
-        alignItems: 'center'
+        border: '10px solid rgb(64,81,182)',
+        alignItems: 'center',
+        marginTop: '-10px'
       }}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg"  className={classes.container}>

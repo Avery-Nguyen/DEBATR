@@ -5,3 +5,17 @@
 .error {
   color: red;
 }
+/* 
+element.style {
+  margin: 10px 0px;
+  padding: 0px 50px;
+  height: 775px;
+  width: 400px;
+  overflow: hidden !important;
+} */
+
+.MuiDialog-paperWidthSm {
+  max-width: 600px;
+  height: 650px;
+  overflow: hidden !important;
+}

@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import './signUp.css'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -194,7 +195,7 @@ export default function SignUp(props) {
           </div>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" style={{color: "black"}}>
                 Already have an account? Sign in
               </Link>
             </Grid>
