@@ -7,11 +7,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 // import { makeStyles } from '@material-ui/core/styles';
-<<<<<<< HEAD
-import { useStore } from '../../Store';
-=======
 import { useStore } from '../../Store'
->>>>>>> 9b98300a64921fee4a1f0efeb575a32e1ef706c2
 import axios from 'axios';
 import Slide from '@material-ui/core/Slide';
 import Dialog from '@material-ui/core/Dialog';
