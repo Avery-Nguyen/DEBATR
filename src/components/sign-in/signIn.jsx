@@ -111,7 +111,7 @@ export default function SignIn(props) {
           Sign in
         </Typography>
 
-<div style={{display:'flex',justifyContent:'center', width:'80%'}}>
+<div style={{display:'flex',justifyContent:'center', width:'80%', height: '50px'}}>
         <form action="http://localhost:3001/api/login/github" style={{display:'flex',justifyContent:'center', width:'90%'}}>
           <button
             style={{
@@ -183,7 +183,7 @@ export default function SignIn(props) {
           {signinErrors}
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" style={{color: "black"}}>
                 Forgot password?
               </Link>
             </Grid>

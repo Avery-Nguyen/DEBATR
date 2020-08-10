@@ -132,8 +132,9 @@ export default function Dashboard() {
       <main className={classes.content} style={{
         display: 'block',
         maxHeight: 'fit-content',
-        border: '25px solid rgb(64,81,182)',
+        border: '10px solid rgb(64,81,182)',
         alignItems: 'center',
+        marginTop: '-10px'
       }}>
         <div className={classes.appBarSpacer} />
         { state.username ? 

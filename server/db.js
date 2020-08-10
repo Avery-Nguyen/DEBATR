@@ -1,5 +1,3 @@
-
-
 const pg = require('pg');
 //or native libpq bindings
 //var pg = require('pg').native
@@ -11,9 +9,6 @@ require('dotenv').config()
 // var client = new pg.Client(conString);
 
 // var client = new pg.Client(process.env.REACT_APP_PG_STRING);
-
-var conString = `postgres://csslmvrr:KuCNQMyVFayHEkIigel7Z6lDdjOIEUDT@ruby.db.elephantsql.com:5432/csslmvrr`
-var client = new pg.Client(conString);
 
 client.connect(function(err) {
   if (err) {

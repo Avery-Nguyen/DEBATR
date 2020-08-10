@@ -5,3 +5,31 @@
 .error {
   color: red;
 }
+/* 
+element.style {
+  margin: 10px 0px;
+  padding: 0px 50px;
+  height: 775px;
+  width: 400px;
+  overflow: hidden !important;
+} */
+
+.MuiDialog-paperWidthSm {
+  max-width: 600px;
+  height: 675px;
+  overflow: hidden !important;
+}
+
+.makeStyles-form-19 {
+  width: 100%;
+  margin-top: 0px;
+}
+
+.MuiGrid-justify-xs-flex-end {
+  justify-content: flex-end;
+  margin-top: -10px;
+}
+
+.makeStyles-submit-20 {
+  margin: 3px 0px 16px !important;
+}
