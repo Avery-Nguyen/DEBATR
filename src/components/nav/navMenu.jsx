@@ -39,9 +39,9 @@ export default function NavMenu() {
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {

@@ -45,7 +45,7 @@ export default function SignUp(props) {
   const [lastName, setlastName] = useState('')
   const [username, setUsername] = useState('')
   const [avatar, setAvatar] = useState('')
-  const [dispatch] = useStore();
+  const [state, dispatch] = useStore();
   const [error, setError] = useState('')
 
 
