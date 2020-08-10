@@ -26,7 +26,7 @@ export default function Chart() {
       console.log(error.message, "problem");
     })
   }, []);
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A5243D', '#8447FF'];
 
   const categories = categoryCount.map((category, index) => {
     return { title: category.name, value: parseInt(category.count), color: COLORS[index] }
