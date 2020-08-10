@@ -32,8 +32,10 @@ DebatR is a Web application that allows the users to have civilized debates on p
 <img align="left" alt="CSS3" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" />
 <img align="left" alt="Sass" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sass/sass.png" />
 <img align="left" alt="Git" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png" />
-<img align="left" alt="Git" width="26px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png" />
+<img align="left" alt="Postgres" width="26px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png" />
+<img align="left" alt="ElephantSQL" width="26px" src="https://www.elephantsql.com/images/elephant_256.png" />
 <br/>
+
 
 ## Dependencies
 - Axios
@@ -59,9 +61,14 @@ DebatR is a Web application that allows the users to have civilized debates on p
 - Typescript
 - Utf-8-validate
 
-## Preparing the application
+## Getting Started
 
 To run the application you will need a [Twilio account](https://www.twilio.com/try-twilio) and Node.js and npm installed. Start by forking and cloning this repo to your machine.
+
+>#### Twilio Credentials
+>You will need your Twilio Account SID, available in your [Twilio console](https://www.twilio.com/console). Add it to the `.env` file.
+>>You will also need an API key and secret, you can create these under the [Programmable Video Tools in your console](https://www.twilio.com/console/video/project/api-keys). Create a key pair and add them to the `.env` file too.
+
 
 
 Install the dependencies:
@@ -75,12 +82,10 @@ Create a `.env` file by copying the `.env.example`.
 ```bash
 cp .env.example .env
 ```
+## Running the Database
 
-### Credentials
+This project was devloped using Elephantsql but it would also work with Postgres. The database route can be located in `server/db.js`
 
-You will need your Twilio Account SID, available in your [Twilio console](https://www.twilio.com/console). Add it to the `.env` file.
-
-You will also need an API key and secret, you can create these under the [Programmable Video Tools in your console](https://www.twilio.com/console/video/project/api-keys). Create a key pair and add them to the `.env` file too.
 
 ## Running the application
 
