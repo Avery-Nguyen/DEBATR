@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
+// import Link from '@material-ui/core/Link';
+// import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,9 +10,9 @@ import TableRow from '@material-ui/core/TableRow';
 
 
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
+// function createData(id, date, name, shipTo, paymentMethod, amount) {
+//   return { id, date, name, shipTo, paymentMethod, amount };
+// }
 
 //will need to do a axios request in here for user data and over all stats
 
@@ -21,11 +21,11 @@ function createData(id, date, name, shipTo, paymentMethod, amount) {
 //   event.preventDefault();
 // }
 
-const useStyles = makeStyles((theme) => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   seeMore: {
+//     marginTop: theme.spacing(3),
+//   },
+// }));
 
 
 export default function LeaderBoard() {
@@ -59,7 +59,7 @@ export default function LeaderBoard() {
   }, []);
 
 
-  const classes = useStyles();
+  // const classes = useStyles();
   return (
     <React.Fragment style={{ maxWidth: 'fit-content' }}>
       <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>

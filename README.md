@@ -1,17 +1,68 @@
 # DEBATR
 
-A final project by Avery Nguygen, Andrew Delmar, Trevor Thomas and Alex Hladun.
+## Project Overview
 
-Learn how to build this entire application in the blog post [Build a Twilio Video Chat with React Hooks](https://www.twilio.com/blog/video-chat-react-hooks).
+DebatR is a Web application that allows the users to have civilized debates on popular topics or topic of their choice through video chat. Our app controls the flow of the debate so the "DebatRs" can worry less about uncontrolled rants and focus more on discussions. There is also a debate review and user ranking system to allow users to view the results of pervious debates and increase their rating on the leaderboard. 
+
+*Special thanks to [Phil Nash](https://github.com/philnash) and his [Twilio Video chat with React Hooks](https://github.com/philnash/twilio-video-react-hooks) tutorial to help make this application possible.*
+
+## Contributors
+
+- [Avery Nguyen](https://github.com/Avery-Nguyen)
+
+- [Andrew Delmar](https://github.com/andrewdelmar87)
+
+- [Trevor Thomas](https://github.com/BDeWitt-Cohen)
+
+- [Alex Hladun](https://github.com/alex-hladun)
+
+## Screenshots
+
+- Lobby
+- Stage
+- Stats
+- User Card
+
+## Languages and Tools
+<img align="left" alt="JavaScript" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png" />
+<img align="left" alt="React" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" />
+<img align="left" alt="Node.js" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nodejs/nodejs.png" />
+<img align="left" alt="Visual Studio Code" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" />
+<img align="left" alt="HTML5" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png" />
+<img align="left" alt="CSS3" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" />
+<img align="left" alt="Sass" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sass/sass.png" />
+<img align="left" alt="Git" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png" />
+<img align="left" alt="Git" width="26px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png" />
+<br/>
+
+## Dependencies
+- Axios
+- Bcrypt
+- Cookie-session
+- Fibers
+- Postgres
+- Sass
+  - Node-sass
+- React
+  - React-dom
+  - React-router-dom
+  - React-scripts
+  - React-scrollable-feed
+  - React-simple-pie-chart
+  - React-svg-piechart
+- Recharts
+- Socket.io
+  - Socket.io-client
+- Twilio-video
+- Material-ui
+- Bit
+- Typescript
+- Utf-8-validate
 
 ## Preparing the application
 
-To run the application you will need a [Twilio account](https://www.twilio.com/try-twilio) and Node.js and npm installed. Start by cloning or downloading the repo to your machine.
+To run the application you will need a [Twilio account](https://www.twilio.com/try-twilio) and Node.js and npm installed. Start by forking and cloning this repo to your machine.
 
-```bash
-git clone https://github.com/philnash/twilio-video-react-hooks.git
-cd twilio-video-react-hooks
-```
 
 Install the dependencies:
 

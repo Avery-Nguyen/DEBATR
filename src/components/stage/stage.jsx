@@ -107,7 +107,7 @@ export default function Stage({ activeRoomState }) {
       }
     })
 
-  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch, mutedUsers]);
+  }, [state.currentSocket, state.currentRoom, state.username, room, dispatch, mutedUsers, disableMedia]);
 
   useEffect(() => {
     const participantConnected = participant => {

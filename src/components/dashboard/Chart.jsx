@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 
-import { useTheme } from '@material-ui/core/styles';
+// import { useTheme } from '@material-ui/core/styles';
 import PieChart from '@bit/recharts.recharts.pie-chart';
 import Pie from '@bit/recharts.recharts.pie';
 import Typography from '@material-ui/core/Typography';
@@ -10,26 +10,26 @@ import Typography from '@material-ui/core/Typography';
 
 
 
-const data02 = [
-  { name: 'A1', value: 100 },
-  { name: 'A2', value: 300 },
-  { name: 'B1', value: 100 },
-  { name: 'B2', value: 80 },
-  { name: 'B3', value: 40 },
-  { name: 'B4', value: 30 },
-  { name: 'B5', value: 50 },
-  { name: 'C1', value: 100 },
-  { name: 'C2', value: 200 },
-  { name: 'D1', value: 150 },
-  { name: 'D2', value: 50 },
-];
+// const data02 = [
+//   { name: 'A1', value: 100 },
+//   { name: 'A2', value: 300 },
+//   { name: 'B1', value: 100 },
+//   { name: 'B2', value: 80 },
+//   { name: 'B3', value: 40 },
+//   { name: 'B4', value: 30 },
+//   { name: 'B5', value: 50 },
+//   { name: 'C1', value: 100 },
+//   { name: 'C2', value: 200 },
+//   { name: 'D1', value: 150 },
+//   { name: 'D2', value: 50 },
+// ];
 
 
 
 
 
 export default function Chart() {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const [categoryCount, setCategoryCount] = useState([]);
 
@@ -46,7 +46,7 @@ export default function Chart() {
       .catch(error => {
         console.log(error.message, "problem");
       })
-  }, []);
+  }, [categoryCount]);
 
   const categories = categoryCount.map((category) => {
     console.log(category);
