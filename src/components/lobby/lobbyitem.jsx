@@ -64,12 +64,8 @@ export default function LobbyItem({ roomDetails }) {
   // console.log(roomDetails);
   const classes = useStyles();
   // const [expanded, setExpanded] = React.useState(false);
-
-
   const [open, setOpen] = React.useState(false);
   const [state, dispatch] = useStore();
-
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -77,7 +73,6 @@ export default function LobbyItem({ roomDetails }) {
   const handleClose = () => {
     setOpen(false);
   };
-
 
 const [hostUsercard, setHostUsercard] = useState({});
 
@@ -184,7 +179,7 @@ const getHostUsercard = (username) => {
         <CardHeader
           avatar={
             <div>
-              <Avatar onClick={() => getHostUsercard(roomDetails.host)} />
+             {roomDetails.host && <Avatar onClick={() => getHostUsercard(roomDetails.host)}/> }
               <Dialog
                 open={open}
                 TransitionComponent={Transition}
@@ -206,7 +201,7 @@ const getHostUsercard = (username) => {
             top: "7px",
             right: "7px"
           }}>
-            <Avatar />
+           {roomDetails.contender && <Avatar onClick={() => getHostUsercard(roomDetails.contender)}/> }
           </div>
 
           <div class="inner" style={{

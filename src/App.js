@@ -130,7 +130,6 @@ const App = () => {
       marginBottom: "20px", 
       color:'white', 
       backgroundColor:'rgb(64,81,182)',
-      borderRadius:'15px',
       padding:'0px 10px' }}>Debate Results</h1>
       <span></span>
       <PastDebate />

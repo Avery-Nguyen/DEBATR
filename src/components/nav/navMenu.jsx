@@ -6,13 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-<<<<<<< HEAD
-import { makeStyles } from '@material-ui/core/styles';
-import { useStore } from '../../Store';
-=======
 // import { makeStyles } from '@material-ui/core/styles';
 import { useStore } from '../../Store'
->>>>>>> dd3531961242efbdf521677c602ead28f47adf78
 import axios from 'axios';
 import Slide from '@material-ui/core/Slide';
 import Dialog from '@material-ui/core/Dialog';
