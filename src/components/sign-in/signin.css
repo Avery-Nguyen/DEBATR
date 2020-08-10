@@ -25,3 +25,8 @@
   margin-top: 65px;
   padding-right: 16px;
 }
+
+.MuiDialog-paperWidthSm {
+  max-width: 600px;
+  height: fit-content;
+}

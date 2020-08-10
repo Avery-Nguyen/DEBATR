@@ -16,6 +16,20 @@ element.style {
 
 .MuiDialog-paperWidthSm {
   max-width: 600px;
-  height: 650px;
+  height: 675px;
   overflow: hidden !important;
+}
+
+.makeStyles-form-19 {
+  width: 100%;
+  margin-top: 0px;
+}
+
+.MuiGrid-justify-xs-flex-end {
+  justify-content: flex-end;
+  margin-top: -10px;
+}
+
+.makeStyles-submit-20 {
+  margin: 3px 0px 16px !important;
 }
