@@ -56,7 +56,7 @@ export default function UserStats() {
       topCategory, 
       topTopic
     ]).then((res) => {
-      setDebateNum(res[0].data[0].count)
+      setDebateNum((res[0].data[0].count)/2)
       setTotalPoints(res[1].data[0].sum)
       setHighestCategory(res[2].data[0].name)
       setHighestTopic(res[3].data.question)
