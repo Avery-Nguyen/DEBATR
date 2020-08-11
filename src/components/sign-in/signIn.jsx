@@ -114,7 +114,7 @@ export default function SignIn(props) {
         </Typography>
 
 <div style={{display:'flex',justifyContent:'center', width:'80%', height: '50px'}}>
-        <form action="http://localhost:3001/api/login/github" style={{display:'flex',justifyContent:'center', width:'90%'}}>
+        <form action="/api/login/github" style={{display:'flex',justifyContent:'center', width:'90%'}}>
           <button
             style={{
               display: 'block',
