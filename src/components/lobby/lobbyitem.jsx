@@ -54,11 +54,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 
 export default function LobbyItem({ roomDetails }) {
   // console.log(roomDetails);
@@ -215,16 +213,16 @@ const getHostUsercard = (username) => {
              {roomDetails.host && roomDetails.contender && <p class="inner"
               variant="contained"
               style={{
-                backgroundColor: "rgb(252, 232, 76)",
+                backgroundColor: "rgb(7,238,38)",
               }}
-              onClick={handleClickOpenSpectate}>Spectate
+              onClick={handleClickOpenSpectate}>spectate
               </p>}
             {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <p class="inner"
               variant="contained"
               style={{
                 backgroundColor: "rgb(7,238,38)",
               }}
-              onClick={handleClickOpenStage}>Enter
+              onClick={handleClickOpenStage}>enter
               </p>}
           </div>
 

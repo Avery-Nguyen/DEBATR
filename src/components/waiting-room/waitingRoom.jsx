@@ -15,11 +15,11 @@ export default function WaitingRoom() {
                   <a style={{marginTop: "250px",
                             marginBottom: "250px"
                             }}>
-                      <span style={{background: "rgb(216,81,182)"}}></span>
-                      <span style={{background: "rgb(216,81,182)"}}></span>
-                      <span style={{background: "rgb(216,81,182)"}}></span>
-                      <span style={{background: "rgb(216,81,182)"}}></span>
-                      <p style={{fontSize: "50px", color: "rgb(216,81,182)"}}>Waiting for opponent</p>
+                      <span style={{background: "rgb(200, 0, 175)"}}></span>
+                      <span style={{background: "rgb(200, 0, 175)"}}></span>
+                      <span style={{background: "rgb(200, 0, 175)"}}></span>
+                      <span style={{background: "rgb(200, 0, 175)"}}></span>
+                      <p style={{fontSize: "50px", color: "rgb(200, 0, 175)"}}>Waiting for opponent</p>
                   </a>
               </div>
   );

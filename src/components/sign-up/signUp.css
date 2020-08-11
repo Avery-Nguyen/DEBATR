@@ -5,20 +5,19 @@
 .error {
   color: red;
 }
-/* 
+
 element.style {
-  margin: 10px 0px;
+  margin: -35px 0px ;
   padding: 0px 50px;
-  height: 775px;
+  height: 720px !important;
   width: 400px;
+}
+
+/* .MuiDialog-paperWidthSm {
+  max-width: 600px;
+  height: 650px !important;
   overflow: hidden !important;
 } */
-
-.MuiDialog-paperWidthSm {
-  max-width: 600px;
-  height: 675px;
-  overflow: hidden !important;
-}
 
 .makeStyles-form-19 {
   width: 100%;
