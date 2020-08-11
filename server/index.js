@@ -419,6 +419,9 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
+app.get('*', (req, res) => res.sendFile('index.html'))
+
+
 http.listen(PORT, () => {
   console.log("Express server is running on localhost:3001")
 });
