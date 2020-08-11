@@ -1,5 +1,6 @@
 const config = require('./config');
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
@@ -25,7 +26,6 @@ app.use(cookieSession({
 app.use('/api', apiRoutes(db))
 
 app.use(pino);
-app.use((req, res) => res.sendFile('index.html', { root: __dirname }))
 
 
 // Alex's SOCKET code
@@ -420,7 +420,12 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
-// app.get('/', (req, res) => res.sendFile('../../public/index.html'))
+app.use(express.static('build'));
+app.get('*', (req, res) => res.sendFile('index.html'))
+
+
+// app.use((req, res) => res.sendFile('index.html', { root: __dirname }))
+
 
 
 http.listen(PORT, () => {
