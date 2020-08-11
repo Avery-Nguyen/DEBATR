@@ -70,8 +70,8 @@ const App = () => {
     }, [dispatch])
 
   useEffect(() => {
-    // const ENDPOINT = "http://127.0.0.1:3001";
-    const socket = socketIOClient();
+    const ENDPOINT = "https://infinite-journey-65119.herokuapp.com/";
+    const socket = socketIOClient(ENDPOINT);
     dispatch({ type: 'SET_CURRENTSOCKET', payload: socket })
     // setCurrentSocket(socket)
     return () => socket.disconnect();
