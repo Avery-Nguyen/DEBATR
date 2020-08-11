@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@bit/joshk.react-spinners-css.grid": "^1.2.1",
-    "@bit/recharts.recharts.pie-chart": "^1.6.2",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
