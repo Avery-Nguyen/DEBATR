@@ -25,7 +25,7 @@ app.use(cookieSession({
 app.use('/api', apiRoutes(db))
 
 app.use(pino);
-app.use((req, res) => res.sendFile('./public/index.html', { root: __dirname }))
+app.use((req, res) => res.sendFile('index.html', { root: __dirname }))
 
 
 // Alex's SOCKET code
