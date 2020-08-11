@@ -117,9 +117,6 @@ const App = () => {
   }, [state.currentSocket, state.currentRoom, dispatch, state.username]);
 
 
-
-
-
   const lobby = (
     <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop:'50px', paddingTop:'25px' }}>
       {/* <Dashboard /> */}

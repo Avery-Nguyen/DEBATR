@@ -17,7 +17,10 @@ const {
   getTopicCount,
   getCategoryCount,
   createGithubUser,
-  getUserDebateCount
+  getUserDebateCount,
+  getUserPoints,
+  getCategoryCountByUserID,
+  getUserMostDebatedTopic
 } = require('./databaseCalls.js');
 const axios = require('axios');
 let githubToken = null;
@@ -184,19 +187,8 @@ module.exports = (client) => {
   });
 
 
-  router.post('/userdebatecount', function(req, res) {
-    console.log(req.body)
-    getUserDebateCount(client, req.body.username)
-      .then(sqlResponse => {
-        console.log(sqlResponse.rows, 'inusercard')
-        res.send(sqlResponse.rows)
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
+
+
 
   router.post('/usercard', function(req, res) {
     // console.log('REQUEST TO /API/usercard')
@@ -230,8 +222,6 @@ module.exports = (client) => {
       });
   });
 
-
-
   router.post('/users/ratings', function(req, res) {
     const from_user_id = req.body.from_user_id
     const to_user_id = req.body.to_user_id
@@ -262,8 +252,6 @@ module.exports = (client) => {
 
     })
   })
-
-
 
   router.post('/agreement_ratings', function(req, res) {
     const room_log_id = req.body.room_log_id
@@ -411,6 +399,61 @@ module.exports = (client) => {
       })
   });
 
+  router.post("/user/highest_user_category", function(req, res) {
+
+    getCategoryCountByUserID(client, req.body.userID)
+    .then(sqlResponse => {
+    console.log("sqlResponse from getCategoryCountByUserID", sqlResponse)
+
+      res.send(sqlResponse)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  });
+
+
+  router.post('/user/debatecount', function(req, res) {
+    console.log(req.body)
+    getUserDebateCount(client, req.body.username)
+      .then(sqlResponse => {
+        console.log(sqlResponse.rows, 'inusercard')
+        res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post('/user/totalpoints', function(req, res) {
+    console.log(req.body)
+    getUserPoints(client, req.body.userID)
+      .then(sqlResponse => {
+        console.log(sqlResponse.rows, 'inusercard')
+        res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post('/user/mostdebatedtopic', function(req, res) {
+    console.log(req.body)
+    getUserMostDebatedTopic(client, req.body.userID)
+      .then(sqlResponse => {
+        console.log(sqlResponse.rows, 'inusercard')
+        res.send(sqlResponse)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
   return router;
 }
 

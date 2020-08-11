@@ -138,7 +138,7 @@ export default function NavMenu() {
         }}
       >
 
-        {state.userAvatarUrl && <Avatar alt={state.username} src="https://robohash.org/facilisquiaquo.jpg?size=50x50&set=set1" />}
+        {state.userAvatarUrl && <Avatar alt={state.username} src={state.userAvatarUrl} />}
         {!state.userAvatarUrl && <Avatar alt={state.userAvatarUrl} />}
 
       </Button>

@@ -54,6 +54,33 @@ const getUserDebateCount = (client, username) => {
   })
 }
 
+const getUserPoints = (client, userID) => {
+  return client.query(`
+  SELECT sum(points)
+  FROM ratings
+  WHERE ratings.to_user_id = $1`, [userID])
+  .then(res => {
+    console.log('TOTAL USER POINTS:')
+    console.log(res.rows)
+    return res.rows
+  })
+}
+
+const getUserMostDebatedTopic = (client, userID) => {
+  return client.query(`
+  SELECT topics.question, topic_id, count(room_logs.topic_id) AS total_debates 
+FROM "public"."room_logs"
+JOIN topics ON topics.id = room_logs.topic_id
+WHERE room_logs.host_id = $1 OR room_logs.contender_id = $1
+GROUP BY topics.question, room_logs.topic_id
+ORDER BY total_debates DESC
+LIMIT 1`, [userID])
+.then(res => {
+  console.log('most debated topic response', res.rows[0])
+  return res.rows[0]
+})
+}
+
 const getTopicCount = (client, limit = 10) => {
   return client.query(`SELECT question , COUNT(question) AS topic_count
   FROM topics
@@ -73,6 +100,22 @@ const getCategoryCount = (client) => {
   join topics on topics.id = room_logs.topic_id
   join categories on categories.id = topics.category_id
   GROUP BY categories.id;`)
+  .then((res) => {
+    // console.log(`res from sql ${res}`)
+    return res.rows
+  })
+}
+
+const getCategoryCountByUserID = (client, user_id) => {
+  console.log('user_id In getCategoryCountByUserID', user_id)
+  return client.query(`SELECT categories.name, COUNT(categories.id) 
+  FROM room_logs 
+  JOIN topics on topics.id = room_logs.topic_id
+  JOIN categories on categories.id = topics.category_id
+  JOIN users on users.id = host_id
+  WHERE users.id = $1
+  GROUP BY categories.id
+  ORDER BY COUNT(categories.id) desc;`, [user_id])
   .then((res) => {
     // console.log(`res from sql ${res}`)
     return res.rows
@@ -256,5 +299,8 @@ module.exports = {
   getTopicCount,
   getCategoryCount,
   createGithubUser,
-  getUserDebateCount
+  getUserDebateCount,
+  getUserPoints,
+  getCategoryCountByUserID,
+  getUserMostDebatedTopic
 }

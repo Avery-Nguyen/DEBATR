@@ -121,13 +121,13 @@ export default function Dashboard() {
 
     
     <div className={classes.root} style={{ paddingTop: '0px' }}>
-      <h1 style={{
+      {/* <h1 style={{
         justifyContent: 'center',
         border: 'solid 1px rgb(64,81,182)',
         color: 'white',
         backgroundColor: 'rgb(64,81,182)',
         padding: '0px 10px'
-      }}>Debate Results</h1>
+      }}>Debate Results</h1> */}
      
       <CssBaseline />
       <main className={classes.content} style={{
@@ -143,6 +143,7 @@ export default function Dashboard() {
 
       
         {/* <Container maxWidth="lg"  className={classes.container} style={{display:'block'}}> */}
+        <h1 align="center" class="margin-spacer" border='solid 8px rgb(64,81,182)'>Overall Stats </h1>
 
           <article class="stat-container">
           <div class="stat-flex-row">

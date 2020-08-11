@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 
 
 // Generate Order Data
@@ -32,38 +33,40 @@ import TableRow from '@material-ui/core/TableRow';
 export default function UserStats() {
 
   const [state, dispatch] = useStore();
-  const [debateCount, setsetDebateCount] = useState([]);
+  // const [debateCount, setsetDebateCount] = useState([]);
   // const [topicCount, setTopicCount] = useState([]);
+  const [debateNum, setDebateNum] = useState(null);
+  const [totalPoints, setTotalPoints] = useState(null);
+  const [highestCategory, setHighestCategory] = useState(null);
+  const [highestTopic, setHighestTopic] = useState(null);
 
   useEffect(() => {
    let username = state.username
-   console.log(username)
+   let userID = state.userID
+  //  console.log(username)
+
+   const debateCount = axios.post(`/api/user/debatecount`, {username})
+   const totalUserPoints = axios.post('/api/user/totalpoints', {userID})
+   const topCategory = axios.post('/api/user/highest_user_category', {userID})
+   const topTopic = axios.post('/api/user/mostdebatedtopic', {userID})
+
     Promise.all([
-      axios.post(`/api/userdebatecount`),
-        {username}
-    
+      debateCount, 
+      totalUserPoints, 
+      topCategory, 
+      topTopic
     ]).then((res) => {
-      console.log(res)
-      // console.log(data, "this is data in orders")
-      // setsetDebateCount(prev => [...prev, ...data[0].data]);
+      setDebateNum(res[0].data[0].count)
+      setTotalPoints(res[1].data[0].sum)
+      setHighestCategory(res[2].data[0].name)
+      setHighestTopic(res[3].data.question)
     })
       .catch(error => {
         console.log(error.message, "problem");
       })
-  }, []);
+  }, [state.username, state.userID]);
 
 
-  // useEffect(() => {
-  //   Promise.all([
-  //     axios.get(`/api/topiccount`)
-  //   ]).then((data) => {
-  //     // console.log(data, "this is data in for topic count")
-  //     setTopicCount(prev => [...prev, ...data[0].data]);
-  //   })
-  //     .catch(error => {
-  //       console.log(error.message, "problem");
-  //     })
-  // }, []);
 
 
   // const classes = useStyles();
@@ -78,8 +81,14 @@ export default function UserStats() {
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>Total Debates</TableCell>
-
+                <TableCell>
+                <Typography class="stat-header" component="p" variant="h4" align='center'>
+                Your Total Debates      
+                </Typography>
+                  </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell style={{textAlign: 'center'}}>{debateNum}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -87,13 +96,45 @@ export default function UserStats() {
             </TableBody>
           </Table>
         </div>
+        <div style={{ display: 'block' }}>
+          <br></br>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                
+                <TableCell align="center">
+                  <Typography class="stat-header" component="p" variant="h4" align='center'>
+                Your Total Points     
+                </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">{totalPoints}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* user topic breakdown */}
+            </TableBody>
+          </Table>
+        </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
 
         <div style={{ display: 'block' }}>
           <br></br>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Categories Breakdown</TableCell>
+                <TableCell align="center">
+                <Typography class="stat-header" component="p" variant="h4" align='center'>
+                Most Debated Category    
+                </Typography>
+                  
+                  
+                  </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">{highestCategory}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,20 +147,14 @@ export default function UserStats() {
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Topics Breakdown</TableCell>
+                <TableCell align="center">
+                <Typography class="stat-header" component="p" variant="h4" align='center'>    
+                  Most Debated Topic
+                </Typography>
+                  </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {/* user topic breakdown */}
-            </TableBody>
-          </Table>
-        </div>
-        <div style={{ display: 'block' }}>
-          <br></br>
-          <Table size="small">
-            <TableHead>
               <TableRow>
-                <TableCell align="center">Total Points</TableCell>
+                <TableCell align="center">{highestTopic}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -127,6 +162,7 @@ export default function UserStats() {
             </TableBody>
           </Table>
         </div>
+       
       </div>
     </React.Fragment>
   );
