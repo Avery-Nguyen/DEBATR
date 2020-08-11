@@ -20,7 +20,6 @@
     "react-scrollable-feed": "^1.1.2",
     "react-simple-pie-chart": "^0.5.0",
     "react-svg-piechart": "^2.4.1",
-    "recharts": "^1.8.5",
     "sass": "^1.26.10",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
