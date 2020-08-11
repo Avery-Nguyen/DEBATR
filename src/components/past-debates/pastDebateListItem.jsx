@@ -24,6 +24,8 @@ import Slide from '@material-ui/core/Slide';
 // import CloseIcon from '@material-ui/icons/Close';
 import './pastDebates.css'
 import axios from 'axios';
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 
 // import getRoomRecords from '../../server/databaseCalls'
@@ -113,7 +115,7 @@ export default function PastDebateItem(props) {
 
   const addLikes = (typeOfLike, room_id) => {
     // console.log(typeOfLike, room_id)
-    axios.post('/api/likes', {
+    axios.post(`${ENDPOINT}/api/likes`, {
       room_id,
       typeOfLike
     })
@@ -137,7 +139,7 @@ export default function PastDebateItem(props) {
 
   const getHostUsercard = (host) => {
     // console.log(host)
-    axios.post('/api/usercard', {
+    axios.post(`${ENDPOINT}/api/usercard`, {
       host
     })
       .then((res) => {

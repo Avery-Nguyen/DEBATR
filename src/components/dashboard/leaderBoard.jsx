@@ -7,6 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
 
 
 // Generate Order Data
@@ -35,7 +36,7 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`/api/leaderboard`)
+      axios.get(`${ENDPOINT}/api/leaderboard`)
     ]).then((data) => {
       // console.log(data, "this is data in orders")
       setleaderBoard(prev => [...prev, ...data[0].data]);
@@ -48,7 +49,7 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`/api/topiccount`)
+      axios.get(`${ENDPOINT}/api/topiccount`)
     ]).then((data) => {
       // console.log(data, "this is data in for topic count")
       setTopicCount(prev => [...prev, ...data[0].data]);

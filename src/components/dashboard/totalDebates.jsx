@@ -4,6 +4,8 @@ import axios from 'axios';
 // import Link from '@material-ui/core/Link';
 // import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 
 // function preventDefault(event) {
@@ -25,7 +27,7 @@ export default function TotalDebates() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`/api/totaldebates`)
+      axios.get(`${ENDPOINT}/api/totaldebates`)
     ]).then((data) => {
       // console.log(data[0].data, "this is data in orders")
       settotaldebates(data[0].data[0].count);

@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 // import Avatar from '@material-ui/core/Avatar';
 // import LobbyItem from '../lobby/lobbyitem'
 import PastDebateItem from './pastDebateListItem'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +28,7 @@ export default function PastDebate() {
   const [pastDebates, setpastDebates] = useState([]);
   useEffect(() => {
     Promise.all([
-      axios.get(`/api/rooms`)
+      axios.get(`${ENDPOINT}/api/rooms`)
     ]).then((data) => {
       console.log("PastDebate -> pastDebates", data)
       setpastDebates(prev => [...prev, ...data[0].data]);

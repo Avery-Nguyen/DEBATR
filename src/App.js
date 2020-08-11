@@ -24,6 +24,8 @@ import { useStore } from './Store'
 import Disconnect from './components/disconnect/Disconnect';
 import WaitingRoom from './components/waiting-room/waitingRoom';
 import PastDebate from './components/past-debates/pastDebates'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //   return <Slide direction="up" ref={ref} {...props} />;
@@ -54,7 +56,7 @@ const App = () => {
   })
   
   useEffect(() => {
-      axios.get('/api/login/check',  {})
+      axios.get(`${ENDPOINT}/api/login/check`,  {})
         .then((res) => {
           if (res.data.success) {
             dispatch({ type: 'SET_USERNAME', payload: res.data.username })
@@ -70,7 +72,6 @@ const App = () => {
     }, [dispatch])
 
   useEffect(() => {
-    const ENDPOINT = "https://infinite-journey-65119.herokuapp.com/";
     const socket = socketIOClient(ENDPOINT);
     dispatch({ type: 'SET_CURRENTSOCKET', payload: socket })
     // setCurrentSocket(socket)
@@ -85,7 +86,7 @@ const App = () => {
       })
 
       state.currentSocket.on('startGame', data => {
-        fetch('/video/token', {
+        fetch(`${ENDPOINT}/video/token`, {
           method: 'POST',
           body: JSON.stringify({
             identity: state.username,

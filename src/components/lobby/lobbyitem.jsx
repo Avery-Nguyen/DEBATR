@@ -26,7 +26,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useStore } from '../../Store';
 import './lobbyItem.css';
 
+
 import Stage from '../stage/stage'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +79,7 @@ const [hostUsercard, setHostUsercard] = useState({});
 
 const getHostUsercard = (username) => {
   // console.log(username)
-  axios.post('/api/usercardByName', {
+  axios.post(`${ENDPOINT}/api/usercardByName`, {
     username
   })
     .then((res) => {

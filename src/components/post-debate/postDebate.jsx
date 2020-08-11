@@ -17,6 +17,8 @@ import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { useStore } from "../../Store";
 import "./post-debate.css";
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -75,14 +77,14 @@ export default function PostDebate({ activeRoomState }) {
       setFromUserID(activeRoomState.contender_id);
       agreePoints = points;
     }
-    const ratingPost = axios.post("/api/users/ratings", {
+    const ratingPost = axios.post(`${ENDPOINT}/api/users/ratings`, {
       from_user_id: state.userID,
       to_user_id: toUserID,
       rating,
       points: 100 + points,
     });
 
-    const agreementRatingPost = axios.post("/api/agreement_ratings", {
+    const agreementRatingPost = axios.post(`${ENDPOINT}/api/agreement_ratings`, {
       room_log_id: activeRoomState.game_id,
       user_id: fromUserID,
       agreement_rating: agreePoints,
