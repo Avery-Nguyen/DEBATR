@@ -3,6 +3,7 @@ import axios from 'axios';
 // import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { PieChart } from 'react-minimal-pie-chart';
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
 
 
 const defaultLabelStyle = {

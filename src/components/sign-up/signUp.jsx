@@ -16,6 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import './signUp.css'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +70,7 @@ export default function SignUp(props) {
     // } else if (password.length < 8) {
     //   setError('Password must be at least 8 characters long')
     } else {
-      axios.post('/api/register', {
+      axios.post(`/api/register`, {
         email,
         firstName,
         lastName,

@@ -12,23 +12,6 @@ import { useStore } from '../../Store';
 import UserStats from  './userStats'
 import './dashboard.css'
 
-//Likely won't need these but could make for a very interactive stats page
-// import Link from '@material-ui/core/Link';
-// import MenuIcon from '@material-ui/icons/Menu';
-// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-// import NotificationsIcon from '@material-ui/icons/Notifications';
-// import { mainListItems, secondaryListItems } from './listItems';
-// import Drawer from '@material-ui/core/Drawer';
-// import Box from '@material-ui/core/Box';
-// import AppBar from '@material-ui/core/AppBar';
-// import Toolbar from '@material-ui/core/Toolbar';
-// import List from '@material-ui/core/List';
-// import Typography from '@material-ui/core/Typography';
-// import Divider from '@material-ui/core/Divider';
-// import IconButton from '@material-ui/core/IconButton';
-// import Badge from '@material-ui/core/Badge';
-
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -120,15 +103,7 @@ export default function Dashboard() {
   return (
 
     
-    <div className={classes.root} style={{ paddingTop: '0px' }}>
-      {/* <h1 style={{
-        justifyContent: 'center',
-        border: 'solid 1px rgb(64,81,182)',
-        color: 'white',
-        backgroundColor: 'rgb(64,81,182)',
-        padding: '0px 10px'
-      }}>Debate Results</h1> */}
-     
+    <div className={classes.root} style={{ paddingTop: '0px' }}>     
       <CssBaseline />
       <main className={classes.content} style={{
         display: 'block',
@@ -157,23 +132,6 @@ export default function Dashboard() {
             
             </div>
           </article>
-          {/* <Grid container spacing={3}>
-            <Grid item xs={9} md={8} lg={19}>
-              <Paper className={fixedHeightPaper}>
-              </Paper>
-              <Paper className={fixedHeightPaper}>
-              </Paper>
-            </Grid>
-            <Grid item xs={3} md={4} lg={3}>
-            </Grid>
-            <div>
-              <Grid item xs={22}>
-                <Paper className={classes.paper}>
-                </Paper>
-              </Grid>
-            </div>
-          </Grid> */}
-        {/* </Container> */}
       </main>
     </div>
   );

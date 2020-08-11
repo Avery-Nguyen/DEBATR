@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 // import Avatar from '@material-ui/core/Avatar';
 // import LobbyItem from '../lobby/lobbyitem'
 import PastDebateItem from './pastDebateListItem'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 const useStyles = makeStyles((theme) => ({
   root: {

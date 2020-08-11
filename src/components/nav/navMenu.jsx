@@ -15,6 +15,8 @@ import UserCard from '../user-card/userCard.jsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -74,7 +76,7 @@ export default function NavMenu() {
       })
     }
 
-    axios.get('/api/logout', {})
+    axios.get(`/api/logout`, {})
       .then((res) => {
         // console.log('response from logout', res)
         if (res.data === 'success') {
@@ -103,7 +105,7 @@ export default function NavMenu() {
   };
 
   const getUsercard = (username) => {
-    axios.post('/api/usercardByName', {
+    axios.post(`/api/usercardByName`, {
       username
     })
       .then((res) => {

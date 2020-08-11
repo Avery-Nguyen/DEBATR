@@ -1,5 +1,6 @@
 const config = require('./config');
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
@@ -12,6 +13,7 @@ const io = require('socket.io')(http);
 const {
   postResultsToDatabase
 } = require('./databaseCalls.js');
+const PORT = process.env.PORT || 3001
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -418,6 +420,14 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
-http.listen(3001, () => {
+app.use(express.static('build'));
+app.get('*', (req, res) => res.sendFile('index.html'))
+
+
+// app.use((req, res) => res.sendFile('index.html', { root: __dirname }))
+
+
+
+http.listen(PORT, () => {
   console.log("Express server is running on localhost:3001")
 });

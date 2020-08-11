@@ -17,6 +17,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useStore } from '../../Store'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +66,7 @@ export default function SignIn(props) {
       // console.log(email, 'email')
       // console.log(password, "password")
       // console.log('submitlogin called')
-      axios.post('/api/login', {
+      axios.post(`/api/login`, {
         email,
         password
       })
@@ -112,7 +114,7 @@ export default function SignIn(props) {
         </Typography>
 
 <div style={{display:'flex',justifyContent:'center', width:'80%', height: '50px'}}>
-        <form action="http://localhost:3001/api/login/github" style={{display:'flex',justifyContent:'center', width:'90%'}}>
+        <form action="/api/login/github" style={{display:'flex',justifyContent:'center', width:'90%'}}>
           <button
             style={{
               display: 'block',

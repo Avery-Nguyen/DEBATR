@@ -26,6 +26,8 @@ import TextField from '@material-ui/core/TextField';
 import Zoom from '@material-ui/core/Zoom';
 import Paper from "@material-ui/core/Paper";
 import './createRoom.css'
+const ENDPOINT = process.env.REACT_APP_HEROKU_URL;
+
 
 
 
@@ -107,7 +109,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
 
     } else if (createdTopic) {
       // console.log(categoryID)
-      axios.post('/api/topics', {
+      axios.post(`/api/topics`, {
         question: createdTopic,
         category_id: parseInt(categoryID)
       })
@@ -137,14 +139,14 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   }
 
   useEffect(() => {
-    axios.get('/api/topics')
+    axios.get(`/api/topics`)
       .then((data) => {
         setOptions(data.data.topics)
       });
   }, [])
 
   useEffect(() => {
-    axios.get('/api/categories')
+    axios.get(`/api/categories`)
       .then((data) => {
         // console.log("CreateRoom -> data", data.data.topics)
         setCategoriesOptions(data.data.topics);

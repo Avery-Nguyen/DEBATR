@@ -99,7 +99,7 @@ module.exports = (client) => {
                     req.session.userID = sqlRes[0].id
                     req.session.userAvatarURL = sqlRes[0].avatar_url
 
-                    return res.redirect('http://localhost:3000/')
+                    return res.redirect('/')
                   })
               } else {
                 createGithubUser(client, gitEmail, response.data.name, 'last', response.data.login, response.data.avatar_url)
@@ -108,7 +108,7 @@ module.exports = (client) => {
                     req.session.username = response.data.login;
                     req.session.userID = sqlResponse.id;
                     req.session.userAvatarURL = sqlResponse.avatar_url
-                    return res.redirect('http://localhost:3000/')
+                    return res.redirect('/')
                   })
               }
             })
