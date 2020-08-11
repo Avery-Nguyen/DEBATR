@@ -40,7 +40,7 @@
     "utf-8-validate": "^5.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node ./server/index.js",
     "build": "CI= react-scripts build",
     "test": "react-scripts test",
     "scss": "node-sass --watch scss -o css",
