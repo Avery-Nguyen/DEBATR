@@ -5,17 +5,13 @@ const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const apiRoutes = require('./routes')
 const cookieSession = require('cookie-session');
-
 const db = require('./db.js');
 const topicRoutes = require("./topics");
-
 const http = require('http').createServer(app)
 const io = require('socket.io')(http);
 const {
   postResultsToDatabase
 } = require('./databaseCalls.js');
-const clientId = process.env.GITHUB_CLIENT_ID;
-const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -34,9 +30,9 @@ app.use(pino);
 let rLString;
 let debtateTime = 3;
 let intermissionTime = 3;
-let round1Time = 2;
-let round2Time = 2;
-let finalround = 5;
+let round1Time = 15;
+let round2Time = 15;
+let finalround = 30;
 // let round1Time = 15;
 // let round2Time = 30;
 // let finalround = 45;
@@ -86,9 +82,11 @@ class Room {
     this.host = null; //username
     this.host_id = null;
     this.host_ready = false;
+    this.host_avatar = null;
     this.contender = null; //username
     this.contender_id = null;
     this.contender_ready = false;
+    this.contender_avatar = null;
     this.spectators = [];
     this.topic = topic;
     this.topic_id = topic_id;
@@ -165,14 +163,13 @@ class Room {
       .then(() => this.sleep(round2Time * 1000))
       .then(() => {
         io.to(this.name).emit("gameCommand", `Final Round - Open Debate!`);
-        // io.to(this.name).emit('unMute', this.host)
+        io.to(this.name).emit('unMute', this.host)
         io.to(this.name).emit("setTimer", finalround)
       })
       .then(() => this.sleep(finalround * 1000))
       .then(() => {
 
         io.to(this.name).emit('gameCommand', 'Game over')
-
 
         // Ends the game for the user - Brings up post-debtate review screen
         io.to(this.name).emit('gameOver', null)
@@ -245,9 +242,11 @@ io.sockets.on("connection", function (socket) {
     if (data.stance) {
       roomList.roomList[data.roomName]["host"] = data.userName;
       roomList.roomList[data.roomName]["host_id"] = data.userID;
+      roomList.roomList[data.roomName]["host_avatar"] = data.avatar;
     } else {
       roomList.roomList[data.roomName]["contender"] = data.userName;
       roomList.roomList[data.roomName]["contender_id"] = data.userID;
+      roomList.roomList[data.roomName]["contender_avatar"] = data.avatar;
     }
 
     // Send an updated room list to everyone in the lobby.

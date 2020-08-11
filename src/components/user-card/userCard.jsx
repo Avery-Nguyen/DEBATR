@@ -32,7 +32,7 @@ export default function UserCard(props) {
 
 let {username, points_avg, rating_avg, host_count, contender_count, avatar_url } = props.hostUsercard || ''
 
-
+console.log(props.hostUsercard)
 // {username: "coder", points_avg: "166.8571428571428571", rating_avg: "4.7142857142857143", host_count: "1155", contender_count: "1155"}/
 
 // const { username }= props.hostUsercard
@@ -45,7 +45,7 @@ let {username, points_avg, rating_avg, host_count, contender_count, avatar_url }
          {username}
         </Typography>
         <UserRating rating={rating_avg}/>
-        <p>{host_count + contender_count || 0} debates</p>
+        <p>{host_count || 0} debates</p>
         <br></br>
         <p>{Math.round(points_avg || 0)} Debate Average</p>
         <div style={{position: "absolute", 

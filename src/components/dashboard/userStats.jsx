@@ -130,7 +130,6 @@ export default function UserStats() {
                 Most Debated Category    
                 </Typography>
                   
-                  
                   </TableCell>
               </TableRow>
               <TableRow>

@@ -187,9 +187,6 @@ module.exports = (client) => {
   });
 
 
-
-
-
   router.post('/usercard', function(req, res) {
     // console.log('REQUEST TO /API/usercard')
     // console.log(req.body.host)
