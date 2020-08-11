@@ -35,7 +35,7 @@ export default function Chart() {
   // console.log(categories)
   return (
       <div>
-        <Typography component="p" variant="h4" align='center'>
+        <Typography class="stat-header" component="p" variant="h4" align='center'>
           Category Breakdown
       </Typography>
         <br />

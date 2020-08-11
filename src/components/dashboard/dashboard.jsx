@@ -10,6 +10,7 @@ import TotalDebates from './totalDebates';
 import LeaderBoard from './leaderBoard';
 import { useStore } from '../../Store';
 import UserStats from  './userStats'
+import './dashboard.css'
 
 //Likely won't need these but could make for a very interactive stats page
 // import Link from '@material-ui/core/Link';
@@ -139,27 +140,39 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         { state.username ? 
       <UserStats /> : <div> </div>}
-        <Container maxWidth="lg"  className={classes.container} style={{display:'block'}}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={19}>
-              <Paper className={fixedHeightPaper}>
+
+      
+        {/* <Container maxWidth="lg"  className={classes.container} style={{display:'block'}}> */}
+
+          <article class="stat-container">
+          <div class="stat-flex-row">
                 <Chart />
+                <div class="stat-flex-col">
+                <TotalDebates />
+                </div>
+          </div>
+          <div class="stat-flex-row">
+                  <LeaderBoard />
+            
+            </div>
+          </article>
+          {/* <Grid container spacing={3}>
+            <Grid item xs={9} md={8} lg={19}>
+              <Paper className={fixedHeightPaper}>
+              </Paper>
+              <Paper className={fixedHeightPaper}>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <TotalDebates />
-              </Paper>
+            <Grid item xs={3} md={4} lg={3}>
             </Grid>
             <div>
               <Grid item xs={22}>
                 <Paper className={classes.paper}>
-                  <LeaderBoard />
                 </Paper>
               </Grid>
             </div>
-          </Grid>
-        </Container>
+          </Grid> */}
+        {/* </Container> */}
       </main>
     </div>
   );

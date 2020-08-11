@@ -38,7 +38,7 @@ export default function TotalDebates() {
 
   return (
     <React.Fragment>
-      <Typography component="p" variant="h4" align='center'>
+      <Typography class="stat-header" component="p" variant="h4" align='center'>
         Total Debates
       </Typography>
       <br/>
