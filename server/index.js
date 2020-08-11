@@ -419,7 +419,7 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
-// app.get('/', (req, res) => res.sendFile('../../public/index.html'))
+app.get('/', (req, res) => res.sendFile('../../public/index.html'))
 
 
 http.listen(3001, () => {
