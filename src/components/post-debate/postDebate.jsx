@@ -109,7 +109,7 @@ export default function PostDebate({ activeRoomState }) {
     <Container
       component="main"
       maxWidth="xs"
-      style={{ border: "2px solid black", borderRadius: "10px" }}
+      style={{ border: "2px solid black", borderRadius: "10px", marginTop: '120px', height: 'auto' }}
     >
       <CssBaseline />
       <div className={classes.paper}>

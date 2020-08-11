@@ -2,6 +2,7 @@ const pg = require('pg');
 require('dotenv').config()
 
 // var conString = `postgres://csslmvrr:KuCNQMyVFayHEkIigel7Z6lDdjOIEUDT@ruby.db.elephantsql.com:5432/csslmvrr` //Can be found in the Details page
+
 // var client = new pg.Client(conString);
 
 var client = new pg.Client(process.env.REACT_APP_PG_STRING);
