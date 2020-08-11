@@ -56,7 +56,7 @@ const App = () => {
   })
   
   useEffect(() => {
-      axios.get(`${ENDPOINT}/api/login/check`,  {})
+      axios.get(`/api/login/check`,  {})
         .then((res) => {
           if (res.data.success) {
             dispatch({ type: 'SET_USERNAME', payload: res.data.username })
@@ -72,7 +72,7 @@ const App = () => {
     }, [dispatch])
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
+    const socket = socketIOClient();
     dispatch({ type: 'SET_CURRENTSOCKET', payload: socket })
     // setCurrentSocket(socket)
     return () => socket.disconnect();
@@ -86,7 +86,7 @@ const App = () => {
       })
 
       state.currentSocket.on('startGame', data => {
-        fetch(`${ENDPOINT}/video/token`, {
+        fetch(`/video/token`, {
           method: 'POST',
           body: JSON.stringify({
             identity: state.username,

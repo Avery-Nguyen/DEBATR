@@ -28,7 +28,7 @@ export default function PastDebate() {
   const [pastDebates, setpastDebates] = useState([]);
   useEffect(() => {
     Promise.all([
-      axios.get(`${ENDPOINT}/api/rooms`)
+      axios.get(`/api/rooms`)
     ]).then((data) => {
       console.log("PastDebate -> pastDebates", data)
       setpastDebates(prev => [...prev, ...data[0].data]);

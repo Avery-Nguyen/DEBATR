@@ -27,7 +27,7 @@ export default function TotalDebates() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`${ENDPOINT}/api/totaldebates`)
+      axios.get(`/api/totaldebates`)
     ]).then((data) => {
       // console.log(data[0].data, "this is data in orders")
       settotaldebates(data[0].data[0].count);

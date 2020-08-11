@@ -36,7 +36,7 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`${ENDPOINT}/api/leaderboard`)
+      axios.get(`/api/leaderboard`)
     ]).then((data) => {
       // console.log(data, "this is data in orders")
       setleaderBoard(prev => [...prev, ...data[0].data]);
@@ -49,7 +49,7 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`${ENDPOINT}/api/topiccount`)
+      axios.get(`/api/topiccount`)
     ]).then((data) => {
       // console.log(data, "this is data in for topic count")
       setTopicCount(prev => [...prev, ...data[0].data]);

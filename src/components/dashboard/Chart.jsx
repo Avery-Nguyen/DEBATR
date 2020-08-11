@@ -18,7 +18,7 @@ export default function Chart() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`${ENDPOINT}/api/categorycount`)
+      axios.get(`/api/categorycount`)
     ]).then((res) => {
       console.log(res);
       setCategoryCount(prev => [...prev, ...res[0].data])

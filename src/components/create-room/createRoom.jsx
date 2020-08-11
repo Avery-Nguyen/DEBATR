@@ -109,7 +109,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
 
     } else if (createdTopic) {
       // console.log(categoryID)
-      axios.post(`${ENDPOINT}/api/topics`, {
+      axios.post(`/api/topics`, {
         question: createdTopic,
         category_id: parseInt(categoryID)
       })
@@ -139,14 +139,14 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
   }
 
   useEffect(() => {
-    axios.get(`${ENDPOINT}/api/topics`)
+    axios.get(`/api/topics`)
       .then((data) => {
         setOptions(data.data.topics)
       });
   }, [])
 
   useEffect(() => {
-    axios.get(`${ENDPOINT}/api/categories`)
+    axios.get(`/api/categories`)
       .then((data) => {
         // console.log("CreateRoom -> data", data.data.topics)
         setCategoriesOptions(data.data.topics);

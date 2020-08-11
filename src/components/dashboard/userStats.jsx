@@ -47,10 +47,10 @@ export default function UserStats() {
    let userID = state.userID
   //  console.log(username)
 
-   const debateCount = axios.post(`${ENDPOINT}/api/user/debatecount`, {username})
-   const totalUserPoints = axios.post(`${ENDPOINT}/api/user/totalpoints`, {userID})
-   const topCategory = axios.post(`${ENDPOINT}/api/user/highest_user_category`, {userID})
-   const topTopic = axios.post(`${ENDPOINT}/api/user/mostdebatedtopic`, {userID})
+   const debateCount = axios.post(`/api/user/debatecount`, {username})
+   const totalUserPoints = axios.post(`/api/user/totalpoints`, {userID})
+   const topCategory = axios.post(`/api/user/highest_user_category`, {userID})
+   const topTopic = axios.post(`/api/user/mostdebatedtopic`, {userID})
 
     Promise.all([
       debateCount, 

@@ -66,7 +66,7 @@ export default function SignIn(props) {
       // console.log(email, 'email')
       // console.log(password, "password")
       // console.log('submitlogin called')
-      axios.post(`${ENDPOINT}/api/login`, {
+      axios.post(`/api/login`, {
         email,
         password
       })

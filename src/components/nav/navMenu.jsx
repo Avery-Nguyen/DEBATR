@@ -76,7 +76,7 @@ export default function NavMenu() {
       })
     }
 
-    axios.get(`${ENDPOINT}/api/logout`, {})
+    axios.get(`/api/logout`, {})
       .then((res) => {
         // console.log('response from logout', res)
         if (res.data === 'success') {
@@ -105,7 +105,7 @@ export default function NavMenu() {
   };
 
   const getUsercard = (username) => {
-    axios.post(`${ENDPOINT}/api/usercardByName`, {
+    axios.post(`/api/usercardByName`, {
       username
     })
       .then((res) => {

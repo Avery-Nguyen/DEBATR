@@ -12,7 +12,7 @@ const io = require('socket.io')(http);
 const {
   postResultsToDatabase
 } = require('./databaseCalls.js');
-const PORT = process.env.PORT || 8001
+// const PORT = process.env.PORT || 3001
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -419,9 +419,9 @@ app.post("/video/token", (req, res) => {
   sendTokenResponse(token, res);
 });
 
-app.get('*', (req, res) => res.sendFile('index.html'))
+app.get('*', (req, res) => res.sendFile('../public/index.html'))
 
 
-http.listen(PORT, () => {
+http.listen(3001, () => {
   console.log("Express server is running on localhost:3001")
 });

@@ -79,7 +79,7 @@ const [hostUsercard, setHostUsercard] = useState({});
 
 const getHostUsercard = (username) => {
   // console.log(username)
-  axios.post(`${ENDPOINT}/api/usercardByName`, {
+  axios.post(`/api/usercardByName`, {
     username
   })
     .then((res) => {

@@ -115,7 +115,7 @@ export default function PastDebateItem(props) {
 
   const addLikes = (typeOfLike, room_id) => {
     // console.log(typeOfLike, room_id)
-    axios.post(`${ENDPOINT}/api/likes`, {
+    axios.post(`/api/likes`, {
       room_id,
       typeOfLike
     })
@@ -139,7 +139,7 @@ export default function PastDebateItem(props) {
 
   const getHostUsercard = (host) => {
     // console.log(host)
-    axios.post(`${ENDPOINT}/api/usercard`, {
+    axios.post(`/api/usercard`, {
       host
     })
       .then((res) => {
