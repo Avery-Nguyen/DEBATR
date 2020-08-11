@@ -181,7 +181,7 @@ const getHostUsercard = (username) => {
         <CardHeader
           avatar={
             <div>
-             {roomDetails.host && <Avatar src={state.userAvatarUrl} onClick={() => getHostUsercard(roomDetails.host)}/> }
+             {roomDetails.host && <Avatar src={roomDetails.host_avatar} onClick={() => getHostUsercard(roomDetails.host)}/> }
               <Dialog
                 open={open}
                 TransitionComponent={Transition}
@@ -203,7 +203,7 @@ const getHostUsercard = (username) => {
             top: "7px",
             right: "7px"
           }}>
-           {roomDetails.contender && <Avatar src={state.userAvatarUrl} onClick={() => getHostUsercard(roomDetails.contender)}/> }
+           {roomDetails.contender && <Avatar src={roomDetails.contender_avatar} onClick={() => getHostUsercard(roomDetails.contender)}/> }
           </div>
 
           <div class="inner" style={{

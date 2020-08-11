@@ -107,7 +107,7 @@ export default function NavMenu() {
       username
     })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         // console.log(data.data[0], 'sql response')
         setUsercard(prev => ({ ...prev, ...res.data[0] }));
         handleClickOpenUsercard();

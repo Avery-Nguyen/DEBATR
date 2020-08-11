@@ -98,6 +98,7 @@ export default function CreateRoom({ handleCloseCreateRoom }) {
         roomName: randRoomName,
         userName: state.username,
         userID: state.userID,
+        avatar: state.userAvatarUrl,
         topicID,
         topic,
         stance
