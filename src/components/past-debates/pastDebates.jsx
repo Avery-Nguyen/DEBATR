@@ -30,7 +30,7 @@ export default function PastDebate() {
     Promise.all([
       axios.get(`/api/rooms`)
     ]).then((data) => {
-      console.log("PastDebate -> pastDebates", data)
+      // console.log("PastDebate -> pastDebates", data)
       setpastDebates(prev => [...prev, ...data[0].data]);
     })
       .catch(error => {
