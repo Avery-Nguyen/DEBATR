@@ -22,11 +22,11 @@ const getRoomRecords = (client, limit = 10) => {
 
 const getLeaderboard = (client, limit = 10) => {
 
-  return client.query(`SELECT  users.username, SUM(agreement_ratings.agreement_rating) FROM users 
-  JOIN agreement_ratings ON users.id = agreement_ratings.user_id
-  GROUP BY users.username
-  ORDER BY sum DESC
-  LIMIT $1;
+  return client.query(`SELECT  users.username, SUM(ratings.points) as sum 
+  FROM users JOIN ratings ON users.id = ratings.to_user_id
+    GROUP BY users.username
+    ORDER BY sum DESC
+    LIMIT $1;
   `, [limit])
     .then((res) => {
       // console.log(`res from sql ${res}`)
