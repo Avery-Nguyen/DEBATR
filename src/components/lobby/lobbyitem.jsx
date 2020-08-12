@@ -75,23 +75,23 @@ export default function LobbyItem({ roomDetails }) {
     setOpen(false);
   };
 
-const [hostUsercard, setHostUsercard] = useState({});
+  const [hostUsercard, setHostUsercard] = useState({});
 
-const getHostUsercard = (username) => {
-  // console.log(username)
-  axios.post(`/api/usercardByName`, {
-    username
-  })
-    .then((res) => {
-      // console.log(res)
-      // console.log(data.data[0], 'sql response')
-      setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
-      handleClickOpen();
+  const getHostUsercard = (username) => {
+    // console.log(username)
+    axios.post(`/api/usercardByName`, {
+      username
+    })
+      .then((res) => {
+        // console.log(res)
+        // console.log(data.data[0], 'sql response')
+        setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
+        handleClickOpen();
 
-    });
-}
+      });
+  }
 
-// console.log(state.userAvatarUrl)
+  // console.log(state.userAvatarUrl)
 
   const [openStage, setOpenStage] = React.useState(false);
 
@@ -156,10 +156,10 @@ const getHostUsercard = (username) => {
           dispatch({ type: 'SET_TOKEN', payload: fetchData.token })
         })
 
-        state.currentSocket.emit('joinRoomSpectator', {
-          roomName: roomDetails.name,
-          userName: state.sessionID
-        })
+      state.currentSocket.emit('joinRoomSpectator', {
+        roomName: roomDetails.name,
+        userName: state.sessionID
+      })
     } else {
       dispatch({ type: 'SET_OPEN_SIGN_IN', payload: true })
 
@@ -182,14 +182,14 @@ const getHostUsercard = (username) => {
         <CardHeader
           avatar={
             <div>
-             {roomDetails.host && <Avatar src={roomDetails.host_avatar} onClick={() => getHostUsercard(roomDetails.host)}/> }
+              {roomDetails.host && <Avatar src={roomDetails.host_avatar} onClick={() => getHostUsercard(roomDetails.host)} />}
               <Dialog
                 open={open}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
               >
-                <UserCard hostUsercard={hostUsercard}  />
+                <UserCard hostUsercard={hostUsercard} />
               </Dialog>
             </div>
           }
@@ -198,39 +198,43 @@ const getHostUsercard = (username) => {
           subheader={roomDetails.host ? `${roomDetails.host} Agrees` : `${roomDetails.contender} Disagrees`}
         />
 
-          <div style={{
-            marginLeft: "10px",
-            position: "absolute",
-            top: "7px",
-            right: "7px"
-          }}>
-           {roomDetails.contender && <Avatar src={roomDetails.contender_avatar} onClick={() => getHostUsercard(roomDetails.contender)}/> }
-          </div>
+        <div style={{
+          marginLeft: "10px",
+          position: "absolute",
+          top: "7px",
+          right: "7px"
+        }}>
+          {roomDetails.contender && <Avatar src={roomDetails.contender_avatar} onClick={() => getHostUsercard(roomDetails.contender)} />}
+        </div>
 
+        {roomDetails.host && roomDetails.contender &&
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+            <div class="spectate"
+              onClick={handleClickOpenSpectate}>spectate
+              </div>
+          </div>}
+
+        {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) &&
           <div class="inner" style={{
             marginLeft: "10px",
             position: "absolute",
             top: "50px",
             right: "135px"
           }}>
-             {roomDetails.host && roomDetails.contender && <p class="inner"
-              variant="contained"
-              style={{
-                backgroundColor: "rgb(7,238,38)",
-              }}
-              onClick={handleClickOpenSpectate}>spectate
-              </p>}
-            {(((roomDetails.host && !roomDetails.contender) || (!roomDetails.host && roomDetails.contender))) && <p class="inner"
+            <p class="inner"
               variant="contained"
               style={{
                 backgroundColor: "rgb(7,238,38)",
               }}
               onClick={handleClickOpenStage}>enter
-              </p>}
-          </div>
+              </p>
+          </div>}
 
-          <CardActions disableSpacing>
-            {/* {roomDetails.host && roomDetails.contender && <Button class="inner"
+        <CardActions disableSpacing>
+          {/* {roomDetails.host && roomDetails.contender && <Button class="inner"
               variant="contained"
               style={{
                 color: "black",
@@ -249,13 +253,13 @@ const getHostUsercard = (username) => {
               }}
               onClick={handleClickOpenStage}>Enter Stage
               </Button>} */}
-            <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
-              <Stage />
-              <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
-                <CloseIcon />
-              </IconButton>
-            </Dialog>
-          </CardActions>
+          <Dialog fullScreen open={openStage} TransitionComponent={Transition}>
+            <Stage />
+            <IconButton edge="start" color="inherit" onClick={handleCloseStage} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+          </Dialog>
+        </CardActions>
 
       </Card>
     );
