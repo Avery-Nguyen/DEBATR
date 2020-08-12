@@ -34,6 +34,7 @@ let intermissionTime = 3;
 let round1Time = 15;
 let round2Time = 15;
 let finalround = 30;
+let finalDemoRound = 15;
 // This class holds an array of all the rooms
 class Rooms {
   constructor() {
@@ -191,6 +192,46 @@ class Room {
     })
     .catch(err => console.log(err))
   }
+
+
+  startDemoGame() {
+    // The framework of the game! Toggles the turns
+    io.to(this.name).emit(
+      "bothReady"
+    );
+    this.sleep(100)
+      .then(() => {
+        io.to(this.name).emit(
+          "gameCommand",
+          `Demo Round - ${this.host} is talking`
+        );
+        io.to(this.name).emit("setTimer", round1Time)
+        io.to(this.name).emit("mute", this.contender)
+        
+      })
+      .then(() => this.sleep(round1Time * 1000))
+      .then(() => {
+        this.postGameToDatabase();
+        io.to(this.name).emit('gameCommand', `Demo - ${this.contender} is talking`)
+        io.to(this.name).emit("setTimer", round1Time)
+        io.to(this.name).emit("mute", this.host)
+        io.to(this.name).emit('unMute', this.contender)
+      })
+      .then(() => this.sleep(round1Time * 1000))
+      .then(() => {
+        io.to(this.name).emit("gameCommand", `Final Demo Round - Open Debate!`);
+        io.to(this.name).emit('unMute', this.host)
+        io.to(this.name).emit("setTimer", finalround)
+      })
+      .then(() => this.sleep(finalDemoRound * 1000))
+      .then(() => {
+
+        io.to(this.name).emit('gameCommand', 'Game over')
+
+        // Ends the game for the user - Brings up post-debtate review screen
+        io.to(this.name).emit('gameOver', null)
+      })
+    }
 }
 
 // Roomslist is an instance of the roomS class.
@@ -199,12 +240,16 @@ const roomList = new Rooms("roomList");
 // Seed data
 roomList.newRoom("room1", "Vancouver is the worst!");
 roomList.roomList['room1'].contender = "Rishav";
-roomList.newRoom("room2", "jQuery is amazing");
-roomList.roomList['room2'].contender = "Eric";
+roomList.roomList['room1'].contender_avatar = "https://ca.slack-edge.com/T2G8TE2E5-U01414BCMDY-3dd5c3eb187a-512";
+roomList.newRoom("room2", "jQuery is dead");
+roomList.roomList['room2'].contender = "Jay-Kwerry";
+roomList.roomList['room2'].contender_avatar = "https://i.imgur.com/XMbyEXc.jpg";
 roomList.newRoom("room3", "Glen is cooler than Bradley");
 roomList.roomList['room3'].host = "Glen";
+roomList.roomList['room3'].host_avatar = "https://ca.slack-edge.com/T2G8TE2E5-UQG14GBS6-c12da29e51cd-512";
 roomList.newRoom("room4", "VIM is an easy-to-use text-editor");
 roomList.roomList['room4'].host = "Andy";
+roomList.roomList['room4'].host_avatar = "https://avatars2.githubusercontent.com/u/16171227?s=460&u=1cf6b0a76a245e1594a7a93cb9fcdb3964bb7b2c&v=4";
 
 io.sockets.on("connection", function (socket) {
   // Send roomList to each new participant
@@ -293,7 +338,7 @@ io.sockets.on("connection", function (socket) {
       roomList.sendRoomUpdate();
 
       // Starts the game method!
-      roomList.roomList[data.roomName].startRealGame()
+      roomList.roomList[data.roomName].startDemoGame()
     }
 
 
