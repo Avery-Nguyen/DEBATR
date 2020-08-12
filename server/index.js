@@ -30,14 +30,10 @@ app.use(pino);
 
 // Alex's SOCKET code
 let rLString;
-let debtateTime = 3;
 let intermissionTime = 3;
 let round1Time = 15;
 let round2Time = 15;
 let finalround = 30;
-// let round1Time = 15;
-// let round2Time = 30;
-// let finalround = 45;
 // This class holds an array of all the rooms
 class Rooms {
   constructor() {

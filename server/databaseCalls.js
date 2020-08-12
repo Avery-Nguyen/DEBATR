@@ -1,8 +1,5 @@
 
 const getRoomRecords = (client, limit = 10) => {
-  // console.log('INSIDE GET ROOM RECORDS')
-  // console.log('insideRoomRecords')
-
   return client.query(`SELECT room_logs.*, ROUND(AVG(agreement_ratings.agreement_rating),0) AS agreement_rating, topics.question, host.username AS host_name, contender.username AS contender_name, host.avatar_url AS host_avatar, contender.avatar_url AS contender_avatar
   FROM room_logs
   JOIN topics ON room_logs.topic_id = topics.id
