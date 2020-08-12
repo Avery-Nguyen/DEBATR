@@ -44,7 +44,7 @@ let {username, points_avg, rating_avg, host_count, contender_count, avatar_url }
          {username}
         </Typography>
         <UserRating rating={rating_avg}/>
-        <p>{host_count || 0} debates</p>
+        <p>{parseInt(host_count) + parseInt(contender_count) || 0} debates</p>
         <br></br>
         <p>{Math.round(points_avg || 0)} Debate Average</p>
         <div style={{position: "absolute", 

@@ -120,15 +120,16 @@ const getCategoryCountByUserID = (client, user_id) => {
 }
 
 const getUserCardByID = (client, id) => {
+  console.log('id', id)
   return client.query(`SELECT username, avatar_url, avg(ratings.points) as points_avg, avg(ratings.rating) AS rating_avg, COUNT(host.host_id) as host_count, COUNT(contender.contender_id) as contender_count
   FROM users
   JOIN ratings ON ratings.to_user_id = users.id
-  JOIN room_logs AS host ON users.id = host.host_id
-  JOIN room_logs AS contender ON users.id = contender.contender_id
+  FULL OUTER JOIN room_logs AS host ON users.id = host.host_id
+  FULL OUTER JOIN room_logs AS contender ON users.id = contender.contender_id
   WHERE users.id = $1
   group by username, avatar_url;`, [id])
   .then((res) => {
-    // console.log(`res from sql ${res}`)
+    console.log('res from sql', res.rows[0])
     return res
   })
 }

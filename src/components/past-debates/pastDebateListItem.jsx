@@ -138,17 +138,24 @@ export default function PastDebateItem(props) {
   // console.log(props)
 
   const getHostUsercard = (host) => {
-    // console.log(host)
-    axios.post(`/api/usercard`, {
+    console.log(host)
+    axios.post('/api/usercard', {
       host
     })
       .then((res) => {
-        // console.log(res.data[0])
+        console.log(res.data[0])
         // console.log(data.data[0], 'sql response')
-        setHostUsercard(prev => ({ ...prev, ...res.data[0] }));
-        handleClickOpen();
+        setHostUsercard(prev => {
+          console.log('inside callback')
+          return { ...prev, ...res.data[0] }
+        }
+        );
+       
 
-      });
+      })
+      .then( 
+        handleClickOpen()
+        )
   }
 
   // const getContenderUsercard = (contender) => {

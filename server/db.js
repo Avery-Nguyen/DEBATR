@@ -12,7 +12,7 @@ client.connect(function(err) {
   if (err) {
     return console.error('could not connect to PG', err);
   }
-  console.log('DB Connected!');
+  console.log('DB Connected to Alex!');
 })
   
 module.exports = client;
