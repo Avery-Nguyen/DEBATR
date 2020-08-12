@@ -74,7 +74,7 @@ export default function UserStats() {
   // const classes = useStyles();
   return (
     <React.Fragment style={{ maxWidth: 'fit-content' }}>
-       <h1 align="center"  border='solid 8px rgb(64,81,182)'>{state.username}'s Stats </h1>
+       <h1 align="center"  border='solid 8px rgb(64,81,182)'><u>{state.username}'s Stats</u></h1>
       <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
      
         <div style={{ display: 'block' }}>
