@@ -118,7 +118,7 @@ export default function Dashboard() {
 
       
         {/* <Container maxWidth="lg"  className={classes.container} style={{display:'block'}}> */}
-        <h1 align="center" class="margin-spacer" border='solid 8px rgb(64,81,182)'>Overall Stats </h1>
+        <h1 align="center" class="margin-spacer" border='solid 8px rgb(64,81,182)'><u>Overall Stats</u></h1>
 
           <article class="stat-container">
           <div class="stat-flex-row">
