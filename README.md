@@ -18,10 +18,10 @@ DebatR is a Web application that allows the users to have civilized debates on p
 
 ## Screenshots
 
-- Lobby
-- Stage
-- Stats
-- User Card
+![Lobby](https://github.com/alex-hladun/DEBATR/blob/master/planning/img/Lobby.png?raw=true)
+![Login](https://github.com/alex-hladun/DEBATR/blob/master/planning/img/Login.png?raw=true)
+![Sign-up](https://github.com/alex-hladun/DEBATR/blob/master/planning/img/Sign_up.png?raw=true)
+![Create Stage](https://github.com/alex-hladun/DEBATR/blob/master/planning/img/Create_stage.png?raw=true)
 
 ## Languages and Tools
 <img align="left" alt="JavaScript" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png" />
