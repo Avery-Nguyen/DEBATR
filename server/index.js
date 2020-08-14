@@ -221,7 +221,7 @@ class Room {
       .then(() => {
         io.to(this.name).emit("gameCommand", `Final Demo Round - Open Debate!`);
         io.to(this.name).emit('unMute', this.host)
-        io.to(this.name).emit("setTimer", finalround)
+        io.to(this.name).emit("setTimer", finalDemoRound)
       })
       .then(() => this.sleep(finalDemoRound * 1000))
       .then(() => {
@@ -338,7 +338,7 @@ io.sockets.on("connection", function (socket) {
       roomList.sendRoomUpdate();
 
       // Starts the game method!
-      roomList.roomList[data.roomName].startRealGame()
+      roomList.roomList[data.roomName].startDemoGame()
     }
 
 
