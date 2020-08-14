@@ -338,7 +338,7 @@ io.sockets.on("connection", function (socket) {
       roomList.sendRoomUpdate();
 
       // Starts the game method!
-      roomList.roomList[data.roomName].startDemoGame()
+      roomList.roomList[data.roomName].startRealGame()
     }
 
 
